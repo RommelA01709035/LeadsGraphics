@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Importar CSV</title>
+    <title>LeadGraphs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        .lead-button {
+            background-color: #4434C8;
+            color: #E1E7FD;
+            font-family: 'Questrial', sans-serif;
+            font-size: 24px;
+            padding: 20px 40px;
+            border-radius: 10px; /* Esquinas curvas */
+            box-shadow: 0px 4px 6px rgba(68, 52, 200, 0.2);
+        }
+        .lead-title {
+            color: #4434C8;
+            font-family: 'Questrial', sans-serif;
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .lead-image {
+            max-width: 200px; /* Tamaño máximo de la imagen */
+        }
+    </style>
 </head>
 <body>
-    <h1>Importar archivo CSV</h1>
-    <button onclick="window.location.href='consultar_leads.html'">Cargar CSV</button>
+    <div class="container has-text-centered">
+        <h1 class="title lead-title">LeadGraphs</h1>
+
+        <img src="LeadGraphs.png" alt="Imagen LeadGraphs" class="lead-image">
+
+        <!-- Botón para generar reporte -->
+        <div>
+        <a href="consultar_leads.html">
+            <button class="button lead-button">Generar reporte</button>
+        </a>
+        </div>
+    </div>
 </body>
 </html>
