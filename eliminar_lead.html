@@ -4,12 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Lead</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        /* Estilo personalizado para el encabezado */
+        .header {
+            background-color: #6669EF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Questrial', sans-serif;
+        }
+
+        /* Estilo personalizado para los botones */
+        .button.is-danger {
+            background-color: #F649D0;
+            color: white;
+        }
+
+        /* Estilo personalizado para centrar el botón */
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Estilo personalizado para la tabla */
+        .table-container {
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .title.is-1 {
+            color: white;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Eliminar lead existente</h1>
+    <div class="header">
+        <h1 class="title is-1">Eliminar lead existente</h1>
+        <!-- Botón para regresar a la página de Consultar Leads -->
+        <button class="button is-danger" onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+    </div>
+
     <!-- Contenido específico para eliminar leads -->
 
-    <!-- Botón para regresar a la página de Consultar Leads -->
-    <button onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+    <!-- Tabla para eliminar leads -->
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Nombre de Lead</th>
+                    <th>ID del Lead</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas de ejemplo -->
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td><button class="button is-danger">Eliminar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>
+                    <td><button class="button is-danger">Eliminar</button></td>
+                </tr>
+                <!-- ... Agrega más filas aquí ... -->
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

@@ -4,12 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Lead</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        /* Estilo personalizado para el encabezado */
+        .header {
+            background-color: #6669EF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Questrial', sans-serif;
+        }
+
+        /* Estilo personalizado para los botones */
+        .button.is-info {
+            background-color: #F649D0;
+            color: white;
+        }
+
+        .title.is-1 {
+            color: white;
+        }
+
+        /* Estilo personalizado para la lista */
+        .custom-list {
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Modificar información de lead</h1>
+    <div class="header">
+        <h1 class="title is-1">Modificar información de lead</h1>
+        <!-- Botón para regresar a la página de Consultar Leads -->
+        <button class="button is-info" onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+    </div>
+
     <!-- Contenido específico para modificar leads -->
 
-    <!-- Botón para regresar a la página de Consultar Leads -->
-    <button onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+    <!-- Lista con 3 columnas -->
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Nombre de Lead</th>
+                    <th>ID del Lead</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas de ejemplo -->
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>    
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 2</td>
+                    <td>456</td>
+                    <td><button class="button is-info">Modificar</button></td>
+                </tr>
+
+                <!-- ... Agrega más filas aquí ... -->
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>
