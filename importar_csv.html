@@ -10,11 +10,26 @@
             background-color: #4434C8;
             color: #E1E7FD;
             font-family: 'Questrial', sans-serif;
-            font-size: 24px;
-            padding: 20px 40px;
+            font-size: 32px;
+            padding: 30px 60px;
             border-radius: 10px; /* Esquinas curvas */
             box-shadow: 0px 4px 6px rgba(68, 52, 200, 0.2);
+            margin-bottom: 20px;
         }
+
+        .lead-upload {
+            background-color: #ffffff; /* Fondo blanco */
+            color: #3F3DC2; /* Texto en color #3F3DC2 */
+            font-family: 'Questrial', sans-serif;
+            font-size: 32px;
+            padding: 30px 60px;
+            border-radius: 10px; /* Esquinas curvas */
+            border: 2px solid #3F3DC2; /* Línea que rodea el botón */
+            box-shadow: 0px 4px 6px rgba(68, 52, 200, 0.2);
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
         .lead-title {
             color: #4434C8;
             font-family: 'Questrial', sans-serif;
@@ -24,19 +39,33 @@
         .lead-image {
             max-width: 200px; /* Tamaño máximo de la imagen */
         }
+
     </style>
 </head>
 <body>
     <div class="container has-text-centered">
+
+        <header>
+            <button class="button lead-button">Regresar a Workspace</button>
+        </header>
+
         <h1 class="title lead-title">LeadGraphs</h1>
 
         <img src="LeadGraphs.png" alt="Imagen LeadGraphs" class="lead-image">
 
         <!-- Botón para generar reporte -->
+
         <div>
-        <a href="consultar_leads.html">
-            <button class="button lead-button">Generar reporte</button>
-        </a>
+            <label for="csv-upload" class="button lead-upload">
+                Cargar CSV
+                <input type="file" id="csv-upload" style="display: none;">
+            </label>
+        </div>
+
+        <div>
+            <a href="consultar_leads.html">
+                <button class="button lead-button">Generar reporte</button>
+            </a>
         </div>
     </div>
 </body>

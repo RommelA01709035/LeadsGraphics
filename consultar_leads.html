@@ -4,17 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Leads</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        /* Estilo personalizado para el encabezado */
+        .header {
+            background-color: #6669EF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Questrial', sans-serif;
+        }
+        /* Estilo personalizado para la tabla */
+        .table-container {
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .title.is-1 {
+            color: white;
+        }
+
+        .button.is-info {
+            background-color: #F649D0;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Consultar leads</h1>
-    <!-- Aquí puedes agregar más contenido relacionado con la consulta de leads -->
+    <div class="header">
+        <h1 class="title is-1">Consultar Leads</h1>
+        <div class="buttons">
+            <a href="crear_lead.html" class="button is-info">Crear Lead</a>
+            <a href="modificar_lead.html" class="button is-info">Modificar Lead</a>
+            <a href="eliminar_lead.html" class="button is-danger">Eliminar Lead</a>
+            <a href="importar_csv.html" class="button is-info">Regreso a Importar</a>
+        </div>
+    </div>
 
-    <!-- Botones para otras páginas -->
-    <button onclick="window.location.href='crear_lead.html'">Crear Lead</button>
-    <button onclick="window.location.href='eliminar_lead.html'">Eliminar Lead</button>
-    <button onclick="window.location.href='modificar_lead.html'">Modificar Lead</button>
-
-    <!-- Botón para regresar a la página anterior -->
-    <button onclick="window.location.href='importar_csv.html'">Regreso a Importar CSV</button>
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>ID</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas de ejemplo -->
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <tr>
+                    <td>Ejemplo 1</td>
+                    <td>123</td>
+                    <td>555-1234</td>
+                </tr>
+                <!-- ... Agrega más filas aquí ... -->
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
