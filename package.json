@@ -1,0 +1,27 @@
+{
+  "name": "leadgraphs",
+  "version": "1.0.0",
+  "description": "Proyecto independiente al sistema de leadsales para la materia TC2005B ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RommelA01709035/LeadGraphs.git"
+  },
+  "keywords": [
+    "leadsales"
+  ],
+  "author": "In-Tech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RommelA01709035/LeadGraphs/issues"
+  },
+  "homepage": "https://github.com/RommelA01709035/LeadGraphs#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3"
+  }
+}
