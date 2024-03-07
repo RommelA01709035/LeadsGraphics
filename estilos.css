@@ -27,3 +27,11 @@
 .colorFooter{
     background-color: #3f40c2;
 }
+
+.columnaAlto{
+    display: flex;
+}
+
+.full-height-container { /*Esto hara que un contenedor abarque toda la pagina*/
+    min-height: 100vh;
+}
