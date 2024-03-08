@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inicio de sesión</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+
+    <section class="image-container">
+      <img src="/Users/alexys_reyna/Desktop/interfaz_inicio/Logo.png">
+    </section>
+
+    <section class="form-section">
+      <form class="box" onsubmit="return validarInicioSesion()">
+        <div class="field">
+          <label class="label">Usuario</label>
+          <div class="control">
+            <input id="usuarioInput" class="input" type="text" placeholder="Ejemplo: JuanBustos">
+          </div>
+        </div>
+
+        <br>
+
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control">
+            <input id="contrasenaInput" class="input" type="password" placeholder="********">
+          </div>
+        </div>
+
+        <br>
+
+        <button type="submit" class="button is-primary">Iniciar sesión</button>
+
+        <p id="mensajeInicioSesion" class="mensaje"></p>
+      </form>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
