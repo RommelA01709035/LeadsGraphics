@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Lead</title>
+    <title>Eliminar Lead</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<body>
-    <h1>Crear nuevo lead</h1>
-    <!-- Contenido específico para crear leads -->
 
-    <!-- Botón para regresar a la página de Consultar Leads -->
-    <button onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+<body>
+    <div class="header">
+        <h1 class="title is-1">Crear Lead</h1>
+        <!-- Botón para regresar a la página de Consultar Leads -->
+        <button class="button is-danger" onclick="window.location.href='consultar_leads.html'">Regresar a Consultar Leads</button>
+    </div>
+
+    <!-- Contenedor del formulario -->
+    <div class="form-container">
+        <!-- Campos de entrada para Nombre Lead y Número telefónico de lead -->
+        <div class="field">
+            <label class="label">Nombre Lead</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Nombre Lead">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Número telefónico de lead</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Número telefónico de lead">
+            </div>
+        </div>
+
+        <!-- Botón para agregar Lead -->
+        <div class="button-container">
+            <button class="button is-add">Agregar Lead</button>
+        </div>
+    </div>
 </body>
 </html>

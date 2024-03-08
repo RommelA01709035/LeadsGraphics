@@ -1,0 +1,93 @@
+/* Estilo personalizado para el encabezado */
+.header {
+    background-color: #6669EF;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-family: 'Questrial', sans-serif;
+}
+
+/* Estilo personalizado para la tabla */
+.table-container {
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.title.is-1 {
+    color: white;
+}
+
+.button.is-info {
+    background-color: #F649D0;
+    color: white;
+}
+
+/* Estilo personalizado para centrar el botón */
+.button-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.button.is-danger {
+    background-color: #F649D0;
+    color: white;
+}
+
+/* Estilo personalizado para el botón de agregar */
+.button.is-add {
+    background-color: #776EC4;
+    color: white;
+}
+
+/* Estilo personalizado para el contenedor del formulario */
+.form-container {
+    margin: 0 auto;
+    max-width: 600px; /* Ajusta este valor según tus necesidades */
+}
+
+.lead-button {
+    background-color: #4434C8;
+    color: #E1E7FD;
+    font-family: 'Questrial', sans-serif;
+    font-size: 24px; /* Tamaño de fuente más pequeño */
+    padding: 20px 40px; /* Padding más pequeño */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(68, 52, 200, 0.2);
+    margin-bottom: 20px;
+}
+
+.lead-upload {
+    background-color: #ffffff;
+    color: #3F3DC2;
+    font-family: 'Questrial', sans-serif;
+    font-size: 32px;
+    padding: 30px 60px;
+    border-radius: 10px;
+    border: 2px solid #3F3DC2;
+    box-shadow: 0px 4px 6px rgba(68, 52, 200, 0.2);
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.lead-title {
+    color: #4434C8;
+    font-family: 'Questrial', sans-serif;
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.lead-image {
+    max-width: 200px;
+}
+
+/* Estilo personalizado para la lista */
+.custom-list {
+    margin-top: 2rem;
+}
+
+/* Nuevo estilo para el header */
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
