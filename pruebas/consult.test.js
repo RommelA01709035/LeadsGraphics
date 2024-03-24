@@ -1,6 +1,6 @@
 // test.js
 const mysql = require('mysql2/promise');
-const Usuario = require('./sum');
+const Usuario = require('./consult');
 
 describe('Pruebas de Usuario', () => {
     let connection;
