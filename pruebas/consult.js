@@ -30,4 +30,10 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_user(IDUsuario) {
+        return db.execute(
+            'SELECT * FROM usuario WHERE IDUsuario=?',
+            [IDUsuario]
+        );
+    }
 };

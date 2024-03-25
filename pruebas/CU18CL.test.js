@@ -2,7 +2,7 @@
 const mysql = require('mysql2/promise');
 const Usuario = require('./consult');
 
-describe('Pruebas de Usuario', () => {
+describe('Pruebas de Lead', () => {
     let connection;
 
     beforeAll(async () => {
