@@ -48,4 +48,10 @@ describe('Pruebas de Usuario', () => {
         expect(rows.length).toBe(0);
     });
     
+    test('fetchOne detecta solo a un usuario detectado', async () => {
+        const [rows] = await Usuario.fetchOne_Count();
+        console.log(rows);
+        expect(rows.length).toBe(1);
+    });
+
 });

@@ -36,4 +36,9 @@ module.exports = class Usuario {
             [IDUsuario]
         );
     }
+
+    static fetchOne_Count() {
+        return db.execute('SELECT COUNT(*) AS total FROM usuario');
+    }
+    
 };

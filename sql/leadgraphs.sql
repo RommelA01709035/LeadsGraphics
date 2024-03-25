@@ -420,6 +420,18 @@ INSERT INTO `workspace` (`IDWorkspace`, `Numero_Versiones`) VALUES
 	(19, 3),
 	(20, 2);
 
+CREATE TABLE `usuario_prueba` (
+  `IDUsuario` int(11) NOT NULL,
+  `nombre_usuario` varchar(50) DEFAULT NULL,
+  `Celular` varchar(20) DEFAULT NULL,
+  `Correo` varchar(40) DEFAULT NULL,
+  `Contrasena` varchar(600) DEFAULT NULL,
+  `Fecha_Ingreso` date DEFAULT NULL,
+  `Habilitado` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`IDUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
