@@ -30,10 +30,24 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_lead_change(IDLead, EtiquetaCambiada) {
+        return db.execute(
+            'UPDATE leads SET Etiqueta = ? WHERE IDLead = ?',
+            [EtiquetaCambiada, IDLead]
+        );
+    }
+
     static fetchOne_user(IDUsuario) {
         return db.execute(
             'SELECT * FROM usuario WHERE IDUsuario=?',
             [IDUsuario]
+        );
+    }
+
+    static fetchOne_user_change(IDUsuario, Correo) {//Parametros de acuerdo a los campos
+        return db.execute(
+            'UPDATE usuario SET Correo = ? WHERE IDUsuario = ?',
+            [Correo, IDUsuario]
         );
     }
 
