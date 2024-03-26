@@ -1,0 +1,12 @@
+<!-- user_row.ejs -->
+
+<!-- Esta plantilla representa una fila de registro de usuario -->
+<tr>
+    <td><%= user.id %></td> <!-- Aquí se muestra el ID del usuario -->
+    <td><%= user.name %></td> <!-- Aquí se muestra el nombre del usuario -->
+    <td><%= user.email %></td> <!-- Aquí se muestra el correo electrónico del usuario -->
+    <td>
+        <!-- Aquí puedes agregar botones de acción, por ejemplo, para eliminar el usuario -->
+        <button onclick="eliminarUsuario('<%= user.id %>')">Eliminar</button>
+    </td>
+</tr>

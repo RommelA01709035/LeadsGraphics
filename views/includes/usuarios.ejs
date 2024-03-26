@@ -1,0 +1,19 @@
+<!-- users.ejs -->
+
+<!-- Aquí comienza la tabla -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo Electrónico</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach(function(user) { %>
+            <!-- Renderizar una fila de usuario utilizando la plantilla user_row.ejs -->
+            <%= include('user_row', {user: user}) %>
+        <% }); %>
+    </tbody>
+</table>
