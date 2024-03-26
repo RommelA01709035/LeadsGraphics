@@ -5,7 +5,7 @@ const Usuario = require('./consult');
 describe('Pruebas de Consultar Usuario', () => {
     let connection;
 
-    beforeAll(async () => {
+    beforeAll(async () => { //conecto bd
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
@@ -14,11 +14,11 @@ describe('Pruebas de Consultar Usuario', () => {
         });
     });
 
-    afterAll(async () => {
+    afterAll(async () => { //cierro bd
         await connection.end();
     });
 
-    test('fetchOne devuelve el Usuario correcto', async () => {
+    test('fetchOne devuelve el Usuario correcto', async () => { //caso de prueba
         const IDUsuario = 12;
         const expectedUser = {
             IDUsuario: 12,
@@ -27,10 +27,11 @@ describe('Pruebas de Consultar Usuario', () => {
             Correo: "ana123@gmail.com",
             Fecha_Ingreso: new Date("2024-03-17T06:00:00.000Z"), // Crear objeto Date
             Habilitado: 1
-        };
+        };//data usada
     
         const [rows] = await Usuario.fetchOne_user(IDUsuario);
         console.log(rows); 
+        //comparación en el caso de prueba
         expect(rows.length).toBe(1);
         expect(rows[0].IDUsuario).toBe(expectedUser.IDUsuario);
         expect(rows[0].Nombre).toBe(expectedUser.Nombre);

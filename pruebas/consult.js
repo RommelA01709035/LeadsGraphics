@@ -44,7 +44,7 @@ module.exports = class Usuario {
         );
     }
 
-    static fetchOne_user_change(IDUsuario, Correo) {
+    static fetchOne_user_change(IDUsuario, Correo) {//Parametros de acuerdo a los campos
         return db.execute(
             'UPDATE usuario SET Correo = ? WHERE IDUsuario = ?',
             [Correo, IDUsuario]
