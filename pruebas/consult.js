@@ -58,6 +58,13 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_user_por_correo(correoElectronico) {
+        return db.execute(
+            'SELECT * FROM Usuario WHERE Correo = ?',
+            [correoElectronico]
+        );
+    }
+
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
