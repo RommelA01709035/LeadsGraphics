@@ -51,6 +51,13 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_user_contrasena(IDUsuario, Contrasena) {//Parametros de acuerdo a los campos
+        return db.execute(
+            'UPDATE usuario SET Contrasena = ? WHERE IDUsuario = ?',
+            [Contrasena, IDUsuario]
+        );
+    }
+
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
