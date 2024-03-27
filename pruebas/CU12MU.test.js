@@ -9,7 +9,7 @@ describe('Pruebas de modificar Usuario', () => {
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'AguaUwu2',
+            password: '',
             database: 'leadgraphs'
         });
     });
