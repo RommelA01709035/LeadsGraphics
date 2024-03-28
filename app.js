@@ -30,17 +30,8 @@ app.use((request, response, next) => {
   next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
 
-const rutasUsuarios = require('./routes/usuarios.routes');
-app.use('/users', rutasUsuarios);
+const rutaGrafica = require('./routes/grafica.routes');
+app.get('/grafica',rutaGrafica);
 
-const rutasConstrucciones = require('./routes/construcciones.routes');
-app.use('/construcciones', rutasConstrucciones);
 
-app.use((request, response, next) => {
-  response.status(404);
-  response.sendFile(
-    path.join(__dirname, 'views', '404.html')
-  );
-});
-
-app.listen(3001);
+app.listen(3000);
