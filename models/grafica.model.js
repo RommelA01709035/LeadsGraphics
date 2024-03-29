@@ -11,8 +11,10 @@ module.exports = class Grafica {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
+            WHERE MONTH(Creado) = 3
             GROUP BY mes, estado_lead
             ORDER BY mes;
+            
             `
         );
     }

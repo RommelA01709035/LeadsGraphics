@@ -1,21 +1,49 @@
+<%- {
+    data: data,
+} %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfica</title>
-    <!-- Incluir Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../public/css/styles-grafica.css">
+    <style>
+        
+#grafica-container {
+    max-width: 400px; 
+    max-height: 300px;
+    padding: 60px;
+}
+
+#myChart {
+    max-width: 400px; 
+    max-height: 300px; 
+    margin: auto;
+}
+    </style>
 </head>
 <body>
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <div id="grafica-container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <a href="/grafica">
+        Crear Grafica
+    </a>
+    
     <script>
-        // Datos de ejemplo (reemplázalos con tus datos reales)
-        const data = {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+        const data = JSON.parse('<%- JSON.stringify(data) %>');
+
+        const labels = data.map(entry => entry.estado_lead);
+        const values = data.map(entry => entry.cantidad_leads);
+
+        const chartData = {
+            labels: labels,
             datasets: [{
                 label: 'Cantidad de leads',
-                data: [65, 59, 80, 81, 56],
+                data: values,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -33,25 +61,45 @@
                 borderWidth: 1
             }]
         };
-
-        // Configuración del gráfico
+        
         const config = {
             type: 'bar',
-            data: data,
+            data: chartData,
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10 // Tamaño de fuente de las etiquetas del eje y
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10 // Tamaño de fuente de las etiquetas del eje x
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 10 // Tamaño de fuente de la leyenda
+                            }
+                        }
                     }
                 }
             },
         };
 
-        // Crear el gráfico
         var myChart = new Chart(
             document.getElementById('myChart'),
             config
         );
+        
     </script>
 </body>
 </html>
