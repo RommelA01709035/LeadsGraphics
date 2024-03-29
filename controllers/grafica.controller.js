@@ -9,7 +9,7 @@ exports.get_grafica = (request, response, next) => {
                 estado_lead: row.estado_lead
             }));
             
-            response.render('grafica', { data: data });
+            response.render('crea-grafica', { data: data });
         })
         .catch(error => {
             console.log(error);
