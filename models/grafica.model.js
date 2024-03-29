@@ -19,5 +19,13 @@ module.exports = class Grafica {
         );
     }
     
-
+    static getData(x) {
+        return db.execute(
+            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, Estado_Lead AS x
+            FROM leads
+            WHERE MONTH(Creado) = ?
+            GROUP BY mes, Estado_Lead
+            ORDER BY cantidad_leads DESC;`, [x]
+        );
+    }
 }
