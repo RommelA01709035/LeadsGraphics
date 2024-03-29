@@ -31,7 +31,7 @@ app.use((request, response, next) => {
 });
 
 const rutaGrafica = require('./routes/grafica.routes');
-app.get('/grafica',rutaGrafica);
+app.use('/', rutaGrafica);
 
 
 app.listen(3000);
