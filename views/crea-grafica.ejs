@@ -1,17 +1,15 @@
 <form action="/grafica" method="POST">
-    <label for="opciones">Selecciona una opción:</label>
+    <label for="opciones">Select an option:</label>
     <select id="opciones" name="opcion">
-        <option value="bar">Barras</option>
-        <option value="Pastel">Pastel</option>
-        <option value="opcion3">Opción 3</option>
+        <option value="bar">Bar</option>
+        <option value="pie">Pie</option>
     </select>
     <section>
-    <label class="label" for="x">Eje X</label>
-    <input name="x" id="x" type="text" class="input"><br>
-    <label class="label" for="y">Eje Y</label>
-    <input name="y" id="y" type="text" class="input"><br><br>
-    <input class="" type="submit" value="Crear">
-    <button type="submit">Enviar</button>
+        <label for="caso">Select your case:</label>
+        <select id="caso" name="caso">
+            <option value="leadsPorMes">Leads per month</option>
+            <option value="leadsPorMesCategory">Leads per month and category</option>
+        </select>
+        <input type="submit" value="Crear">
     </section>
-    
 </form>

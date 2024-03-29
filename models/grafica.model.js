@@ -7,11 +7,10 @@ module.exports = class Grafica {
         this.y = y_
     }
 
-    static create() {
+    static getLeadsMonthCategory() {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
-            WHERE MONTH(Creado) = 3
             GROUP BY mes, estado_lead
             ORDER BY mes;
             
@@ -19,13 +18,11 @@ module.exports = class Grafica {
         );
     }
     
-    static getData(x) {
+    static getLeadsMonth() {
         return db.execute(
-            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, Estado_Lead AS x
+            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads
             FROM leads
-            WHERE MONTH(Creado) = ?
-            GROUP BY mes, Estado_Lead
-            ORDER BY cantidad_leads DESC;`, [x]
+            GROUP BY mes`
         );
     }
 }
