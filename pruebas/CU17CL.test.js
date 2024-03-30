@@ -6,3 +6,5 @@ test
 const mysql = require('mysql2/promise');
 const Usuario = require('./consult');
 
+
+
