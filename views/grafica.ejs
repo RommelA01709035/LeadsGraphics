@@ -1,8 +1,3 @@
-<%- {
-    data: data,
-    opcion: opcion,
-    caso: caso
-} %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfica</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <style>
         /* Estilos CSS */
         #grafica-container {
@@ -50,23 +46,25 @@
 
     <div id="grafica-container">
         <canvas id="myChart"></canvas>
+        <% if (caso === "LastMessage") { %>
+            <div>
+                <p>Mensajes encontrados:</p>
+                <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
+            </div>
+        <% } %>
     </div>
 
     <a href="/crea-grafica">
         Crear Gráfica
     </a>
-    <% if (caso === "LastMessage") { %>
-        <div>
-            <p>Mensajes encontrados:</p>
-                <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
-        </div>
-    <% } %>
+
+    <button onclick="downloadChart()">Descargar Gráfica</button>
     
     <script>
         const data = JSON.parse('<%- JSON.stringify(data) %>');
         const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
         let labels;
-        let values
+        let values;
     
         <% if(caso === "leadsPorMes") { %>
             labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
@@ -78,8 +76,6 @@
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
             values = data.map(entry => entry.cantidad_mensajes);
         <%}%>
-    
-        
     
         const chartData = {
             labels: labels,
@@ -140,21 +136,26 @@
                         pan: {
                             enabled: true
                         }
+                    },
+                    datalabels: {
+                        display: true
                     }
                 }
             },
         };
-
-
-
 
         var myChart = new Chart(
             document.getElementById('myChart'),
             config
         );
 
-
-
+        function downloadChart() {
+            const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
+            const link = document.createElement('a');
+            link.href = base64Image;
+            link.download = 'grafica.jpg';
+            link.click();
+        }
     </script>
     
 </body>
