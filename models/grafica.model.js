@@ -34,5 +34,14 @@ module.exports = class Grafica {
             [palabra]
         );
     }
-    
+    static getPerCompany() {
+        return db.execute(
+            `
+            SELECT COUNT(Compania ) AS cantidad_mensajes, Compania
+            FROM leads
+            GROUP BY Compania
+            ORDER BY cantidad_mensajes DESC
+            `
+        );
+    }
 }

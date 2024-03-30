@@ -80,7 +80,27 @@ exports.post_grafica = (request, response, next) => {
                     response.render('crea-grafica', { opcion: "LastMessage" });
                 }
             
-            break;                                          
+            break;   
+            case 'PerCompany':
+
+                    Grafica.getPerCompany()
+                    .then(([rows, fieldData]) => {
+                        const data = rows.map(row => ({
+                            cantidad_mensajes: row.cantidad_mensajes, 
+                            Compania: row.Compania,
+                        }));
+                        console.log("Tuplas obtenidas de la base de datos:");
+                        data.forEach(tupla => {
+                            console.log(tupla);
+                        });
+                        console.log(opcion);
+                        response.render('grafica', { data: data, opcion: opcion, caso: caso });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        response.status(500).json({ message: "Error creating chart" });
+                    });
+                break;                                         
 
         default:
             response.status(400).json({ message: "Invalid case" });
