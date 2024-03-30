@@ -2,20 +2,22 @@ const Grafica = require('../models/grafica.model');
 
 
 exports.get_crea_grafica = (request, response, next) => {
-    response.render('crea-grafica');
+    const opcion = "";
+    response.render('crea-grafica', { opcion: opcion });
+
 };
 
 
 
 exports.post_grafica = (request, response, next) => {
     const { caso, opcion } = request.body;
-    
+    console.log(caso)
     switch (caso) {
         case 'leadsPorMes':
             Grafica.getLeadsMonth()
                 .then(([rows, fieldData]) => {
                     const data = rows.map(row => ({
-                        estado_lead: row.mes, 
+                        mes: row.mes, 
                         cantidad_leads: row.cantidad_leads,
                     }));
                     console.log("Tuplas obtenidas de la base de datos:");
@@ -44,31 +46,40 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion });
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso });
                 })
                 .catch(error => {
                     console.log(error);
                     response.status(500).json({ message: "Error creating chart" });
                 });
             break;
-        case 'leadsPorMes':
-            Grafica.getLeadsMonth()
+        case 'LastMessage':
+            const {palabra} = request.body
+            console.log(palabra)
+            if(palabra){
+                Grafica.getLastMessage(palabra)
                 .then(([rows, fieldData]) => {
                     const data = rows.map(row => ({
-                        estado_lead: row.mes, 
-                        cantidad_leads: row.cantidad_leads,
+                        cantidad_mensajes: row.cantidad_mensajes, 
+                        palabra: palabra,
                     }));
                     console.log("Tuplas obtenidas de la base de datos:");
                     data.forEach(tupla => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion });
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso });
                 })
                 .catch(error => {
                     console.log(error);
                     response.status(500).json({ message: "Error creating chart" });
-                });
+                });}
+                else {
+                    console.log("ENtraste al Else")
+                    console.log(opcion);
+                    response.render('crea-grafica', { opcion: "LastMessage" });
+                }
+            
             break;                                          
 
         default:

@@ -10,99 +10,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfica</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../public/css/styles-grafica.css">
     <style>
-        
-#grafica-container {
-    max-width: 400px; 
-    max-height: 300px;
-    padding: 60px;
-}
+        /* Estilos CSS */
+        #grafica-container {
+            max-width: 600px; 
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
 
-#myChart {
-    max-width: 400px; 
-    max-height: 300px; 
-    margin: auto;
-}
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .canvas-container canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .remove-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
     <div id="grafica-container">
         <canvas id="myChart"></canvas>
     </div>
 
     <a href="/crea-grafica">
-        Crear Grafica
+        Crear Gráfica
     </a>
+    <% if (caso === "LastMessage") { %>
+        <div>
+            <p>Mensajes encontrados:</p>
+                <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
+        </div>
+    <% } %>
     
     <script>
-            
-    const data = JSON.parse('<%- JSON.stringify(data) %>');
-    const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
-    const labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
-    const values = data.map(entry => entry.cantidad_leads);
-
-    const chartData = {
-        labels: labels,
-        datasets: [{
-            label: 'Cantidad de leads',
-            data: values,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
-            
-            const config = {
-                type: opcion,
-                data: chartData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: {
-                                    size: 10 
-                                }
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 10 
-                                }
+        const data = JSON.parse('<%- JSON.stringify(data) %>');
+        const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
+        let labels;
+        let values
+    
+        <% if(caso === "leadsPorMes") { %>
+            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "leadsPorMesCategory"){ %>
+            labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "LastMessage"){%>
+            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
+            values = data.map(entry => entry.cantidad_mensajes);
+        <%}%>
+    
+        
+    
+        const chartData = {
+            labels: labels,
+            datasets: [{
+                label: labels,
+                data: values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+                
+        const config = {
+            type: opcion,
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10 
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: {
-                                    size: 10 
-                                }
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10 
                             }
                         }
                     }
                 },
-            };
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 10 
+                            }
+                        }
+                    },
+                    zoom: {
+                        zoom: {
+                            enabled: true
+                        },
+                        pan: {
+                            enabled: true
+                        }
+                    }
+                }
+            },
+        };
 
-            var myChart = new Chart(
-                document.getElementById('myChart'),
-                config
-            );
-            
+
+
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+
+
     </script>
+    
 </body>
 </html>

@@ -25,4 +25,14 @@ module.exports = class Grafica {
             GROUP BY mes`
         );
     }
+
+    static getLastMessage(palabra) {
+        return db.execute(
+            `SELECT COUNT(*) AS cantidad_mensajes
+            FROM leads
+            WHERE Ultimo_Mensaje LIKE CONCAT('%', ?, '%')`,
+            [palabra]
+        );
+    }
+    
 }
