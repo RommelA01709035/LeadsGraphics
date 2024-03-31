@@ -1,26 +1,47 @@
-<form action="/grafica" method="POST">
-    <label for="opciones">Select an option:</label>
-    <select id="opciones" name="opcion">
-        <option value="bar">Bar</option>
-        <option value="pie">Pie</option>
-    </select>
-    <section>
-        <label for="caso">Select your case:</label>
-        <select id="caso" name="caso">
-            <option value="leadsPorMes">Leads per month</option>
-            <option value="leadsPorMesCategory">Leads per month and category</option>
-            <option value="LastMessage">Last word count</option>
-            <option value="PerCompany">Leads Per Compania</option>
-        </select>
-        <% if (opcion === 'LastMessage') { %>
-            <section>
-                <label for="LastMessageWord">Last message word:</label>
-                <input id="LastMessageWord"type="text" id="LastMessageWord" name="palabra">
-            </section>
-
-
-            
-        <% } %>
-        <input type="submit" value="Create">
-    </section>
-</form>
+<%- include('includes/instructions-graphic.ejs') %>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGraphs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+</head>
+<div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+    <div class="column is-half">
+        <div class="select is-rounded is-medium">
+            <form class="box" action="/grafica" method="POST">
+                <label for="opciones">Select a graphic type:</label>
+                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+                    
+                    
+                    <div >
+                        <select class="" id="opciones" name="opcion">
+                            <option value="bar">Bar</option>
+                            <option value="pie">Pie</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <label for="caso">Select your case:</label>
+                    <select id="caso" name="caso">
+                        <option value="leadsPorMes">Leads per month</option>
+                        <option value="leadsPorMesCategory">Leads per month and category</option>
+                        <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Last word count</option>
+                        <option value="PerCompany">Leads Per Compania</option>
+                    </select>
+                </div>
+                <% if (opcion === 'LastMessage') { %>
+                    <div class="mt-4"> 
+                        <label for="LastMessageWord">Last message word:</label>
+                        <input id="LastMessageWord" type="text" name="palabra">
+                    </div>
+                <% } %>
+                <div class="mt-4"> 
+                    <button class="button is-link custom-button" type="submit" value="Create"> Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

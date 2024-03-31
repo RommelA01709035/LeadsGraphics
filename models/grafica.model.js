@@ -7,6 +7,7 @@ module.exports = class Grafica {
         this.y = y_
     }
 
+
     static getLeadsMonthCategory() {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
