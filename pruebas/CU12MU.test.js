@@ -18,7 +18,7 @@ describe('Pruebas de modificar Usuario', () => {
         await connection.end();
     });
 
-    test('fetchOne modifica usuario correcto', async () => {
+    test('modifica usuario correcto', async () => {
         const IDUsuario = 12;
         const gmailCambiado = "ana123@yahoo.com"
         const [rows1] = await Usuario.fetchOne_user(IDUsuario);
@@ -29,7 +29,14 @@ describe('Pruebas de modificar Usuario', () => {
         expect(rows1[0].Correo).toBe(gmailCambiado);
     });
     
-    test('fetchOne no encuentra el Usuario', async () => {
+    test(' no encuentra el Usuario', async () => {
+        const IDUsuario = 21;
+        const [rows] = await Usuario.fetchOne_user(IDUsuario);
+        console.log(rows);
+        expect(rows.length).toBe(0);
+    });
+
+    test('cancela la modificacion', async () => {
         const IDUsuario = 21;
         const [rows] = await Usuario.fetchOne_user(IDUsuario);
         console.log(rows);

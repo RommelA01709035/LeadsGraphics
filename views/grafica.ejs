@@ -1,0 +1,166 @@
+<%- include('includes/head.ejs') %>
+    <div id="grafica-container">
+        <canvas id="myChart"></canvas>
+        <% if (caso === "LastMessage") { %>
+            <div>
+                <p>Mensajes encontrados:</p>
+                <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
+            </div>
+        <% } %>
+    </div>
+    <div class="box">
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Avergae</p>
+                <p class="title">3,456</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Max</p>
+                <p class="title">123</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Mininum</p>
+                <p class="title">456K</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Register Number</p>
+                <p class="title">789</p>
+              </div>
+            </div>
+        </nav>
+    </div>
+    
+    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-1">
+        <div class="column is-half">
+
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
+                        </div>
+                        <div class="column">
+                            <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+ 
+    
+
+
+
+    
+    
+    <script>
+        const data = JSON.parse('<%- JSON.stringify(data) %>');
+        const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
+        let labels;
+        let values;
+    
+        <% if(caso === "leadsPorMes") { %>
+            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "leadsPorMesCategory"){ %>
+            labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "LastMessage"){%>
+            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
+            values = data.map(entry => entry.cantidad_mensajes);
+        <% } else if(caso == "PerCompany"){%>
+            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.Compania}`);
+            values = data.map(entry => entry.cantidad_mensajes);
+        <%}%>
+        
+    
+        const chartData = {
+            labels: labels,
+            datasets: [{
+                label: labels,
+                data: values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+                
+        const config = {
+            type: opcion,
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10 
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10 
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 10 
+                            }
+                        }
+                    },
+                    zoom: {
+                        zoom: {
+                            enabled: true
+                        },
+                        pan: {
+                            enabled: true
+                        }
+                    },
+                    datalabels: {
+                        display: true
+                    }
+                }
+            },
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+        function downloadChart() {
+            const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
+            const link = document.createElement('a');
+            link.href = base64Image;
+            link.download = 'grafica.jpg';
+            link.click();
+        }
+    </script>
+    
+</body>
+</html>
