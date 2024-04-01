@@ -1,20 +1,23 @@
 const Grafica = require('../models/grafica.model');
+const { end } = require('../util/database');
 
 
 exports.get_crea_grafica = (request, response, next) => {
     const opcion = "";
-    response.render('crea-grafica', { opcion: opcion });
-
+    const startMonth = 1; 
+    const endMonth = 12; 
+    response.render('crea-grafica', { opcion: opcion, startMonth: startMonth, endMonth: endMonth });
 };
 
 
 
+
 exports.post_grafica = (request, response, next) => {
-    const { caso, opcion } = request.body;
+    const { caso, opcion, startMonth, endMonth } = request.body;
     console.log(caso)
     switch (caso) {
         case 'leadsPorMes':
-            Grafica.getLeadsMonth()
+            Grafica.getLeadsMonth(startMonth, endMonth)
                 .then(([rows, fieldData]) => {
                     const data = rows.map(row => ({
                         mes: row.mes, 
@@ -26,7 +29,7 @@ exports.post_grafica = (request, response, next) => {
                     });
                     console.log(opcion);
                     console.log(caso)
-                    response.render('grafica', { data: data, opcion: opcion , caso: caso});
+                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth});
                 })
                 .catch(error => {
                     console.log(error);
@@ -34,7 +37,7 @@ exports.post_grafica = (request, response, next) => {
                 });
             break;
         case 'leadsPorMesCategory':
-            Grafica.getLeadsMonthCategory()
+            Grafica.getLeadsMonthCategory(startMonth, endMonth)
                 .then(([rows, fieldData]) => {
                     const data = rows.map(row => ({
                         mes: row.mes,
@@ -57,7 +60,7 @@ exports.post_grafica = (request, response, next) => {
             const {palabra} = request.body
             console.log(palabra)
             if(palabra){
-                Grafica.getLastMessage(palabra)
+                Grafica.getLastMessage(palabra,startMonth, endMonth)
                 .then(([rows, fieldData]) => {
                     const data = rows.map(row => ({
                         cantidad_mensajes: row.cantidad_mensajes, 
@@ -77,13 +80,13 @@ exports.post_grafica = (request, response, next) => {
                 else {
                     console.log("ENtraste al Else")
                     console.log(opcion);
-                    response.render('crea-grafica', { opcion: "LastMessage" });
+                    response.render('crea-grafica', { opcion: "LastMessage", startMonth: startMonth, endMonth: endMonth });
                 }
             
             break;   
             case 'PerCompany':
 
-                    Grafica.getPerCompany()
+                    Grafica.getPerCompany(startMonth, endMonth)
                     .then(([rows, fieldData]) => {
                         const data = rows.map(row => ({
                             cantidad_mensajes: row.cantidad_mensajes, 

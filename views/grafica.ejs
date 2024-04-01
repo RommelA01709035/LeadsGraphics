@@ -1,82 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGraphs</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
-    
-    <style>
-        /* Estilos CSS */
-        #grafica-container {
-            max-width: 600px; 
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            height: auto;
-        }
-
-        .canvas-container canvas {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .remove-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            background-color: #ff6f61;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <nav class="level is-mobile">
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Tweets</p>
-            <p class="title">3,456</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Following</p>
-            <p class="title">123</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Followers</p>
-            <p class="title">456K</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Likes</p>
-            <p class="title">789</p>
-          </div>
-        </div>
-      </nav>
-    <div class="grid">
-        <div class="cell">Cell 1</div>
-        <div class="cell">Cell 2</div>
-        <div class="cell">Cell 3</div>
-    </div>
-
+<%- include('includes/head.ejs') %>
     <div id="grafica-container">
         <canvas id="myChart"></canvas>
         <% if (caso === "LastMessage") { %>
@@ -86,12 +8,57 @@
             </div>
         <% } %>
     </div>
+    <div class="box">
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Avergae</p>
+                <p class="title">3,456</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Max</p>
+                <p class="title">123</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Mininum</p>
+                <p class="title">456K</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Register Number</p>
+                <p class="title">789</p>
+              </div>
+            </div>
+        </nav>
+    </div>
+    
+    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+        <div class="column is-half">
 
-    <a href="/crea-grafica">
-        Crear Gráfica
-    </a>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
+                        </div>
+                        <div class="column">
+                            <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
 
-    <button onclick="downloadChart()">Descargar Gráfica</button>
+ 
+    
+
+
+
+    
     
     <script>
         const data = JSON.parse('<%- JSON.stringify(data) %>');

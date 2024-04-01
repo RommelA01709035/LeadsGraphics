@@ -8,41 +8,47 @@ module.exports = class Grafica {
     }
 
 
-    static getLeadsMonthCategory() {
+    static getLeadsMonthCategory(startMonth, endMonth) {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
+            WHERE MONTH(Creado) BETWEEN ? AND ?
             GROUP BY mes, estado_lead
-            ORDER BY mes;
-            
-            `
+            ORDER BY mes`,
+            [startMonth, endMonth]
         );
     }
     
-    static getLeadsMonth() {
-        return db.execute(
-            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads
-            FROM leads
-            GROUP BY mes`
-        );
-    }
-
-    static getLastMessage(palabra) {
+    static getLastMessage(palabra, startMonth, endMonth) {
         return db.execute(
             `SELECT COUNT(*) AS cantidad_mensajes
             FROM leads
-            WHERE Ultimo_Mensaje LIKE CONCAT('%', ?, '%')`,
-            [palabra]
+            WHERE Ultimo_Mensaje LIKE CONCAT('%', ?, '%')
+            AND MONTH(Creado) BETWEEN ? AND ?`,
+            [palabra, startMonth, endMonth]
         );
     }
-    static getPerCompany() {
+    
+    static getPerCompany(startMonth, endMonth) {
         return db.execute(
-            `
-            SELECT COUNT(Compania ) AS cantidad_mensajes, Compania
+            `SELECT COUNT(Compania ) AS cantidad_mensajes, Compania
             FROM leads
+            WHERE MONTH(Creado) BETWEEN ? AND ?
             GROUP BY Compania
-            ORDER BY cantidad_mensajes DESC
-            `
+            ORDER BY cantidad_mensajes DESC`,
+            [startMonth, endMonth]
         );
     }
+    
+    static getLeadsMonth(startMonth, endMonth) {
+        return db.execute(
+            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
+            FROM leads
+            WHERE MONTH(Creado) BETWEEN ? AND ?
+            GROUP BY mes, estado_lead
+            ORDER BY mes`,
+            [startMonth, endMonth]
+        );
+    }
+
 }

@@ -7,6 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
 </head>
+<% if (opcion === 'LastMessage') { %>
+    <p class="subtitle">- Write the word to search.</p>
+<% } %>
+<p class="subtitle">- Click on create graphic.</p>
+
+</div>
+</section>
 <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
     <div class="column is-half">
         <div class="select is-rounded is-medium">
@@ -38,6 +45,30 @@
                         <input id="LastMessageWord" type="text" name="palabra">
                     </div>
                 <% } %>
+
+                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+                    
+                    
+                    <div >
+                        <label for="startMonth">Start Date:</label>
+                        <select id="startMonth" name="startMonth">
+                            <% for (let i = 1; i <= 12; i++) { %>
+                                <option value="<%= i %>" <%= startMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
+                            <% } %>
+                        </select>
+                        
+                        <label for="endMonth">End Date:</label>
+                        <select id="endMonth" name="endMonth">
+                            <% for (let i = 1; i <= 12; i++) { %>
+                                <option value="<%= i %>" <%= endMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
+                            <% } %>
+                        </select>                        
+                        </div>
+                </div>
+
+                
+
+
                 <div class="mt-4"> 
                     <button class="button is-link custom-button" type="submit" value="Create"> Create</button>
                 </div>
@@ -45,3 +76,12 @@
         </div>
     </div>
 </div>
+
+<% function getMonthName(monthNumber) { %>
+    <% const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]; %>
+    <%= months[monthNumber - 1] %>
+<% } %>
+
