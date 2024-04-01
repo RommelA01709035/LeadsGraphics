@@ -28,5 +28,8 @@ app.use((request, response, next) => {
 const rutaGrafica = require('./routes/grafica.routes');
 app.use('/', rutaGrafica);
 
+const rutaLeads = require('./routes/leads.routes');
+app.use('/', rutaLeads);
+
 
 app.listen(3000);

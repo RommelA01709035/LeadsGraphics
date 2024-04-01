@@ -1,0 +1,49 @@
+<!-- consultar_lead.ejs -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Leads</title>
+    <!-- Agrega cualquier estilo CSS que desees -->
+    <style>
+        /* Estilos CSS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consultar Leads</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Compañía</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% leads.forEach(lead => { %>
+                <tr>
+                    <td><%= lead.Nombre %></td>
+                    <td><%= lead.Correo %></td>
+                    <td><%= lead.Compania %></td>
+                    <td><%= lead.Telefono %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
