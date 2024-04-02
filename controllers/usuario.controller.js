@@ -15,6 +15,6 @@ exports.getUsuarioPage = async (req, res) => {
 
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
-        res.status(500).send('Error al obtener leads');
+        res.status(500).send('Error al obtener usuarios');
     }
 };
