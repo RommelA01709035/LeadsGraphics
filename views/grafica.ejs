@@ -67,8 +67,10 @@
         let values;
     
         <% if(caso === "leadsPorMes") { %>
+            
             labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
             values = data.map(entry => entry.cantidad_leads);
+
         <% } else if(caso == "leadsPorMesCategory"){ %>
             labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
