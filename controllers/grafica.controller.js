@@ -109,4 +109,3 @@ exports.post_grafica = (request, response, next) => {
             response.status(400).json({ message: "Invalid case" });
     }
 };
-
