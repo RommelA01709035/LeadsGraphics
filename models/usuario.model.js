@@ -4,16 +4,17 @@ module.exports = class Usuario {
 
     constructor(usuarioNombre, usuarioCorreo, usuarioTelefono, usuarioId) {
 
-        console.log("Nombre:", leadNombre);
-        console.log("Correo:", leadCorreo);
-        console.log("Teléfono:", leadTelefono);
-        console.log("ID: ", leadId);
+        console.log("Nombre:", usuarioNombre);
+        console.log("Correo:", usuarioCorreo);
+        console.log("Teléfono:", usuarioTelefono);
+        console.log("ID: ", usuarioId);
         
-        this.nombre = leadNombre;
-        this.correo = leadCorreo;
-        this.telefono = leadTelefono;
-        this.id = leadId;
+        this.nombre = usuarioNombre;
+        this.correo = usuarioCorreo;
+        this.telefono = usuarioTelefono;
+        this.id = usuarioId;
     }
+
 
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
