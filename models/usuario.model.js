@@ -4,15 +4,11 @@ module.exports = class Usuario {
 
     constructor(usuarioNombre, usuarioCorreo, usuarioTelefono, usuarioId) {
 
-        console.log("Nombre:", leadNombre);
-        console.log("Correo:", leadCorreo);
-        console.log("Teléfono:", leadTelefono);
-        console.log("ID: ", leadId);
         
-        this.nombre = leadNombre;
-        this.correo = leadCorreo;
-        this.telefono = leadTelefono;
-        this.id = leadId;
+        this.nombre = usuarioNombre;
+        this.correo = usuarioCorreo;
+        this.telefono = usuarioTelefono;
+        this.id = usuarioId;
     }
 
     static fetchAll() {
