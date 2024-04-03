@@ -20,7 +20,7 @@ describe('Pruebas para Eliminar Lead', () => {
 
     test('elimina lead correcto', async () => {
         const IDUsuario = 51;
-        const telefonoEliminado = 552-7734;
+        const telefonoEliminado = '552-7734';
         // Verificar que exista antes de la eliminacion
         const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
         expect(rowsBeforeDeletion.length).toBe(1);
@@ -33,8 +33,7 @@ describe('Pruebas para Eliminar Lead', () => {
     });
 
     test('cancela la eliminación', async () => {
-        const IDUsuario = 51;
-        const telefonoEliminado = 552-7734;
+        const IDUsuario = 60;
         const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
         console.log(rowsBeforeDeletion);
         expect(rowsBeforeDeletion.length).toBe(1);
@@ -44,10 +43,18 @@ describe('Pruebas para Eliminar Lead', () => {
     });
 
     test('error durante la eliminación', async () => {
-        const IDUsuario = 51;
-        const telefonoEliminado = 552-7734;
+        const IDUsuario = 55;
+        const telefonoEliminado = 'telefono_inexistente';
         const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
         console.log(rowsBeforeDeletion);
+        expect(rowsBeforeDeletion.length).toBe(1);
+
+        // Simular un error durante la eliminacion
+        try {
+            await Leads.delete_lead(IDUsuario,telefonoEliminado);
+        } catch (error) {
+            console.log(error);
+        }
 
         const [rowsAfterError] = await Leads.fetchOne_lead(IDUsuario);
         console.log(rowsAfterError);
