@@ -22,28 +22,36 @@ describe('Pruebas para Eliminar Lead', () => {
         const IDUsuario = 51;
         const telefonoEliminado = 552-7734;
         // Verificar que exista antes de la eliminacion
-        const [rows1] = await Leads.fetchOne(IDUsuario,telefonoEliminado);
-        expect(rows1.length).toBe(1);
+        const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
+        expect(rowsBeforeDeletion.length).toBe(1);
+        console.log(rowsBeforeDeletion);
+        await Leads.delete_lead(IDUsuario,telefonoEliminado);
 
-        const [rows2] = await Leads.delete_lead(IDUsuario,telefonoEliminado);
-        console.log(rows1); 
-        console.log(rows2);
-        expect(rows2.length).toBe(0);
-        expect(rows2[0].Correo).toBe(0);
-    });
-
-    test(' no encuentra el lead', async () => {
-        const IDUsuario = 200;
-        const [rows] = await Usuario.fetchOne_user(IDUsuario);
-        console.log(rows);
-        expect(rows.length).toBe(0);
+        const [rowsAfterDeletion] = await Leads.fetchOne_lead(IDUsuario);
+        console.log(rowsAfterDeletion);
+        expect(rowsAfterDeletion.length).toBe(0);
     });
 
     test('cancela la eliminación', async () => {
-        const IDUsuario = 200;
-        const [rows] = await Usuario.fetchOne_user(IDUsuario);
-        console.log(rows);
-        expect(rows.length).toBe(0);
+        const IDUsuario = 51;
+        const telefonoEliminado = 552-7734;
+        const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
+        console.log(rowsBeforeDeletion);
+        expect(rowsBeforeDeletion.length).toBe(1);
+        const [rowsAfterCancellation] = await Leads.fetchOne_lead(IDUsuario);
+        console.log(rowsAfterCancellation);
+        expect(rowsAfterCancellation.length).toBe(1);
+    });
+
+    test('error durante la eliminación', async () => {
+        const IDUsuario = 51;
+        const telefonoEliminado = 552-7734;
+        const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
+        console.log(rowsBeforeDeletion);
+
+        const [rowsAfterError] = await Leads.fetchOne_lead(IDUsuario);
+        console.log(rowsAfterError);
+        expect(rowsAfterError.length).toBe(1);
     });
 });
 

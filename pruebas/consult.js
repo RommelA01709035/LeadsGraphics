@@ -44,4 +44,21 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM leads');
     }
 
+    static fetchOne_user(IDUsuario) {
+        return db.execute(
+            'SELECT * FROM usuario WHERE IDUsuario=?',
+            [IDUsuario]
+        );
+    }
+
+    static fetchOne_user_change(IDUsuario, Correo) {//Parametros de acuerdo a los campos
+        return db.execute(
+            'UPDATE usuario SET Correo = ? WHERE IDUsuario = ?',
+            [Correo, IDUsuario]
+        );
+    }
+
+    static fetchOne_Count() {
+        return db.execute('SELECT COUNT(*) AS total FROM usuario');
+    }
 }
