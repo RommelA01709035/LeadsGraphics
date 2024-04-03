@@ -110,6 +110,17 @@ INSERT  INTO `leads` (`IDLead`, `IDHistorial`, `IDWorkspace`, `Telefono`, `Nombr
 UPDATE leads
 SET Correo = CONCAT(Nombre, '@gmail.com')
 
+UPDATE leads
+SET Compania = 
+    CASE 
+        WHEN IDLead BETWEEN 1 AND 15 THEN 'Telcel'
+        WHEN IDLead BETWEEN 16 AND 25 THEN 'Acme'
+        WHEN IDLead BETWEEN 26 AND 30 THEN 'Movistar'
+        WHEN IDLead BETWEEN 31 AND 38 THEN 'Dell'
+        WHEN IDLead BETWEEN 39 AND 50 THEN 'Pinnacle'
+    END
+WHERE IDLead BETWEEN 1 AND 50;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

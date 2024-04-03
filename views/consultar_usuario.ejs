@@ -25,34 +25,29 @@
             color: white;
         }
 
-        /* Estilos para el contenedor del formulario */
-        #contenedor-formulario {
-            display: none;
+        .notification-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            z-index: 100;
-        }
-
-        /* Estilos para el formulario dentro del contenedor */
-        #formulario-modificar {
-            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
+            z-index: 1000; 
         }
+
+
     </style>
 </head>
 <body>
     <section class="section">
         <div class="container">
+            <div class="notification-container">
+                <% if (message) { %>
+                    <div class="notification is-success">
+                        <%= message %>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                <% } %>
+            </div>
             <h1 class="title">Consultar Usuarios</h1>
-            <!-- Agrega la clase "table-shadow" para aplicar la sombra a la tabla -->
             <table class="table is-bordered is-striped is-fullwidth table-shadow">
                 <thead>
                     <tr>
@@ -60,60 +55,30 @@
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>ID</th>
-                        <th class="is-narrow">Acciones</th> <!-- Columna para botones de acciones -->
+                        <th class="is-narrow">Acciones</th> 
                     </tr>
                 </thead>
                 <tbody>
                     <% usuario.forEach(user => { %>
-                        <tr>
+                        <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>
+                        <tr class="<%= rowClass %>">
                             <td><%= user.nombre_usuario %></td>
                             <td><%= user.Correo %></td>
                             <td><%= user.Celular %></td>
                             <td><%= user.IDUsuario %></td>
                             <td class="is-narrow">
-                                <!-- Botones para modificar y eliminar un usuario -->
-                                <a href="#" class="boton-modificar">Modificar Usuario</a>
-                                <!-- Contenedor que cubre toda la tabla -->
-                                <div id="contenedor-formulario" style="margin-top: -50px;">
-                                    <div class="columns is-centered has-text-centered is-centered is-vcentered">
-                                        <div class="column is-three-quarters" id="formulario-modificar">
-                                            <div class="select is-rounded is-medium">
-                                                <form class="box" action="/modify-usuario" method="POST">
-                                                    <div class="field">
-                                                        <label class="label">Nombre</label>
-                                                        <div class="control">
-                                                            <input class="input" type="text" name="nombre" placeholder="Nombre">
-                                                        </div>
-                                                    </div>
-                                                    <div class="field">
-                                                        <label class="label">Correo</label>
-                                                        <div class="control">
-                                                            <input class="input" type="email" name="correo" placeholder="Correo">
-                                                        </div>
-                                                    </div>
-                                                    <div class="field">
-                                                        <label class="label">Teléfono</label>
-                                                        <div class="control">
-                                                            <input class="input" type="tel" name="telefono" placeholder="Teléfono">
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" name="id" value="<%= user.IDUsuario %>">
-                                                    <div class="field is-grouped">
-                                                        <div class="control">
-                                                            <button class="button is-link" type="submit">Guardar cambios</button>
-                                                        </div>
-                                                        <div class="control">
-                                                            <button type="button" class="button is-danger" id="cerrar-formulario">Cerrar</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                <form class="box" action="/delete-usuario" method="POST">
+                                    <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
+                                    <input type="hidden" name="id" value="<%= user.IDUsuario %>">
+                                    <div class="field is-grouped">
+                                        <div class="control">
+                                            <button class="button is-primary" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+                                        </div>
+                                        <div class="control">
+                                            <button class="button is-danger" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">Eliminar Usuario</button>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                
-                                <button class="button custom-button"><a href="">Eliminar Usuario</a></button>
+                                </form>
                             </td>
                         </tr>
                     <% }); %>
@@ -121,35 +86,22 @@
             </table>
         </div>
     </section>
-    
-<% function getMonthName(monthNumber) { %>
-    <% const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ]; %>
-    <%= months[monthNumber - 1] %>
-<% } %>
 </body>
 </html>
 <script>
-    // Obtener el botón "Modificar Usuario"
-    const botonModificar = document.querySelector('.boton-modificar');
+    document.addEventListener('DOMContentLoaded', function () {
+        const notifications = document.querySelectorAll('.notification');
 
-    // Obtener el contenedor del formulario
-    const contenedorFormulario = document.getElementById('contenedor-formulario');
+        notifications.forEach(notification => {
+            const closeButton = notification.querySelector('.delete');
 
-    // Obtener el botón de cerrar formulario
-    const cerrarFormulario = document.getElementById('cerrar-formulario');
+            closeButton.addEventListener('click', function () {
+                notification.remove(); 
+            });
 
-    // Agregar un evento de clic al botón "Modificar Usuario"
-    botonModificar.addEventListener('click', function() {
-        // Mostrar el contenedor del formulario
-        contenedorFormulario.style.display = 'block';
-    });
-
-    // Agregar un evento de clic al botón de cerrar formulario
-    cerrarFormulario.addEventListener('click', function() {
-        // Ocultar el contenedor del formulario
-        contenedorFormulario.style.display = 'none';
+            setTimeout(function () {
+                notification.remove(); 
+            }, 5000);
+        });
     });
 </script>
