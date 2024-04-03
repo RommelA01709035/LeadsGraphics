@@ -41,7 +41,7 @@ module.exports = class Usuario {
     }
 
     static create_lead(Nombre, Correo, Telefono) {
-        return db.execute('SELECT * FROM leads');
+        return db.execute('INSERT INTO leads VALUES(?,?,?,?,?,?,?,?,?,?,?)');
     }
 
     static fetchOne_user(IDUsuario) {

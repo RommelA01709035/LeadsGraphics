@@ -1,7 +1,7 @@
 /* Esta hoja de estilos tiene colores o cosas que no podríamos poner con bulma */
 
 .colorFondoClaro{
-    background-color: #a5a7f4; 
+    background-color: #e4e4fb; 
 }
 
 .colorBotonTexto{
@@ -9,7 +9,7 @@
 }
 
 .colorBotonTexto1{
-    background-color: #3f3dc2; 
+    color: #3f3dc2; 
 }
 
 .colorAlertas{
