@@ -18,11 +18,11 @@ exports.post_login = (request, response, next) => {
 
 exports.get_logout = (request, response, next) => {
     request.session.destroy(() => {
-        response.redirect('/login'); //Este código se ejecuta cuando la sesión se elimina.
+        response.redirect('/'); //Este código se ejecuta cuando la sesión se elimina.
     });
 };
 
 exports.get_root =  (request, response, next) => {
     console.log('Ruta /');
-    response.render('login')
+    response.render('login');
 }
