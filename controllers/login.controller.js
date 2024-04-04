@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario.model');
 
 exports.get_login = (request, response, next) => {
+    console.log('Ruta /login');
     console.log(request.body);
     const error = request.session.error || ''; // Declarar una constante error del tipo sesion
     request.session.error = ''; // Para que no este para siempre, el usuario puede equivocarse
@@ -13,9 +14,9 @@ exports.get_login = (request, response, next) => {
 
 exports.post_login = (request, response, next) => {
     console.log(request.body);
+    console.log('Redirigir a homepage');
     request.session.username = request.body.username;
     response.redirect('/homepage');
-    console.log('Reditigir a homepage');
 };
 
 exports.get_logout = (request, response, next) => {
@@ -23,8 +24,3 @@ exports.get_logout = (request, response, next) => {
         response.redirect('/login'); //Este código se ejecuta cuando la sesión se elimina.
     });
 };
-
-exports.get_root =  (request, response, next) => {
-    console.log('Ruta /');
-    response.render('login');
-}

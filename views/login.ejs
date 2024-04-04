@@ -39,35 +39,29 @@
             <br>
             
             <section class="form-section">
-                <form class="box">
+                <form class="box" action="/login" method="POST">
                     <section class="image-container">
                     <figure class="image is-256x256">
                         <img src="/multimedia/logo.png">
                     </figure>
                     </section>
                     <div class="form-container">
-                        <form action="/login" method="POST">
+                        <form>
                             <div class="form-container">
                             <div class="field">
-                                <label class="label">Usuario</label>
-                                <div class="control">
+                                <label class="label" for="username">Usuario</label>
                                 <input id="username" name="username" class="input" type="text" placeholder="Ejemplo: JuanBustos">
-                                </div>
                             </div>
                 
                             <div class="field">
-                                <label class="label">Contraseña</label>
-                                <div class="control">
+                                <label class="label" for="password">Contraseña</label>
                                 <input id="password" name="password" class="input" type="password" placeholder="********">
-                                </div>
                             </div>
                 
                             <br>
                 
                             <div class="field has-text-centered">
-                                <div class="control">
                                 <button type="submit" class="button is-primary" style="background-color: #F649D0;">Iniciar sesión</button>
-                                </div>
                             </div>
                             </div>
                         </form>
