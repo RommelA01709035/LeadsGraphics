@@ -20,6 +20,8 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+const Swal = require('sweetalert2')
+
 //Middleware
 app.use((request, response, next) => {
   console.log('Middleware!');

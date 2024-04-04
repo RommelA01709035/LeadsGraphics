@@ -6,11 +6,28 @@
     <title>Consultar Usuarios</title>
     <!-- Enlace a Bulma CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Estilo personalizado para la sombra de la tabla */
         .table-shadow {
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ajusta los valores según prefieras */
+            border: #6949f6;
         }
+
+        .has-background-danger td {
+            color: white; /* Hace que el texto sea blanco */
+        }
+
+        
+        .has-background-danger {
+            border: 2px solid #000000; /* Cambia el color del borde según tu preferencia */
+        }
+
+        .table-shadow td,
+        .table-shadow th {
+            border-right: 2px solid #000000; /* Color del borde vertical */
+        }
+
 
         /* Estilo personalizado para cambiar el color de los botones */
         .custom-button {
@@ -33,8 +50,23 @@
             z-index: 1000; 
         }
 
+        .control {
+            border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
+            border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
+        }
+
+
 
     </style>
+</head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Usuarios</title>
+    <!-- Enlace a Bulma CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 <body>
     <section class="section">
@@ -67,15 +99,15 @@
                             <td><%= user.Celular %></td>
                             <td><%= user.IDUsuario %></td>
                             <td class="is-narrow">
-                                <form class="box" action="/delete-usuario" method="POST">
+                                <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
                                     <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
                                     <input type="hidden" name="id" value="<%= user.IDUsuario %>">
                                     <div class="field is-grouped">
                                         <div class="control">
-                                            <button class="button is-primary" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+                                            <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
                                         </div>
                                         <div class="control">
-                                            <button class="button is-danger" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">Eliminar Usuario</button>
+                                            <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
                                         </div>
                                     </div>
                                 </form>
@@ -86,22 +118,40 @@
             </table>
         </div>
     </section>
+
+    <script>
+        function confirmDelete(userId) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "¡No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminarlo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("deleteForm_" + userId).submit();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const notifications = document.querySelectorAll('.notification');
+
+            notifications.forEach(notification => {
+                const closeButton = notification.querySelector('.delete');
+
+                closeButton.addEventListener('click', function () {
+                    notification.remove(); 
+                });
+
+                setTimeout(function () {
+                    notification.remove(); 
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const notifications = document.querySelectorAll('.notification');
 
-        notifications.forEach(notification => {
-            const closeButton = notification.querySelector('.delete');
-
-            closeButton.addEventListener('click', function () {
-                notification.remove(); 
-            });
-
-            setTimeout(function () {
-                notification.remove(); 
-            }, 5000);
-        });
-    });
-</script>
