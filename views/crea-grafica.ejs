@@ -15,15 +15,12 @@
 </div>
 </section>
 
-
 <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
     <div class="column is-half">
         <div class="select is-rounded is-medium">
             <form class="box" action="/grafica" method="POST">
-                <label for="opciones">Selecciona el tipo de grafica:</label>
+                <label for="opciones">Selecciona el tipo de gráfica:</label>
                 <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    
-                    
                     <div >
                         <select class="" id="opciones" name="opcion">
                             <option value="bar">Barras</option>
@@ -31,53 +28,40 @@
                         </select>
                     </div>
                 </div>
-                
                 <div class="mt-4">
                     <label for="caso">Selecciona el caso:</label>
                     <select id="caso" name="caso">
                         <option value="leadsPorMes">Leads por mes.</option>
-                        <option value="leadsPorMesCategory">Leads por mes y categoria</option>
-                        <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Ultimo mensaje enviado</option>
-                        <option value="PerCompany">Leads por Compania</option>
+                        <option value="leadsPorMesCategory">Leads por mes y categoría</option>
+                        <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Último mensaje enviado</option>
+                        <option value="PerCompany">Leads por Compañía</option>
                     </select>
                 </div>
                 <% if (opcion === 'LastMessage') { %>
                     <div class="mt-4"> 
-                        <label for="LastMessageWord">Ultimo mensaje a buscar:</label>
+                        <label for="LastMessageWord">Último mensaje a buscar:</label>
                         <input id="LastMessageWord" type="text" name="palabra">
                     </div>
                 <% } %>
-
                 <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    
-                    
-                    <div >
-                        <label for="startMonth">Fecha de inicio:</label>
-                        <select id="startMonth" name="startMonth">
-                            <% for (let i = 1; i <= 12; i++) { %>
-                                <option value="<%= i %>" <%= startMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
-                            <% } %>
-                        </select>
-                        
-                        <label for="endMonth">Fecha de fin:</label>
-                        <select id="endMonth" name="endMonth">
-                            <% for (let i = 1; i <= 12; i++) { %>
-                                <option value="<%= i %>" <%= endMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
-                            <% } %>
-                        </select>                        
-                        </div>
+                    <div class="mt-4">
+                        <label for="startDate">Fecha de inicio:</label>
+                        <input type="date" id="startDate" name="startDate">
+                    </div>
+    
+                    <div class="mt-4">
+                        <label for="endDate">Fecha de fin:</label>
+                        <input type="date" id="endDate" name="endDate">
+                    </div>
                 </div>
-
-                
-
-
                 <div class="mt-4"> 
-                    <button class="button is-link custom-button" type="submit" value="Create"> Create</button>
+                    <button class="button is-link custom-button" type="submit" value="Create">Crear</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 <div class="columns is-centered has-text-centered is-centered is-vcentered">
     <div class="column is-half">

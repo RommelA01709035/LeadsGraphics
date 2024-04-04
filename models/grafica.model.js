@@ -10,44 +10,51 @@ module.exports = class Grafica {
 
     static getLeadsMonthCategory(startMonth, endMonth) {
         return db.execute(
-            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
+            `
+            SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
+            WHERE Creado BETWEEN ? AND ?
             GROUP BY mes, estado_lead
-            ORDER BY mes`,
+            ORDER BY mes
+
+            `,
             [startMonth, endMonth]
         );
     }
     
     static getLastMessage(palabra, startMonth, endMonth) {
         return db.execute(
-            `SELECT COUNT(*) AS cantidad_mensajes
+            `
+            SELECT COUNT(*) AS cantidad_mensajes
             FROM leads
             WHERE Ultimo_Mensaje LIKE CONCAT('%', ?, '%')
-            AND MONTH(Creado) BETWEEN ? AND ?`,
+            AND Creado BETWEEN ? AND ?
+            `,
             [palabra, startMonth, endMonth]
         );
     }
     
     static getPerCompany(startMonth, endMonth) {
         return db.execute(
-            `SELECT COUNT(Compania ) AS cantidad_mensajes, Compania
+            `
+            SELECT COUNT(Compania) AS cantidad_mensajes, Compania
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
+            WHERE Creado BETWEEN ? AND ?
             GROUP BY Compania
-            ORDER BY cantidad_mensajes DESC`,
+            ORDER BY cantidad_mensajes DESC
+            `,
             [startMonth, endMonth]
         );
     }
     
-    static getLeadsMonth(startMonth, endMonth) {
+    static getLeadsMonth(startDate, endDate) {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
+            WHERE Creado BETWEEN ? AND ?
             GROUP BY mes, estado_lead
             ORDER BY mes`,
-            [startMonth, endMonth]
+            [startDate, endDate]
         );
     }
 

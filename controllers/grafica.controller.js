@@ -1,19 +1,21 @@
 const Grafica = require('../models/grafica.model');
+const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
-
 
 exports.get_crea_grafica = (request, response, next) => {
     const opcion = "";
-    const startMonth = 1; 
-    const endMonth = 12; 
-    response.render('crea-grafica', { opcion: opcion, startMonth: startMonth, endMonth: endMonth });
+    const startDate = new Date().toISOString().split('T')[0]; // Fecha actual como valor predeterminado
+    const minDate = "XXXX-XX-XX"; // Fecha mínima permitida
+    const maxDate = "XXXX-XX-XX"; // Fecha máxima permitida
+    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate });
 };
 
 
-
-
 exports.post_grafica = (request, response, next) => {
-    const { caso, opcion, startMonth, endMonth } = request.body;
+    const { caso, opcion, startDate, endDate } = request.body;
+    let titulo = ""
+    const startMonth = new Date(startDate); 
+    const endMonth = new Date(endDate); 
     console.log(caso)
     switch (caso) {
         case 'leadsPorMes':
@@ -29,7 +31,7 @@ exports.post_grafica = (request, response, next) => {
                     });
                     console.log(opcion);
                     console.log(caso)
-                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth});
+                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes"});
                 })
                 .catch(error => {
                     console.log(error);
@@ -49,7 +51,7 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso });
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria"});
                 })
                 .catch(error => {
                     console.log(error);
@@ -71,7 +73,7 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso });
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads con este mensaje" });
                 })
                 .catch(error => {
                     console.log(error);
@@ -80,7 +82,7 @@ exports.post_grafica = (request, response, next) => {
                 else {
                     console.log("ENtraste al Else")
                     console.log(opcion);
-                    response.render('crea-grafica', { opcion: "LastMessage", startMonth: startMonth, endMonth: endMonth });
+                    response.render('crea-grafica', { opcion: "LastMessage", startMonth: startMonth, endMonth: endMonth, caso: caso, titulo: ""});
                 }
             
             break;   
@@ -97,7 +99,7 @@ exports.post_grafica = (request, response, next) => {
                             console.log(tupla);
                         });
                         console.log(opcion);
-                        response.render('grafica', { data: data, opcion: opcion, caso: caso });
+                        response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por compañia" });
                     })
                     .catch(error => {
                         console.log(error);
