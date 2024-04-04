@@ -28,6 +28,13 @@ app.use((request, response, next) => {
   next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
 
+const rutaLogin = require('./routes/login.routes');
+app.use('/', rutaLogin);
+
+const rutaInicio = require('./routes/inicio.routes');
+app.use('/homepage', rutaInicio);
+
+/*
 const rutaGrafica = require('./routes/grafica.routes');
 app.use('/', rutaGrafica);
 
@@ -36,6 +43,6 @@ app.use('/', rutaLeads);
 
 const rutaUsuarios = require('./routes/usuario.routes');
 app.use('/', rutaUsuarios);
-
+*/
 
 app.listen(3000);
