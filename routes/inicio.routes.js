@@ -5,5 +5,4 @@ const controllerInicio = require('../controllers/inicio.controller');
 
 router.get('/', controllerInicio.get_homepage);
 
-
 module.exports = router;
