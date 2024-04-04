@@ -12,7 +12,6 @@ exports.getUsuarioPage = async (req, res) => {
         const instanciaUsuario = new Usuario("nombre", "correo", "telefono", "id");
         console.log("Instancia del modelo creada:", instanciaUsuario);
 
-
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
         res.status(500).send('Error al obtener usuarios');
