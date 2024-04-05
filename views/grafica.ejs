@@ -159,9 +159,11 @@
 
         function downloadChart() {
             const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
+            const timestamp = new Date().getTime();
+            const filename = 'grafica_' + timestamp + '.jpg';
             const link = document.createElement('a');
             link.href = base64Image;
-            link.download = 'grafica.jpg';
+            link.download = filename;
             link.click();
         }
     </script>
