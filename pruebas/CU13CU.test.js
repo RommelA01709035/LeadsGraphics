@@ -53,4 +53,9 @@ describe('Pruebas de Consultar Usuario', () => {
         expect(rows.length).toBe(1);
     });
 
+    test('FetchAll detectar numero de usuarios', async () => {
+        const [rows] = await Usuario.fetchOne_Count();
+        console.log(rows);
+        expect(rows.length).toBe(20);
+    })
 });
