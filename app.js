@@ -34,15 +34,15 @@ app.use('/', rutaLogin);
 const rutaInicio = require('./routes/inicio.routes');
 app.use('/homepage', rutaInicio);
 
-/*
-const rutaGrafica = require('./routes/grafica.routes');
-app.use('/', rutaGrafica);
 
+const rutaGrafica = require('./routes/grafica.routes');
+app.use('/homepage', rutaGrafica);
+/*
 const rutaLeads = require('./routes/leads.routes');
 app.use('/', rutaLeads);
 */
 const rutaUsuarios = require('./routes/usuario.routes');
-app.use('/homepage', rutaUsuarios);
+app.use('/', rutaUsuarios);
 
 
 app.listen(3000);
