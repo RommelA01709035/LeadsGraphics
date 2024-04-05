@@ -8,6 +8,10 @@
     background-color: #3f3dc2; 
 }
 
+.colorBotonTexto1{
+    color: #3f3dc2;
+}
+
 .colorAlertas{
     background-color: #f81937; 
 }
@@ -38,6 +42,16 @@
 }
 
 .sidebar:hover{
-  transition: width 0.3s ease;
-  width: 10%; 
+  transition: width 0.5s ease;
+  width: 15%; 
+}
+
+.text-icon .hover-text {
+    display: none; /* Oculta el texto en dispositivos táctiles */
+    opacity: 0; /* Inicialmente, el texto estará oculto */
+}
+
+.text-icon:hover .hover-text {
+    display: inline-block; /* Muestra el texto al pasar el mouse sobre el icono */
+    opacity: 1; /* Cuando se pasa el mouse sobre el texto, se mostrará */
 }
