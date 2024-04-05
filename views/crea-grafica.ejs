@@ -28,15 +28,20 @@
                         </select>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <label for="caso">Selecciona el caso:</label>
-                    <select id="caso" name="caso">
-                        <option value="leadsPorMes">Leads por mes.</option>
-                        <option value="leadsPorMesCategory">Leads por mes y categoría</option>
-                        <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Último mensaje enviado</option>
-                        <option value="PerCompany">Leads por Compañía</option>
-                    </select>
+                <div class="columns is-centered mt-4">
+                    <div class="column is-half has-text-centered">
+                        <label for="opciones">Selecciona el caso:</label>
+                        <div class="select mt-4">
+                            <select id="caso" name="caso">
+                                <option value="leadsPorMes">Leads por mes.</option>
+                                <option value="leadsPorMesCategory">Leads por mes y categoría</option>
+                                <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Último mensaje enviado</option>
+                                <option value="PerCompany">Leads por Compañía</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+                
                 <% if (opcion === 'LastMessage') { %>
                     <div class="mt-4"> 
                         <label for="LastMessageWord">Último mensaje a buscar:</label>
