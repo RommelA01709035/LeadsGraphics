@@ -37,10 +37,6 @@
     margin-right: auto;
 }
 
-.sidebar{
-    width: 100%;
-}
-
 .sidebar:hover{
   transition: width 0.3s ease;
   width: 10%; 

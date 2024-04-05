@@ -36,11 +36,11 @@ app.use('/homepage', rutaInicio);
 
 
 const rutaGrafica = require('./routes/grafica.routes');
-app.use('/homepage', rutaGrafica);
-/*
+app.use('/', rutaGrafica);
+
 const rutaLeads = require('./routes/leads.routes');
 app.use('/', rutaLeads);
-*/
+
 const rutaUsuarios = require('./routes/usuario.routes');
 app.use('/', rutaUsuarios);
 
