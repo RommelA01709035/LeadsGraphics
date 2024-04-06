@@ -16,6 +16,16 @@ module.exports = class Grafica {
         );
     }
 
+    static getMax(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMax(?, ?) as maximo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+
+
     static getLeadsMonthCategory(startMonth, endMonth) {
         
         return db.execute(

@@ -1,4 +1,34 @@
 <%- include('includes/head.ejs') %>
+
+
+<div class="box mt-4">
+    <nav class="level is-mobile">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Average</p>
+            <p class="title"><%= _Average = average.map(entry => entry.promedio); %></p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Max</p>
+            <p class="title"><%= _Max = maximo.map(entry => entry.promedio); %></p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Mininum</p>
+            <p class="title">456K</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Register Number</p>
+            <p class="title">789</p>
+          </div>
+        </div>
+    </nav>
+</div>
     <div id="grafica-container" class="mt-5">
         <h2 class="title is-2 has-text-centered"> <%= titulo%></h2> 
         
@@ -9,34 +39,6 @@
                 <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
             </div>
         <% } %>
-    </div>
-    <div class="box mt-4">
-        <nav class="level is-mobile">
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Avergae</p>
-                <p class="title">3,456</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Max</p>
-                <p class="title">123</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Mininum</p>
-                <p class="title">456K</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Register Number</p>
-                <p class="title">789</p>
-              </div>
-            </div>
-        </nav>
     </div>
     
     <div class="columns is-centered has-text-centered is-centered is-vcentered mt-1">

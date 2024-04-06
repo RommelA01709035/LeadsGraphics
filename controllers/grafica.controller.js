@@ -4,16 +4,16 @@ const { end } = require('../util/database');
 
 exports.get_crea_grafica = (request, response, next) => {
     const opcion = "";
-    const startDate = new Date().toISOString().split('T')[0]; // Fecha actual como valor predeterminado
-    const minDate = "XXXX-XX-XX"; // Fecha mínima permitida
-    const maxDate = "XXXX-XX-XX"; // Fecha máxima permitida
+    const startDate = new Date().toISOString().split('T')[0]; 
+    const minDate = "XXXX-XX-XX"; 
+    const maxDate = "XXXX-XX-XX"; 
     response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate });
 };
 
 
 exports.post_grafica = (request, response, next) => {
     const { caso, opcion, startDate, endDate } = request.body;
-    let titulo = ""
+    
     const startMonth = new Date(startDate); 
     const endMonth = new Date(endDate); 
     console.log(caso)
@@ -29,9 +29,36 @@ exports.post_grafica = (request, response, next) => {
                     data.forEach(tupla => {
                         console.log(tupla);
                     });
-                    console.log(opcion);
-                    console.log(caso)
-                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes"});
+                    Grafica.getAverage(startMonth,endMonth)
+                    .then(([rows2, fieldData]) => {
+                        const average = rows2.map(row => ({
+                            promedio: row.promedio
+                        }));
+                        console.log("Promedio:");
+                        average.forEach(tupla => {
+                            console.log(tupla);
+                        });
+                        Grafica.getMax(startMonth, endMonth).then(([rows3, fieldData]) => {
+                            const maximo = rows3.map(row => ({
+                                maximo: row.maximo
+                            }));
+                            console.log("Maximo:");
+                            maximo.forEach(tupla => {
+                                console.log(tupla);
+                            });
+                            console.log(startDate);
+                            console.log(endDate);
+                            response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes", average:average, maximo: maximo});
+                        }).catch(error => {
+                            console.log(error);
+                            response.status(500).json({ message: "Error en maximos" });
+                        });
+                        
+                    }).catch(error => {
+                        console.log(error);
+                        response.status(500).json({ message: "Error en promedio" });
+                    });
+                    
                 })
                 .catch(error => {
                     console.log(error);
@@ -51,15 +78,13 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    average = getAverageFunction(startDate, endDate)
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria",});
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria"});
                 })
                 .catch(error => {
                     console.log(error);
                     response.status(500).json({ message: "Error creating chart" });
                 });
             break;
-            
         case 'LastMessage':
             const {palabra} = request.body
             console.log(palabra)
@@ -113,17 +138,3 @@ exports.post_grafica = (request, response, next) => {
             response.status(400).json({ message: "Invalid case" });
     }
 };
-
-function getAverageFunction(startMonth, endMonth) {
-    return Grafica.getAverage(startMonth, endMonth)
-        .then(([tupla, fieldData]) => {
-            const promedio = tupla.map(tupla => ({
-                promedio: tupla.promedio
-            }));
-            console.log("Promedio obtenido de la base de datos:");
-            promedio.forEach(tupla => {
-                console.log(tupla);
-            });
-            return promedio;
-        });
-}
