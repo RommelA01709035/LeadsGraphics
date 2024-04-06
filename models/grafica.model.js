@@ -25,6 +25,15 @@ module.exports = class Grafica {
         );
     }
 
+    static getMin(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMin(?, ?) as minimo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+
 
     static getLeadsMonthCategory(startMonth, endMonth) {
         

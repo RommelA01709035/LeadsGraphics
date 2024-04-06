@@ -38,7 +38,8 @@ exports.post_grafica = (request, response, next) => {
                         average.forEach(tupla => {
                             console.log(tupla);
                         });
-                        Grafica.getMax(startMonth, endMonth).then(([rows3, fieldData]) => {
+                        Grafica.getMax(startMonth, endMonth)
+                        .then(([rows3, fieldData]) => {
                             const maximo = rows3.map(row => ({
                                 maximo: row.maximo
                             }));
@@ -46,12 +47,27 @@ exports.post_grafica = (request, response, next) => {
                             maximo.forEach(tupla => {
                                 console.log(tupla);
                             });
-                            console.log(startDate);
-                            console.log(endDate);
-                            response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes", average:average, maximo: maximo});
+                        
+                            Grafica.getMin(startMonth, endMonth)
+                            .then(([rows4, fieldData]) => {
+                                const minimo = rows4.map(row => ({
+                                    minimo: row.minimo
+                                }));
+                                console.log("Minimo:");
+                                minimo.forEach(tupla => {
+                                    console.log(tupla);
+                                });
+                                console.log(startDate);
+                                console.log(endDate);
+                                response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes", average:average, maximo: maximo, minimo: minimo});
+                        
+                            }).catch(error => {
+                                console.log(error);
+                                response.status(500).json({ message: "Error en minimo" });
+                            });
                         }).catch(error => {
                             console.log(error);
-                            response.status(500).json({ message: "Error en maximos" });
+                            response.status(500).json({ message: "Error en maximo" });
                         });
                         
                     }).catch(error => {
@@ -78,13 +94,13 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria"});
+                    
                 })
                 .catch(error => {
                     console.log(error);
                     response.status(500).json({ message: "Error creating chart" });
                 });
-            break;
+            break;response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria"});
         case 'LastMessage':
             const {palabra} = request.body
             console.log(palabra)
@@ -100,7 +116,7 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads con este mensaje" });
+                   
                 })
                 .catch(error => {
                     console.log(error);
@@ -112,7 +128,7 @@ exports.post_grafica = (request, response, next) => {
                     response.render('crea-grafica', { opcion: "LastMessage", startMonth: startMonth, endMonth: endMonth, caso: caso, titulo: ""});
                 }
             
-            break;   
+            break;    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads con este mensaje" });
             case 'PerCompany':
 
                     Grafica.getPerCompany(startMonth, endMonth)
@@ -126,13 +142,13 @@ exports.post_grafica = (request, response, next) => {
                             console.log(tupla);
                         });
                         console.log(opcion);
-                        response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por compañia" });
+                        
                     })
                     .catch(error => {
                         console.log(error);
                         response.status(500).json({ message: "Error creating chart" });
                     });
-                break;                                         
+                break;   response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por compañia" });                                      
 
         default:
             response.status(400).json({ message: "Invalid case" });
