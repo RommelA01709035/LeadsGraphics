@@ -432,6 +432,69 @@ CREATE TABLE `usuario_prueba` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+DELIMITER //
+
+CREATE FUNCTION getAverage(startDate DATE, endDate DATE)
+RETURNS FLOAT
+BEGIN
+    DECLARE promedio_result FLOAT;
+
+    SELECT AVG(cantidad_registros)
+    INTO promedio_result
+    FROM (
+        SELECT COUNT(*) AS cantidad_registros
+        FROM leads
+        WHERE Creado BETWEEN startDate AND endDate
+        GROUP BY MONTH(Creado)
+    ) AS registros_por_mes;
+
+    RETURN promedio_result;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE FUNCTION getMax(startDate DATE, endDate DATE)
+RETURNS INT
+BEGIN
+    DECLARE maximo_result INT;
+
+    SELECT MAX(cantidad_registros)
+    INTO maximo_result
+    FROM (
+        SELECT COUNT(*) AS cantidad_registros
+        FROM leads
+        WHERE Creado BETWEEN startDate AND endDate
+        GROUP BY MONTH(Creado)
+    ) AS registros_por_mes;
+
+    RETURN maximo_result;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE FUNCTION getMin(startDate DATE, endDate DATE)
+RETURNS INT
+BEGIN
+    DECLARE minimo_result INT;
+
+    SELECT MIN(cantidad_registros)
+    INTO minimo_result
+    FROM (
+        SELECT COUNT(*) AS cantidad_registros
+        FROM leads
+        WHERE Creado BETWEEN startDate AND endDate
+        GROUP BY MONTH(Creado)
+    ) AS registros_por_mes;
+
+    RETURN minimo_result;
+END //
+
+DELIMITER ;
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
