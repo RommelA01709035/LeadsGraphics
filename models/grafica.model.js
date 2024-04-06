@@ -7,18 +7,28 @@ module.exports = class Grafica {
         this.y = y_
     }
 
+    static getAverage(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getAverage(?, ?) as promedio;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
 
     static getLeadsMonthCategory(startMonth, endMonth) {
+        
         return db.execute(
             `
+            
             SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
             WHERE Creado BETWEEN ? AND ?
             GROUP BY mes, estado_lead
-            ORDER BY mes
+            ORDER BY mes;
 
             `,
-            [startMonth, endMonth]
+            [startMonth, endMonth, startMonth, endMonth]
         );
     }
     

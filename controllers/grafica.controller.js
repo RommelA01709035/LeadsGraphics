@@ -51,13 +51,15 @@ exports.post_grafica = (request, response, next) => {
                         console.log(tupla);
                     });
                     console.log(opcion);
-                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria"});
+                    average = getAverageFunction(startDate, endDate)
+                    response.render('grafica', { data: data, opcion: opcion, caso: caso, titulo: "Leads por categoria",});
                 })
                 .catch(error => {
                     console.log(error);
                     response.status(500).json({ message: "Error creating chart" });
                 });
             break;
+            
         case 'LastMessage':
             const {palabra} = request.body
             console.log(palabra)
@@ -111,3 +113,17 @@ exports.post_grafica = (request, response, next) => {
             response.status(400).json({ message: "Invalid case" });
     }
 };
+
+function getAverageFunction(startMonth, endMonth) {
+    return Grafica.getAverage(startMonth, endMonth)
+        .then(([tupla, fieldData]) => {
+            const promedio = tupla.map(tupla => ({
+                promedio: tupla.promedio
+            }));
+            console.log("Promedio obtenido de la base de datos:");
+            promedio.forEach(tupla => {
+                console.log(tupla);
+            });
+            return promedio;
+        });
+}
