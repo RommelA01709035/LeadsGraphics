@@ -86,7 +86,7 @@
                   </thead>
                   <tbody>
                       <% usuario.forEach(user => { %>
-                          <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>
+                          <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>                         
                           <tr class="<%= rowClass %>">
                               <td><%= user.nombre_usuario %></td>
                               <td><%= user.Correo %></td>
@@ -98,11 +98,19 @@
                                       <input type="hidden" name="id" value="<%= user.IDUsuario %>">
                                       <div class="field is-grouped">
                                           <div class="control">
-                                              <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+                                              <button class="button is-info is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
                                           </div>
-                                          <div class="control">
-                                              <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
-                                          </div>
+                                          <% if(user.Habilitado == 0){%>
+                                            <div class="control">
+                                                <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
+                                            </div>
+                                            <%}else{%>
+                                                <div class="control">
+                                                    <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
+                                                </div>
+                                               
+                                            <%}%>
+                                          
                                       </div>
                                   </form>
                               </td>
@@ -120,7 +128,7 @@
         function confirmDelete(userId) {
             Swal.fire({
                 title: "¿Estás seguro?",
-                text: "¡No podrás revertir esto!",
+                text: "Puedes revertir la decisón después",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -129,6 +137,24 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById("deleteForm_" + userId).submit();
+                }
+            });
+        }
+
+        function confirmReactivate(userId) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Puedes revertir la decisión después",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, reactivalo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById("deleteForm_" + userId);
+                    form.action = "/reactivate-usuario"; 
+                    form.submit();
                 }
             });
         }
