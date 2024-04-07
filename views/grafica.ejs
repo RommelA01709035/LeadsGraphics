@@ -1,6 +1,5 @@
 <%- include('includes/head.ejs') %>
 
-
 <div class="box mt-4">
     <nav class="level is-mobile">
         <div class="level-item has-text-centered">
@@ -11,7 +10,7 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Maxim</p>
+            <p class="heading">Max</p>
             <p class="title"><%= _Max = maximo.map(entry => entry.maximo); %></p>
           </div>
         </div>
@@ -22,11 +21,11 @@
           </div>
         </div>
         <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Register Number</p>
-            <p class="title">789</p>
-          </div>
-        </div>
+            <div>
+                <p class="heading">Numero de leads en el estudio</p>
+                <p class="title"><%= _Count = registers.map(entry => entry.total_tuplas); %></p>
+            </div>
+        </div>        
     </nav>
 </div>
     <div id="grafica-container" class="mt-5">
@@ -74,16 +73,12 @@
             
             labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
             values = data.map(entry => entry.cantidad_leads);
-
-        <% } else if(caso == "leadsPorMesCategory"){ %>
-            labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
-            values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
-            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.Compania}`);
-            values = data.map(entry => entry.cantidad_mensajes);
+            labels = data.map(entry => `${entry.cantidad_leads}-${entry.Compania}`);
+            values = data.map(entry => entry.cantidad_leads);
         <%}%>
         
     
