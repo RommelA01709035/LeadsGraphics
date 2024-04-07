@@ -1,4 +1,5 @@
-<%- include('includes/instructions-graphic.ejs') %>
+<%- include('includes/naveside.ejs') %>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,111 +8,112 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
-<% if (opcion === 'LastMessage') { %>
-    <p class="subtitle">- Escribe la palabra que quieras buscar.</p>
-<% } %>
 
-
-</div>
-</section>
-
-<div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-    <div class="column is-half">
-        <div class="select is-rounded is-medium">
-            <form class="box" action="/grafica" method="POST"  onsubmit="return validarFormulario()">
-                <label for="opciones">Selecciona el tipo de gráfica:</label>
-                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    <div >
-                        <select class="" id="opciones" name="opcion">
-                            <option value="bar">Barras</option>
-                            <option value="pie">Pastel</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="columns is-centered mt-4">
-                    <div class="column is-half has-text-centered">
-                        <label for="opciones">Selecciona el caso:</label>
-                        <div class="select mt-4">
-                            <select id="caso" name="caso">
-                                <option value="leadsPorMes">Leads por mes.</option>
-                                <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Último mensaje enviado</option>
-                                <option value="PerCompany">Leads por Compañía</option>
-                            </select>
+<html>
+<body>
+    <div  class="main-content">
+        <div class="column">
+            <section class="section">
+                <div class="container">
+                        
+                    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+                        <div class="column is-half">
+                            <div class="select is-rounded is-medium">
+                                <form class="box" action="/grafica" method="POST"  onsubmit="return validarFormulario()">
+                                    <label for="opciones">Selecciona el tipo de gráfica:</label>
+                                    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+                                        <div >
+                                            <select class="" id="opciones" name="opcion">
+                                                <option value="bar">Barras</option>
+                                                <option value="pie">Pastel</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="columns is-centered mt-4">
+                                        <div class="column is-half has-text-centered">
+                                            <label for="opciones">Selecciona el caso:</label>
+                                            <div class="select mt-4">
+                                                <select id="caso" name="caso">
+                                                    <option value="leadsPorMes">Leads por mes.</option>
+                                                    <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Último mensaje enviado</option>
+                                                    <option value="PerCompany">Leads por Compañía</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <% if (opcion === 'LastMessage') { %>
+                                        <div class="mt-4"> 
+                                            <label for="LastMessageWord">Último mensaje a buscar:</label>
+                                            <input id="LastMessageWord" type="text" name="palabra">
+                                        </div>
+                                    <% } %>
+                                    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
+                                        <div class="mt-4">
+                                            <label for="startDate">Fecha de inicio:</label>
+                                            <input type="date" id="startDate" name="startDate">
+                                        </div>
+                        
+                                        <div class="mt-4 ml-4">
+                                            <label for="endDate">Fecha de fin:</label>
+                                            <input type="date" id="endDate" name="endDate">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4"> 
+                                        <button class="button is-link custom-button" type="submit" value="Create">Crear</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <% if (opcion === 'LastMessage') { %>
-                    <div class="mt-4"> 
-                        <label for="LastMessageWord">Último mensaje a buscar:</label>
-                        <input id="LastMessageWord" type="text" name="palabra">
-                    </div>
-                <% } %>
-                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    <div class="mt-4">
-                        <label for="startDate">Fecha de inicio:</label>
-                        <input type="date" id="startDate" name="startDate">
-                    </div>
-    
-                    <div class="mt-4 ml-4">
-                        <label for="endDate">Fecha de fin:</label>
-                        <input type="date" id="endDate" name="endDate">
-                    </div>
-                </div>
-                <div class="mt-4"> 
-                    <button class="button is-link custom-button" type="submit" value="Create">Crear</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<div class="columns is-centered has-text-centered is-centered is-vcentered">
-    <div class="column is-half">
-        <div class="is-pulled-right mr-4"> 
-            <div class="dropdown is-hoverable">
-                <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                        <span>FAQS</span>
-                        <span class="icon is-small">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </div>
-                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                    <div class="dropdown-content">
-                        <div class="dropdown-item">
-                            <p class="subtitle">- Selecciona el tipo de grafica que quieras.</p>
-                            <p class="subtitle">- Selecciona un caso que quieras analizar.</p>
-                            <p class="subtitle">- Selecciona en orden  cronologico las fechas que desees
-                            <p class="subtitle">- Da click para crear grafica.</p>
+                    <div class="columns is-centered has-text-centered is-centered is-vcentered mr-8">
+            <div class="column is-half">
+                <div class="is-pulled-right mr-4"> 
+                    <div class="dropdown is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                <span>FAQS</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                            <div class="dropdown-content">
+                                <div class="dropdown-item">
+                                    <p class="subtitle">- Selecciona el tipo de grafica que quieras.</p>
+                                    <p class="subtitle">- Selecciona un caso que quieras analizar.</p>
+                                    <p class="subtitle">- Selecciona en orden  cronologico las fechas que desees
+                                    <p class="subtitle">- Da click para crear grafica.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
+        
+        <script>
+            function validarFormulario() {
+                const opcion = document.getElementById('opciones').value;
+                const caso = document.getElementById('caso').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
 
-<script>
-    function validarFormulario() {
-        const opcion = document.getElementById('opciones').value;
-        const caso = document.getElementById('caso').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        if (!opcion || !caso || !startDate || !endDate) {
-            Swal.fire({
-                icon: "error",
-                title: "Proceso incompleto",
-                text: "Rellene todos los campos, por favor :)",
-                });
-            return false;
-        }
-        return true;
-    }
-</script>
-
-
+                if (!opcion || !caso || !startDate || !endDate) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Proceso incompleto",
+                        text: "Rellene todos los campos, por favor :)",
+                        });
+                    return false;
+                }
+                return true;
+            }
+        </script>

@@ -1,0 +1,87 @@
+/* Esta hoja de estilos tiene colores o cosas que no podríamos poner con bulma */
+
+.colorFondoClaro{
+    background-color: #a5a7f4; 
+}
+
+.colorBotonTexto{
+    background-color: #3f3dc2; 
+}
+
+.colorBotonTexto1{
+    color: #3f3dc2;
+}
+
+.colorAlertas{
+    background-color: #f81937; 
+}
+
+.colorBoton{
+    background-color: #f649d0;
+}
+
+.colorFondo{
+    background-color: #e1e7fd;
+}
+
+.colorHeader{
+    background-color: #6669ef;
+}
+
+.colorFooter{
+    background-color: #3f40c2;
+}
+
+.full-height-container { /*Esto hara que un contenedor abarque toda la pagina*/
+    min-height: 100vh;
+}
+
+.has-image-centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sidebar:hover{
+  transition: width 0.5s ease;
+  width: 20%; 
+}
+
+.text-icon .hover-text {
+    display: none; /* Oculta el texto en dispositivos táctiles */
+    opacity: 0; /* Inicialmente, el texto estará oculto */
+}
+
+.text-icon:hover .hover-text {
+    display: inline-block; /* Muestra el texto al pasar el mouse sobre el icono */
+    opacity: 1; /* Cuando se pasa el mouse sobre el texto, se mostrará */
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0; /* Ajusta el sidebar para que abarque toda la altura vertical */
+    width: 10%; /* Ancho del sidebar */
+    background-color: #a5a7f4; /* Color de fondo del sidebar */
+    overflow: hidden; /* Oculta el desbordamiento de contenido */
+    z-index: 1000; /* Asegura que el sidebar esté por encima de otros elementos */
+}
+
+.sidebar:hover {
+    transition: width 0.5s ease;
+    width: 15%; /* Ancho expandido cuando se pasa el mouse sobre el sidebar */
+}
+
+.menu-list {
+    height: 100%; /* Ajusta el menú para que abarque toda la altura vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-list li {
+    flex-grow: 1; /* Hace que los elementos de la lista se expandan para llenar el espacio disponible */
+}
+
+.main-content {
+    margin-left: 15%; 
+}

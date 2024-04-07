@@ -1,4 +1,5 @@
 <%- include('includes/head.ejs') %>
+<%- include('includes/naveside.ejs') %>
 
 <div class="box mt-4">
     <nav class="level is-mobile">
@@ -156,9 +157,11 @@
 
         function downloadChart() {
             const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
+            const timestamp = new Date().getTime();
+            const filename = 'grafica_' + timestamp + '.jpg';
             const link = document.createElement('a');
             link.href = base64Image;
-            link.download = 'grafica.jpg';
+            link.download = filename;
             link.click();
         }
     </script>
