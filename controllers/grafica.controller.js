@@ -3,11 +3,12 @@ const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
 
 exports.get_crea_grafica = (request, response, next) => {
+    const vista ='crea-grafica';
     const opcion = "";
     const startDate = new Date().toISOString().split('T')[0]; 
     const minDate = "XXXX-XX-XX"; 
     const maxDate = "XXXX-XX-XX"; 
-    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate });
+    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate, vista: vista});
 };
 
 
