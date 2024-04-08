@@ -3,18 +3,17 @@ const db = require('../util/database');
 module.exports = class Usuario {
 
     constructor(usuarioNombre, usuarioCorreo, usuarioTelefono, usuarioId) {
-
         console.log("Nombre:", usuarioNombre);
         console.log("Correo:", usuarioCorreo);
         console.log("Teléfono:", usuarioTelefono);
         console.log("ID: ", usuarioId);
         
+
         this.nombre = usuarioNombre;
         this.correo = usuarioCorreo;
         this.telefono = usuarioTelefono;
         this.id = usuarioId;
     }
-
 
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
@@ -47,9 +46,9 @@ module.exports = class Usuario {
         `,[IDUsuario, nombre_usuario])
     }
 
-    static reactivate_user(nombre_usuario, IDUsuario){
+    static reactive_user(nombre_usuario, IDUsuario){
         db.execute(
-            `UPDATE usuario SET Habilitado = 1 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
+            `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
             [nombre_usuario, IDUsuario]
         );
 
@@ -66,5 +65,13 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
     
+    static create(nombre, correo, celular, contrasena) {
+        return db.execute(
+            `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
+            VALUES (?, ?, ?, ?, 1)`,
+            [nombre, correo, celular, contrasena]
+        );
+    }
+
     
 }

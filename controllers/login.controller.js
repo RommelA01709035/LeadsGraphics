@@ -1,4 +1,6 @@
+const { response } = require('express');
 const Usuario = require('../models/usuario.model');
+const bcrypt = require('bcryptjs');
 
 exports.get_login = (request, response, next) => {
     console.log('Ruta /login');
@@ -21,6 +23,24 @@ exports.post_login = (request, response, next) => {
 
 exports.get_logout = (request, response, next) => {
     request.session.destroy(() => {
-        response.redirect('/login'); //Este código se ejecuta cuando la sesión se elimina.
+        response.redirect('/login'); 
     });
+};
+
+exports.get_signup = (request, response, next) => {
+    response.render('signup'); 
+};
+
+exports.post_signup = (request, response, next) => {
+    const { nombre_usuario, correo, celular, contrasena } = request.body;
+
+    Usuario.create(nombre_usuario, correo, celular, contrasena)
+        .then(result => {
+            console.log("Usuario registrado correctamente");
+            response.redirect('/login');
+        })
+        .catch(error => {
+            console.error("Error al registrar usuario:", error);
+            response.status(500).send('Error al registrar usuario');
+        });
 };
