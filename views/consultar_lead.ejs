@@ -73,15 +73,15 @@
                               <td><%= lead.Telefono %></td>
                               <td class="is-narrow">
                                   <!-- Botones para modificar y eliminar un lead -->
-                                  <form id="deleteForm_<%= lead.ID %>" action="/delete-lead" method="POST">
-                                      <input type="hidden" name="nombre" value="<%= lead.Nombre %>">
-                                      <input type="hidden" name="id" value="<%= lead.ID %>">
+                                  <form id="deleteForm_<%= lead.id %>" action="/delete-lead" method="POST"> <!-- Corregido el nombre de las propiedades -->
+                                      <input type="hidden" name="nombre" value="<%= lead.nombre %>">
+                                      <input type="hidden" name="id" value="<%= lead.id %>">
                                       <div class="field is-grouped">
                                           <div class="control">
                                               <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este lead?')">Modificar Lead</button>
                                           </div>
                                           <div class="control">
-                                              <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= lead.ID %>')">Eliminar Lead</button>
+                                              <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= lead.id %>')">Eliminar Lead</button>
                                           </div>
                                       </div>
                                   </form>
