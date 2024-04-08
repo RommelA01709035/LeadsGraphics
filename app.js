@@ -18,12 +18,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+const Swal = require('sweetalert2')
 
 //Middleware
 app.use((request, response, next) => {
   console.log('Middleware!');
   next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
+
+const rutaLogin = require('./routes/login.routes');
+app.use('/', rutaLogin);
+
+const rutaInicio = require('./routes/inicio.routes');
+app.use('/homepage', rutaInicio);
+
 
 const rutaGrafica = require('./routes/grafica.routes');
 app.use('/', rutaGrafica);

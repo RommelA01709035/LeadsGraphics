@@ -7,47 +7,76 @@ module.exports = class Grafica {
         this.y = y_
     }
 
-
-    static getLeadsMonthCategory(startMonth, endMonth) {
+    static getAverage(startMonth, endMonth){
         return db.execute(
-            `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
+          `
+          SELECT getAverage(?, ?) as promedio;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+
+    static getMax(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMax(?, ?) as maximo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+
+    static getMin(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMin(?, ?) as minimo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+    static getCount(startMonth, endMonth) {
+        return db.execute(
+            `
+            SELECT COUNT(*) AS total_tuplas
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
-            GROUP BY mes, estado_lead
-            ORDER BY mes`,
+            WHERE Creado BETWEEN ? AND ?
+            `,
             [startMonth, endMonth]
         );
     }
     
     static getLastMessage(palabra, startMonth, endMonth) {
         return db.execute(
-            `SELECT COUNT(*) AS cantidad_mensajes
+            `
+            SELECT COUNT(*) AS cantidad_mensajes
             FROM leads
             WHERE Ultimo_Mensaje LIKE CONCAT('%', ?, '%')
-            AND MONTH(Creado) BETWEEN ? AND ?`,
+            AND Creado BETWEEN ? AND ?
+            `,
             [palabra, startMonth, endMonth]
         );
     }
     
     static getPerCompany(startMonth, endMonth) {
         return db.execute(
-            `SELECT COUNT(Compania ) AS cantidad_mensajes, Compania
+            `
+            SELECT COUNT(Compania) AS cantidad_leads, Compania
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
+            WHERE Creado BETWEEN ? AND ?
             GROUP BY Compania
-            ORDER BY cantidad_mensajes DESC`,
+            ORDER BY cantidad_leads DESC
+            `,
             [startMonth, endMonth]
         );
     }
     
-    static getLeadsMonth(startMonth, endMonth) {
+    static getLeadsMonth(startDate, endDate) {
         return db.execute(
             `SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
             FROM leads
-            WHERE MONTH(Creado) BETWEEN ? AND ?
+            WHERE Creado BETWEEN ? AND ?
             GROUP BY mes, estado_lead
             ORDER BY mes`,
-            [startMonth, endMonth]
+            [startDate, endDate]
         );
     }
 

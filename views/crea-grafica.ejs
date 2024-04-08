@@ -1,4 +1,5 @@
-<%- include('includes/instructions-graphic.ejs') %>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,82 +7,131 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
-<% if (opcion === 'LastMessage') { %>
-    <p class="subtitle">- Write the word to search.</p>
-<% } %>
-<p class="subtitle">- Click on create graphic.</p>
+<body>
+    <%- include('includes/naveside.ejs') %>
 
-</div>
-</section>
-<div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-    <div class="column is-half">
-        <div class="select is-rounded is-medium">
-            <form class="box" action="/grafica" method="POST">
-                <label for="opciones">Select a graphic type:</label>
-                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    
-                    
-                    <div >
-                        <select class="" id="opciones" name="opcion">
-                            <option value="bar">Bar</option>
-                            <option value="pie">Pie</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="mt-4">
-                    <label for="caso">Select your case:</label>
-                    <select id="caso" name="caso">
-                        <option value="leadsPorMes">Leads per month</option>
-                        <option value="leadsPorMesCategory">Leads per month and category</option>
-                        <option value="LastMessage" <% if (opcion === 'LastMessage') { %> selected <% } %>>Last word count</option>
-                        <option value="PerCompany">Leads Per Compania</option>
-                    </select>
-                </div>
-                <% if (opcion === 'LastMessage') { %>
-                    <div class="mt-4"> 
-                        <label for="LastMessageWord">Last message word:</label>
-                        <input id="LastMessageWord" type="text" name="palabra">
-                    </div>
-                <% } %>
-
-                <div class="columns is-centered has-text-centered is-centered is-vcentered mt-4">
-                    
-                    
-                    <div >
-                        <label for="startMonth">Start Date:</label>
-                        <select id="startMonth" name="startMonth">
-                            <% for (let i = 1; i <= 12; i++) { %>
-                                <option value="<%= i %>" <%= startMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
-                            <% } %>
-                        </select>
-                        
-                        <label for="endMonth">End Date:</label>
-                        <select id="endMonth" name="endMonth">
-                            <% for (let i = 1; i <= 12; i++) { %>
-                                <option value="<%= i %>" <%= endMonth == i ? 'selected' : '' %>><%= getMonthName(i) %></option>
-                            <% } %>
-                        </select>                        
+    <div class="main-content">
+        <section class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-half centered-form ">
+                        <div class="box">
+                            <form action="/grafica" method="POST" onsubmit="return validarFormulario()">
+                                <div class="field control has-text-centered">
+                                    <label class="label" for="opciones">Selecciona el tipo de gráfica:</label>
+                                    <div class="control has-text-centered">
+                                        <div class="select is-rounded is-medium">
+                                            <select id="opciones" name="opcion">
+                                                <option value="bar">Barras</option>
+                                                <option value="pie">Pastel</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="field">
+                                    <label class="label control has-text-centered " for="caso">Selecciona el caso:</label>
+                                    <div class="control has-text-centered">
+                                        <div class="select mt-2">
+                                            <select id="caso" name="caso">
+                                                <option value="leadsPorMes">Leads por mes.</option>
+                                                <option value="LastMessage">Último mensaje enviado</option>
+                                                <option value="PerCompany">Leads por Compañía</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <% if (opcion === 'LastMessage') { %>
+                                <div class="field control has-text-centered">
+                                    <label class="label" for="LastMessageWord">Último mensaje a buscar:</label>
+                                    <div class="">
+                                        <input class="input" id="LastMessageWord" type="text" name="palabra">
+                                    </div>
+                                </div>
+                                <% } %>
+    
+                                <div class="field">
+                                    <div class="columns">
+                                        <div class="column">
+                                            <label class="label" for="startDate">Fecha de inicio:</label>
+                                            <div class="control has-text-centered">
+                                                <input class="input" type="date" id="startDate" name="startDate">
+                                            </div>
+                                        </div>
+                                        <div class="column">
+                                            <label class="label" for="endDate">Fecha de fin:</label>
+                                            <div class="control has-text-centered">
+                                                <input class="input" type="date" id="endDate" name="endDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="field">
+                                    <div class="control mt-2"> 
+                                        <button class="button is-link custom-button" type="submit" value="Create">Crear</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
+                    
+                <div class="column is-half">
+                    <div class="columns is-centered">
+                        <div class="column is-half ml-16"> <!-- Aplicar margen a la nueva columna -->
+                            <div class="dropdown is-hoverable">
+                                <div class="dropdown-trigger">
+                                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                        <span>FAQS</span>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-item">
+                                            <p class="subtitle">- Selecciona el tipo de gráfica que quieras.</p>
+                                            <p class="subtitle">- Selecciona un caso que quieras analizar.</p>
+                                            <p class="subtitle">- Selecciona en orden cronológico las fechas que desees.</p>
+                                            <p class="subtitle">- Da click para crear gráfica.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                
-
-
-                <div class="mt-4"> 
-                    <button class="button is-link custom-button" type="submit" value="Create"> Create</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </section>
 </div>
+    
+                   
 
-<% function getMonthName(monthNumber) { %>
-    <% const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ]; %>
-    <%= months[monthNumber - 1] %>
-<% } %>
+    <script>
+        function validarFormulario() {
+            const opcion = document.getElementById('opciones').value;
+            const caso = document.getElementById('caso').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
 
+            if (!opcion || !caso || !startDate || !endDate) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Proceso incompleto",
+                    text: "Rellene todos los campos, por favor :)",
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

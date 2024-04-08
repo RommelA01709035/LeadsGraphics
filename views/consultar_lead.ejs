@@ -1,4 +1,4 @@
-<!-- consultar_lead.ejs -->
+<%- include('includes/naveside.ejs') %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -8,6 +8,8 @@
     <title>Consultar Leads</title>
     <!-- Enlace a Bulma CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/estilos.css">
     <style>
         /* Estilo personalizado para la sombra de la tabla */
         .table-shadow {
@@ -29,37 +31,42 @@
     </style>
 </head>
 <body>
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Consultar Leads</h1>
-            <!-- Agrega la clase "table-shadow" para aplicar la sombra a la tabla -->
-            <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Compañía</th>
-                        <th>Teléfono</th>
-                        <th class="is-narrow">Acciones</th> <!-- Columna para botones de acciones -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <% leads.forEach(lead => { %>
-                        <tr>
-                            <td><%= lead.Nombre %></td>
-                            <td><%= lead.Correo %></td>
-                            <td><%= lead.Compania %></td>
-                            <td><%= lead.Telefono %></td>
-                            <td class="is-narrow">
-                                <!-- Botones para modificar y eliminar un lead -->
-                                <button class="button custom-button">Modificar Lead</button>
-                                <button class="button custom-button">Eliminar Lead</button>
-                            </td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-    </section>
+  <div class="main-content">
+    <div class="columns">
+      <section class="section">
+          <div class="container">
+              <h1 class="title">Consultar Leads</h1>
+              <!-- Agrega la clase "table-shadow" para aplicar la sombra a la tabla -->
+              <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                  <thead>
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Correo</th>
+                          <th>Compañía</th>
+                          <th>Teléfono</th>
+                          <th class="is-narrow">Acciones</th> <!-- Columna para botones de acciones -->
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% leads.forEach(lead => { %>
+                          <tr>
+                              <td><%= lead.Nombre %></td>
+                              <td><%= lead.Correo %></td>
+                              <td><%= lead.Compania %></td>
+                              <td><%= lead.Telefono %></td>
+                              <td class="is-narrow">
+                                  <!-- Botones para modificar y eliminar un lead -->
+                                  <button class="button custom-button">Modificar Lead</button>
+                                  <button class="button custom-button">Eliminar Lead</button>
+                              </td>
+                          </tr>
+                      <% }); %>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+      </div>
+  </div>
+    
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%- include('includes/naveside.ejs') %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,41 +7,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Homepage</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="stylesheet" href="public/css/estilos.css">
+        <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/css/estilos.css">
+        
     </head>
     <body>
-        <div class="columns is-gapless">
-            <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile colorFondoClaro full-height-container">
-                <ul class="menu-list">
-                    <li><a><figure class="image is-64x64 has-image-centered"><img src="iconos/inicio.png"></figure></a></li>
-                    <li><a><figure class="image is-64x64 has-image-centered"><img src="iconos/usuario.png"></figure></a></li>
-                    <li><a href="importar_csv.html"><figure class="image is-64x64 has-image-centered"><img src="iconos/documento.png"></figure></a></li>
-                    <li><a><figure class="image is-64x64 has-image-centered"><img src="iconos/grafica.png"></figure></a></li>
-                    <li><a><figure class="image is-64x64 has-image-centered"><img src="iconos/ayuda.png"></figure></a></li>
-                </ul>
-                <ul class="menu-list">
-                    <li><a><figure class="image is-64x64 has-image-centered"><img src="iconos/preferencias.png"></figure></a></li>
-                </ul>
-            </aside>
-
-
-            <section class="section">
-                <div class="column is-flex">
-                    <div class="container">
-                        <h1 class="title">
-                            Bienvenido
-                        </h1>
-                        <p class="subtitle">
-                            Esta es la <strong>homepage</strong> de LeadGraphs!
-                        </p>
-                    </div>
-                </div>
+        <!--Contenido principal-->
+        <div class="main-content">
+            <div class="column">
+              <section class="section">
+                  <div class="container">
+                      <h1 class="title">
+                          Bienvenido <%= username %>
+                      </h1>
+                      <p class="subtitle">
+                          Esta es la <strong>homepage</strong> de LeadGraphs!
+                          <a href="/logout">Salir</a>
+                      </p>
+                  </div>
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/inicio.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-right-to-bracket fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
@@ -55,16 +48,18 @@
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/usuario.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-circle-user fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
                           <p>
-                            <strong>User</strong> <small>Perfil</small>
+                            <strong>Users</strong> <small>Usuarios</small>
                             <br>
-                            En el apartado de usuario encontraras la información acerca de tu perfil y rol
+                            En el apartado de usuario encontraras la información acerca de los usuarios 
                           </p>
                         </div>
                       </div>
@@ -73,9 +68,11 @@
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/documento.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-file fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
@@ -92,9 +89,11 @@
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/grafica.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-chart-pie fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
@@ -110,9 +109,11 @@
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/ayuda.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-circle-info fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
@@ -128,9 +129,11 @@
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="iconos/preferencias.png" alt="Image">
-                        </figure>
+                        <span class="icon-text">
+                          <span class="icon">
+                            <i class="fa-regular fa-gear fa-3x has-text-black"></i>
+                          </span>
+                        </span>
                       </div>
                       <div class="media-content">
                         <div class="content">
@@ -143,8 +146,11 @@
                       </div>
                     </article>
                 </div>
-            </section>
-            
+                
+              </section>
+            </div>
+          </div>
         </div>
+        
     </body>
 </html>
