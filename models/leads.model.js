@@ -1,5 +1,8 @@
 const db = require('../util/database');
 
+const pool = require('../util/database'); // Importa el módulo pool desde tu archivo de configuración de base de datos
+
+
 module.exports = class Leads {
 
     constructor(data) {
@@ -36,6 +39,23 @@ module.exports = class Leads {
         return db.execute('SELECT * FROM leads WHERE IDLead = ?', [id]);
     }
 
+    static async buscarPorNombre(nombre) {
+        try {
+            const query = `
+            SELECT *
+            FROM leads
+            WHERE LOWER(nombre) LIKE LOWER(?)`;
+    
+            const [rows, fields] = await pool.query(query, [`%${nombre}%`]);
+    
+            console.log('Datos de leads encontrados:', rows);
+    
+            return rows;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     // Método para guardar un nuevo lead en la base de datos
     async save() {
         const values = Object.values(this).map(val => (val === undefined ? null : val));
@@ -59,4 +79,5 @@ module.exports = class Leads {
         );
         return result[0]; // Devuelve el resultado de la inserción
     }
+    
 }

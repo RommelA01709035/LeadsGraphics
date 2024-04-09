@@ -47,62 +47,90 @@
         }
     </style>
 </head>
+
 <body>
     <div class="main-content">
         <div class="columns">
             <section class="section">
                 <div class="container">
                     <h1 class="title">Consultar Leads</h1>
-                    <!-- Botón para agregar un nuevo lead -->
-                    <div class="field is-grouped">
-                        <div class="control">
-                            <a href="/agregar-lead" class="button is-success">Agregar Lead</a>
-                        </div>
-                    </div>
-                    <!-- Agrega la clase "table-shadow" para aplicar la sombra a la tabla -->
-                    <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Compañía</th>
-                                <th>Teléfono</th>
-                                <th class="is-narrow">Acciones</th> <!-- Columna para botones de acciones -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% leads.forEach(lead => { %>
-                                <tr>
-                                    <td><%= lead.Nombre %></td>
-                                    <td><%= lead.Correo %></td>
-                                    <td><%= lead.Compania %></td>
-                                    <td><%= lead.Telefono %></td>
-                                    <td class="is-narrow">
-                                        <!-- Botones para modificar y eliminar un lead -->
-                                        <form id="deleteForm_<%= lead.id %>" action="/delete-lead" method="POST"> <!-- Corregido el nombre de las propiedades -->
-                                            <input type="hidden" name="nombre" value="<%= lead.nombre %>">
-                                            <input type="hidden" name="id" value="<%= lead.id %>">
-                                            <div class="field is-grouped">
-                                                <div class="control">
-                                                    <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este lead?')">Modificar Lead</button>
-                                                </div>
-                                                <div class="control">
-                                                    <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= lead.id %>')">Eliminar Lead</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-    </div>
-    
-    
 
+                    <!-- Barra de búsqueda -->
+                    <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/><br><br>
+                    
+                    <!-- Contenedor para mostrar los resultados de la búsqueda -->
+                    <div id="respuesta_ajax">
+                        <% if (leads.length < 1) { %>
+                            <!-- Mensaje si no se encuentran leads -->
+                            <div class="notification is-info">
+                                <button class="delete"></button>
+                                No se encontraron leads.            
+                            </div>
+                        <% } else { %>
+                            <!-- Contenedor para los leads encontrados -->
+                            <div class="columns">
+                                <% let columns = 0; %>
+                                <% for (let lead of leads) { %>
+                                    <% columns++; %>
+                                    <div class="column">
+                                        <div class="card">
+                                            <div class="card-content">
+                                                <!-- Mostrar nombre del lead -->
+                                                <p class="title is-4"><%= lead.Nombre %></p>
+                                            </div>
+                                            <div class="content">
+                                                <!-- Mostrar otros datos del lead -->
+                                                <p><strong>Correo:</strong> <%= lead.Correo %></p>
+                                                <p><strong>Compañía:</strong> <%= lead.Compania %></p>
+                                                <p><strong>Teléfono:</strong> <%= lead.Telefono %></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Verificar si es necesario cerrar la fila y abrir una nueva -->
+                                    <% if (columns % 4 == 0) { %>
+                                        </div>
+                                        <div class="columns">
+                                    <% } %>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Script para la solicitud AJAX -->
+                    <script>
+                        document.getElementById('buscar').addEventListener('input', () => {
+                            const valor_busqueda = document.getElementById('buscar').value;
+                            
+                            // Realizar la solicitud AJAX
+                            fetch(`/buscar/${encodeURIComponent(valor_busqueda)}`, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            }).then((result) => {
+                                return result.json(); // Convertir la respuesta a JSON
+                            }).then((data) => {
+                                // Procesar la respuesta y actualizar el DOM
+                                const respuestaHtml = data.map(lead => `
+                                    <div class="column">
+                                        <div class="card">
+                                            <div class="card-content">
+                                                <p class="title is-4">${lead.Nombre}</p>
+                                            </div>
+                                            <div class="content">
+                                                <p><strong>Correo:</strong> ${lead.Correo}</p>
+                                                <p><strong>Compañía:</strong> ${lead.Compania}</p>
+                                                <p><strong>Teléfono:</strong> ${lead.Telefono}</p>
+                                            </div>
+                                        </div>
+                                    </div>`).join('');
+                                document.getElementById('respuesta_ajax').innerHTML = respuestaHtml;
+                            }).catch(err => {
+                                console.log(err);
+                            });
+                        });
+                    </script>
+    
     <script>
         function confirmDelete(leadId) {
             Swal.fire({
