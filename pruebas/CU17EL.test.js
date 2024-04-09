@@ -25,7 +25,7 @@ describe('Pruebas para Eliminar Lead', () => {
         const [rowsBeforeDeletion] = await Leads.fetchOne_lead(IDUsuario);
         expect(rowsBeforeDeletion.length).toBe(1);
         console.log(rowsBeforeDeletion);
-        await Leads.delete_lead(IDUsuario,telefonoEliminado);
+        await Leads.fetchOne_delete_lead(IDUsuario,telefonoEliminado);
 
         const [rowsAfterDeletion] = await Leads.fetchOne_lead(IDUsuario);
         console.log(rowsAfterDeletion);
@@ -51,7 +51,7 @@ describe('Pruebas para Eliminar Lead', () => {
 
         // Simular un error durante la eliminacion
         try {
-            await Leads.delete_lead(IDUsuario,telefonoEliminado);
+            await Leads.fetchOne_delete_lead(IDUsuario,telefonoEliminado);
         } catch (error) {
             console.log(error);
         }
