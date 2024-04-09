@@ -37,6 +37,13 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_user_name(Nombre, Contrasenia) {
+        return db.execute(
+            'SELECT * FROM usuario WHERE nombre_usuario=? AND Contrasena=?', 
+            [Nombre, Contrasenia]
+        );
+    }
+
     static fetchOne_user(IDUsuario) {
         return db.execute(
             'SELECT * FROM usuario WHERE IDUsuario=?',
