@@ -49,7 +49,8 @@ exports.post_signup = (request, response, next) => {
             response.redirect('/login');
         })
         .catch(error => {
-            console.error("Error al registrar usuario:", error);
-            response.status(500).send('Error al registrar usuario');
+            console.log(error);
+            request.session.error = 'Nombre de usuario inválido.';
+            response.redirect('/login');
         });
 };
