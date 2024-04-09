@@ -28,12 +28,21 @@ exports.get_logout = (request, response, next) => {
 };
 
 exports.get_signup = (request, response, next) => {
-    response.render('signup'); 
+    const error = request.session.error || '';
+    request.session.error = '';
+    response.render('signup', {
+        username: request.session.username || '',
+        registrar: true,
+        error: error,
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+    }); 
 };
 
 exports.post_signup = (request, response, next) => {
     const { nombre_usuario, correo, celular, contrasena } = request.body;
-
+    const nuevo_usuario = new Usuario(request.body.username, request.body.password);
+    
     Usuario.create(nombre_usuario, correo, celular, contrasena)
         .then(result => {
             console.log("Usuario registrado correctamente");
