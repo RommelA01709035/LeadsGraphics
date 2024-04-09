@@ -45,6 +45,12 @@
             background-color: #F8C9EE; /* Cambia el color a un tono más claro */
             color: white;
         }
+
+            /* Establecer una altura fija para el cuerpo de la tabla */
+        .table-body {
+            max-height: 700px; /* Establece aquí la altura máxima deseada */
+            overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+        }
     </style>
 </head>
 
@@ -59,7 +65,7 @@
                     <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/><br><br>
                     
                     <!-- Contenedor para mostrar los resultados de la búsqueda -->
-                    <div id="respuesta_ajax">
+                    <div id="respuesta_ajax" class="table-body">
                         <% if (leads.length < 1) { %>
                             <!-- Mensaje si no se encuentran leads -->
                             <div class="notification is-info">
@@ -68,31 +74,33 @@
                             </div>
                         <% } else { %>
                             <!-- Contenedor para los leads encontrados -->
-                            <div class="columns">
-                                <% let columns = 0; %>
-                                <% for (let lead of leads) { %>
-                                    <% columns++; %>
-                                    <div class="column">
-                                        <div class="card">
-                                            <div class="card-content">
-                                                <!-- Mostrar nombre del lead -->
-                                                <p class="title is-4"><%= lead.Nombre %></p>
-                                            </div>
-                                            <div class="content">
-                                                <!-- Mostrar otros datos del lead -->
-                                                <p><strong>Correo:</strong> <%= lead.Correo %></p>
-                                                <p><strong>Compañía:</strong> <%= lead.Compania %></p>
-                                                <p><strong>Teléfono:</strong> <%= lead.Telefono %></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Verificar si es necesario cerrar la fila y abrir una nueva -->
-                                    <% if (columns % 4 == 0) { %>
-                                        </div>
-                                        <div class="columns">
+                        
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Compañía</th>
+                                        <th>Teléfono</th>
+                                        <th>Acciones</th> <!-- Agregado para los botones de acción -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let lead of leads) { %>
+                                        <tr>
+                                            <td><%= lead.Nombre %></td>
+                                            <td><%= lead.Correo %></td>
+                                            <td><%= lead.Compania %></td>
+                                            <td><%= lead.Telefono %></td>
+                                            <td>
+                                                <!-- Botones de acción -->
+                                                <button class="button is-info">Modificar Lead</button>
+                                                <button class="button is-danger">Eliminar Lead</button>
+                                            </td>
+                                        </tr>
                                     <% } %>
-                                <% } %>
-                            </div>
+                                </tbody>
+                            </table>
                         <% } %>
                     </div>
 
@@ -112,19 +120,32 @@
                             }).then((data) => {
                                 // Procesar la respuesta y actualizar el DOM
                                 const respuestaHtml = data.map(lead => `
-                                    <div class="column">
-                                        <div class="card">
-                                            <div class="card-content">
-                                                <p class="title is-4">${lead.Nombre}</p>
-                                            </div>
-                                            <div class="content">
-                                                <p><strong>Correo:</strong> ${lead.Correo}</p>
-                                                <p><strong>Compañía:</strong> ${lead.Compania}</p>
-                                                <p><strong>Teléfono:</strong> ${lead.Telefono}</p>
-                                            </div>
-                                        </div>
-                                    </div>`).join('');
-                                document.getElementById('respuesta_ajax').innerHTML = respuestaHtml;
+                                    <tr>
+                                        <td>${lead.Nombre}</td>
+                                        <td>${lead.Correo}</td>
+                                        <td>${lead.Compania}</td>
+                                        <td>${lead.Telefono}</td>
+                                        <td>
+                                            <!-- Botones de acción -->
+                                            <button class="button is-info">Modificar Lead</button>
+                                            <button class="button is-danger">Eliminar Lead</button>
+                                        </td>
+                                    </tr>`).join('');
+                                document.getElementById('respuesta_ajax').innerHTML = `
+                                    <table class="table is-fullwidth is-hoverable">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Correo</th>
+                                                <th>Compañía</th>
+                                                <th>Teléfono</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${respuestaHtml}
+                                        </tbody>
+                                    </table>`;
                             }).catch(err => {
                                 console.log(err);
                             });
