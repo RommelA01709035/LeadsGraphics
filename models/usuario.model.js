@@ -83,7 +83,7 @@ module.exports = class Usuario {
 
         return db.execute(
          `
-        SELECT nombre_usuario, Matricula
+        SELECT nombre_usuario, Matricula as matri
         FROM usuario 
         WHERE nombre_usuario = ?;
          

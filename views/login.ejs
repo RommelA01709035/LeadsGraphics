@@ -38,79 +38,71 @@
         }
         </style>
     </head>
-    
     <body>
         <div class="notification-container mb-4">
             <% if (message) { %>
-                <div class="notification is-success">
+                <div class="notification is-info">
                     <%= message %>
                     <button class="delete" aria-label="delete"></button>
-
                 </div>
             <% } %>
+        </div>
         <div class="page-container">
             <div class="container">
                 <div class="box">
-                    
                     <br>
-                    
                     <section class="form-section">
                         <form class="" action="/login" method="POST">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <section class="image-container">
-                            <figure class="image is-256x256">
-                                <img src="/multimedia/logo.png">
-                            </figure>
+                                <figure class="image is-256x256">
+                                    <img src="/multimedia/logo.png">
+                                </figure>
                             </section>
                             <div class="form-container">
                                 <form>
                                     <div class="form-container">
-                                    <div class="field">
-                                        <label class="label" for="username">Usuario</label>
-                                        <input id="username" name="username" class="input" type="text" placeholder="Ejemplo: JuanBustos">
+                                        <div class="field">
+                                            <label class="label" for="username">Usuario</label>
+                                            <input id="username" name="username" class="input" type="text" placeholder="Ejemplo: JuanBustos">
+                                        </div>
+                            
+                                        <div class="field">
+                                            <label class="label" for="password">Contraseña</label>
+                                            <input id="password" name="password" class="input" type="password" placeholder="********">
+                                        </div>
+                            
+                                        <br>
+                            
+                                        <div class="field has-text-centered">
+                                            <button type="submit" class="button is-primary" style="background-color: #F649D0;">Iniciar sesión</button>
+                                        </div>
                                     </div>
-                        
-                                    <div class="field">
-                                        <label class="label" for="password">Contraseña</label>
-                                        <input id="password" name="password" class="input" type="password" placeholder="********">
-                                    </div>
-                        
-                                    <br>
-                        
-                                    <div class="field has-text-centered">
-                                        <button type="submit" class="button is-primary" style="background-color: #F649D0;">Iniciar sesión</button>
-                                    </div>
-                                    </div>
-                                    
-                                    
                                 </form>
-
                             </div>
                         </form>
                         <a href="/signup" class="button is-link">Registrate</a>
-
                     </section>
                 </div>
             </div>
         </div>
         <script>
-            
-        document.addEventListener('DOMContentLoaded', function () {
-            const notifications = document.querySelectorAll('.notification');
-
-            notifications.forEach(notification => {
-                const closeButton = notification.querySelector('.delete');
-
-                closeButton.addEventListener('click', function () {
-                    notification.remove(); 
+            document.addEventListener('DOMContentLoaded', function () {
+                const notifications = document.querySelectorAll('.notification');
+    
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+    
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+    
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
                 });
-
-                setTimeout(function () {
-                    notification.remove(); 
-                }, 60000);
             });
-        });
-
         </script>
     </body>
+    
 </html>

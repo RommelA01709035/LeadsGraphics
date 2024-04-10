@@ -49,7 +49,7 @@ exports.post_signup = (request, response, next) => {
     .then(([rows, fieldData]) => {
         console.log(rows); 
         const new_user = rows[0]; 
-        const message = `El usuario ${new_user.nombre_usuario} con Matricula ${new_user.Matricula} ha sido Registrado correctamente.`;
+        const message = `El usuario ${new_user.nombre_usuario} con Matricula ${new_user.matri} ha sido Registrado correctamente.`;
         request.session.message = message; 
         console.log("Usuario registrado correctamente");
         response.redirect('/login');
