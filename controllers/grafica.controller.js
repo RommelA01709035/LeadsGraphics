@@ -1,4 +1,5 @@
 const Grafica = require('../models/grafica.model');
+const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
 
 exports.get_crea_grafica = (request, response, next) => {
@@ -14,18 +15,8 @@ exports.get_crea_grafica = (request, response, next) => {
 exports.post_grafica = (request, response, next) => {
     const { caso, opcion, startDate, endDate } = request.body;
     
-
-    const _startMonth = new Date(startDate); 
-    const _endMonth = new Date(endDate); 
-
-    _startMonth.setDate(_startMonth.getDate() )
-    console.log(_startMonth);
-    _endMonth.setDate(_endMonth.getDate() + 1);
-    console.log(_endMonth);
-
-    const startMonth = new Date(_startMonth); 
-    const endMonth = new Date(_endMonth); 
-    
+    const startMonth = new Date(startDate); 
+    const endMonth = new Date(endDate); 
     console.log(caso)
     switch (caso) {
         case 'leadsPorMes':

@@ -69,7 +69,3 @@ exports.post_delete_Usuario = (request, response, next) => {
         response.status(500).json({ message: "Error al deshabilitar" });
     });
 };
-
-
-
-
