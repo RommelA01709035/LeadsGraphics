@@ -62,8 +62,11 @@ BEGIN
     RETURN minimo_result;
 END //
 
+DELIMITER //
+
+CREATE PROCEDURE generarMatricula(IN _nombre_usuario VARCHAR(255), IN _Correo VARCHAR(40), OUT nueva_matricula VARCHAR(10))
 BEGIN
-    
+   
     DECLARE nuevo_id INT;
     SELECT IFNULL(MAX(IDUsuario), 0) + 1 INTO nuevo_id FROM usuario;
     SET nueva_matricula = CONCAT('USR', LPAD(nuevo_id, 5, '0'));
@@ -71,7 +74,11 @@ BEGIN
     SET matricula = nueva_matricula
     WHERE nombre_usuario = _nombre_usuario
     AND Correo = _Correo; 
-END
+END //
+
+DELIMITER ;
+
+
 
 SELECT 
     DATE(Creado) AS fecha,
