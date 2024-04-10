@@ -39,6 +39,14 @@ module.exports = class Leads {
         return db.execute('SELECT * FROM leads WHERE IDLead = ?', [id]);
     }
 
+    static fetch(id) {
+        if(id) {
+            return this.fetchOne(id);
+        } else {
+            this.fetchAll();
+        }
+    }
+
     static async buscarPorNombre(nombre) {
         try {
             const query = `
@@ -79,5 +87,9 @@ module.exports = class Leads {
         );
         return result[0]; // Devuelve el resultado de la inserción
     }
+
+    static deleteLead(id){
+        return db.execute('CALL deleteLead(?)',[id])
+    };
     
 }

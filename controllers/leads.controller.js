@@ -1,4 +1,5 @@
-    const Leads = require('../models/leads.model');
+    const { request, response } = require('express');
+const Leads = require('../models/leads.model');
     const pool = require('../util/database');
 
     exports.getLeadsPage = async (req, res) => {
@@ -69,21 +70,47 @@
             res.status(500).send('Error al agregar lead');
         }
 
-        };
-        
-        exports.buscarLeads = async (req, res) => {
-            try {
-                const nombre = req.params.nombre;
-                const leads = await Leads.buscarPorNombre(nombre);
-
-                console.log('Datos de leads encontrados:', leads); // Agrega este log para imprimir los datos encontrados
-
-            
-                res.status(200).json(leads);
-            } catch (error) {
-                console.error('Error al buscar leads:', error);
-                res.status(500).json({ error: 'Ocurrió un error al buscar leads' });
-            }
-
-
     };
+        
+    exports.buscarLeads = async (req, res) => {
+        try {
+            const nombre = req.params.nombre;
+            const leads = await Leads.buscarPorNombre(nombre);
+
+            console.log('Datos de leads encontrados:', leads); // Agrega este log para imprimir los datos encontrados
+
+        
+            res.status(200).json(leads);
+        } catch (error) {
+            console.error('Error al buscar leads:', error);
+            res.status(500).json({ error: 'Ocurrió un error al buscar leads' });
+        }
+    };
+
+    exports.eliminarLead = (request, response, next) => {
+        Leads.deleteLead(request.body.IDLead)
+        .then(() => {
+            return Leads.fetch();
+        })
+        .then((leads) => {
+            return response.status(200).json(leads);
+        })
+        .catch((error) => {console.log(error)});
+    }
+
+    /*
+    exports.eliminarLead = async (req, res) => {
+        try {
+            const id = req.params.IDLead;
+            const leads = await Leads.fetchOne(id);
+            console.log('Lead a Eliminar: ', id);
+
+            await Leads.deleteLead(id);
+            console.log('Lead elminado');
+            res.status(200).json(leads);
+        } catch (error) {
+            console.error('Error al eliminar Lead');
+            res.status(500).json({ error: 'Ocurrió un error al elmininar leads' });
+        }
+    };
+    */

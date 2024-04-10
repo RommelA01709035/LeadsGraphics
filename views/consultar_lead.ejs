@@ -106,7 +106,7 @@
                                             <td>
                                                 <!-- Botones de acción -->
                                                 <button class="button is-info">Modificar Lead</button>
-                                                <button class="button is-danger">Eliminar Lead</button>
+                                                <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar Lead</button>
                                             </td>
                                         </tr>
                                     <% } %>
@@ -139,7 +139,7 @@
                                         <td>
                                             <!-- Botones de acción -->
                                             <button class="button is-info">Modificar Lead</button>
-                                            <button class="button is-danger">Eliminar Lead</button>
+                                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
                                         </td>
                                     </tr>`).join('');
                                 document.getElementById('respuesta_ajax').innerHTML = `
@@ -175,7 +175,9 @@
                 confirmButtonText: "Sí, eliminarlo"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById("deleteForm_" + leadId).submit();
+                    //document.getElementById("deleteForm_" + leadId).submit();
+                    console.log('Eliminar lead ha sido seleccionado');
+                    eliminar(leadId);
                 }
             });
         }
@@ -195,6 +197,52 @@
                 }, 5000);
             });
         });
+
+        const eliminar = (IDLead) => {
+            console.log('lead a eliminar', IDLead);
+            // Realizar la solicitud de eliminacion de lead
+            fetch('/eliminar-lead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({IDLead: IDLead}) // Para enviar JSON al body
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                console.log(data);
+                // Procesar la respuesta y actualizar el DOM
+                const respuestaHtml = data.map(lead => `
+                    <tr>
+                        <td>${lead.Nombre}</td>
+                        <td>${lead.Correo}</td>
+                        <td>${lead.Compania}</td>
+                        <td>${lead.Telefono}</td>
+                        <td>
+                            <!-- Botones de acción -->
+                            <button class="button is-info">Modificar Lead</button>
+                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
+                        </td>
+                    </tr>`).join('');
+                document.getElementById('respuesta_ajax').innerHTML = `
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Compañía</th>
+                                <th>Teléfono</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${respuestaHtml}
+                        </tbody>
+                    </table>`;
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     </script>
 </body>
 </html>
