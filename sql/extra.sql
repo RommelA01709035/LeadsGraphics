@@ -62,20 +62,15 @@ BEGIN
     RETURN minimo_result;
 END //
 
-DELIMITER ;
-
 BEGIN
     
     DECLARE nuevo_id INT;
-    SET nuevo_id = (SELECT IFNULL(MAX(IDUsuario), 0) + 1 FROM usuario); -- Obtener el próximo IDUsuario
-    
-
+    SELECT IFNULL(MAX(IDUsuario), 0) + 1 INTO nuevo_id FROM usuario;
     SET nueva_matricula = CONCAT('USR', LPAD(nuevo_id, 5, '0'));
-    
-
     UPDATE usuario
     SET matricula = nueva_matricula
-    WHERE nombre_usuario = nombre_usuario;
+    WHERE nombre_usuario = _nombre_usuario
+    AND Correo = _Correo; 
 END
 
 SELECT 
