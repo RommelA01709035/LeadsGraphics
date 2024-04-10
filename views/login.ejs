@@ -28,10 +28,26 @@
         .form-container {
             width: 400px;
         }
+
+        .notification-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; 
+        }
         </style>
     </head>
     
     <body>
+        <div class="notification-container mb-4">
+            <% if (message) { %>
+                <div class="notification is-success">
+                    <%= message %>
+                    <button class="delete" aria-label="delete"></button>
+
+                </div>
+            <% } %>
         <div class="page-container">
             <div class="container">
                 <div class="box">
@@ -77,6 +93,24 @@
                 </div>
             </div>
         </div>
+        <script>
+            
+        document.addEventListener('DOMContentLoaded', function () {
+            const notifications = document.querySelectorAll('.notification');
+
+            notifications.forEach(notification => {
+                const closeButton = notification.querySelector('.delete');
+
+                closeButton.addEventListener('click', function () {
+                    notification.remove(); 
+                });
+
+                setTimeout(function () {
+                    notification.remove(); 
+                }, 60000);
+            });
+        });
+
+        </script>
     </body>
-  
 </html>

@@ -5,13 +5,15 @@ const bcrypt = require('bcryptjs');
 exports.get_login = (request, response, next) => {
     console.log('Ruta /login');
     console.log(request.body);
-    const error = request.session.error || ''; // Declarar una constante error del tipo sesion
-    request.session.error = ''; // Para que no este para siempre, el usuario puede equivocarse
-    response.render('login', { // Render de la plantilla login
+    const error = request.session.error || ''; 
+    request.session.error = '';
+    const message = request.session.message || ''; 
+    request.session.message = ''; 
+    response.render('login', { 
         username: request.session.username || '',
         csrfToken: request.csrfToken(),
-        //registrar: false, // Variable que se le pasa al ejs para determinar su accion
         error: error,
+        message: message, 
     }); 
 };
 
@@ -39,20 +41,22 @@ exports.get_signup = (request, response, next) => {
         permisos: request.session.permisos || [],
     }); 
 };
-
 exports.post_signup = (request, response, next) => {
     const { nombre_usuario, correo, celular, contrasena } = request.body;
-    const nuevo_usuario = new Usuario(request.body.username, request.body.password);
-    
+    const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena);
+    console.log(request.body)
     Usuario.create(nombre_usuario, correo, celular, contrasena)
-        .then(result => {
-            
-            console.log("Usuario registrado correctamente");
-            response.redirect('/login');
-        })
-        .catch(error => {
-            console.log(error);
-            request.session.error = 'Nombre de usuario inválido.';
-            response.redirect('/login');
-        });
+    .then(([rows, fieldData]) => {
+        console.log(rows); 
+        const new_user = rows[0]; 
+        const message = `El usuario ${new_user.nombre_usuario} con Matricula ${new_user.Matricula} ha sido Registrado correctamente.`;
+        request.session.message = message; 
+        console.log("Usuario registrado correctamente");
+        response.redirect('/login');
+    })
+    .catch(error => {
+        console.log(error);
+        request.session.error = 'Nombre de usuario inválido.';
+        response.redirect('/login');
+    });
 };

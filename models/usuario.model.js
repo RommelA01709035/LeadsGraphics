@@ -14,6 +14,9 @@ module.exports = class Usuario {
         this.telefono = usuarioTelefono;
         this.id = usuarioId;
     }
+    static createUserContructor(nombre, correo, celular, contrasena) {
+        return new Usuario(nombre, correo, celular, contrasena);
+    }
 
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
@@ -66,12 +69,26 @@ module.exports = class Usuario {
     }
     
     static create(nombre, correo, celular, contrasena) {
-        return db.execute(
+        db.execute(            
             `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
-            VALUES (?, ?, ?, ?, 1)`,
+            VALUES (?, ?, ?, ?, 1);`,
             [nombre, correo, celular, contrasena]
         );
-    }
+        db.execute(
+            `
+            CALL generarMatricula(?,?,?)
+            `,
+            [nombre, correo, null]
+        );
 
+        return db.execute(
+         `
+        SELECT nombre_usuario, Matricula
+        FROM usuario 
+        WHERE nombre_usuario = ?;
+         
+         `, [nombre]
+        )
+    }
     
 }
