@@ -59,10 +59,21 @@
         <div class="columns">
             <section class="section">
                 <div class="container">
+                    
                     <h1 class="title">Consultar Leads</h1>
 
-                    <!-- Barra de búsqueda -->
-                    <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/><br><br>
+                    <div class="is-flex" style="justify-content: space-between;">
+                        <!-- Barra de búsqueda -->
+                        <div class="control">
+                            <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
+                        </div>
+                    
+                        <!-- Botón para agregar leads -->
+                        <div>
+                            <a href="/agregar-lead" class="button is-info">Agregar Lead</a>
+                        </div>
+                    </div>
+                    <br><br>
                     
                     <!-- Contenedor para mostrar los resultados de la búsqueda -->
                     <div id="respuesta_ajax" class="table-body">
