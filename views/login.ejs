@@ -40,6 +40,7 @@
                     
                     <section class="form-section">
                         <form class="" action="/login" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <section class="image-container">
                             <figure class="image is-256x256">
                                 <img src="/multimedia/logo.png">

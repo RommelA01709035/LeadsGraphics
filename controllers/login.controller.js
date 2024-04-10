@@ -9,6 +9,7 @@ exports.get_login = (request, response, next) => {
     request.session.error = ''; // Para que no este para siempre, el usuario puede equivocarse
     response.render('login', { // Render de la plantilla login
         username: request.session.username || '',
+        csrfToken: request.csrfToken(),
         //registrar: false, // Variable que se le pasa al ejs para determinar su accion
         error: error,
     }); 
@@ -45,6 +46,7 @@ exports.post_signup = (request, response, next) => {
     
     Usuario.create(nombre_usuario, correo, celular, contrasena)
         .then(result => {
+            
             console.log("Usuario registrado correctamente");
             response.redirect('/login');
         })
