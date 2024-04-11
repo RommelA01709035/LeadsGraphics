@@ -105,15 +105,16 @@ const Leads = require('../models/leads.model');
     exports.eliminarLead = async (request, response, next) => {
         try {
             const leadId = request.body.IDLead;
-            // Eliminar el lead de la base de datos
-            await Leads.deleteLead(leadId);
-            // Obtener los leads actualizados después de la eliminación
-            const [leads, fieldData] = await Leads.fetchAll();
-            // Devolver los leads actualizados en la respuesta
-            response.status(200).json({ leads: leads });
+            
+            await Leads.deleteLead(leadId);  // Eliminar el lead de la base de datos
+
+            const [leads, fieldData] = await Leads.fetchAll(); // Obtener los leads actualizados después de la eliminación
+
+            response.status(200).json({ leads: leads }); // Devolver los leads actualizados en la respuesta
         } catch (error) {
             console.error('Error al eliminar lead:', error);
             response.status(500).json({ error: 'Ocurrió un error al eliminar Lead.' });
         }
     };
+
     

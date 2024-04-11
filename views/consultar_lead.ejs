@@ -117,9 +117,9 @@
 
     <!-- Script para la solicitud AJAX -->
     <script>
-        document.getElementById('buscar').addEventListener('input', () => {
+        const buscarLeads = () => {
             const valor_busqueda = document.getElementById('buscar').value;
-            
+
             // Realizar la solicitud AJAX
             fetch(`/buscar/${encodeURIComponent(valor_busqueda)}`, {
                 method: 'GET',
@@ -160,7 +160,9 @@
             }).catch(err => {
                 console.log(err);
             });
-        });
+        };
+
+    document.getElementById('buscar').addEventListener('input', buscarLeads);
     </script>
     
     <script>
@@ -200,6 +202,9 @@
 
         const eliminar = (IDLead) => {
             console.log('lead a eliminar', IDLead);
+
+            const valor_busqueda = document.getElementById('buscar').value;
+
             // Realizar la solicitud de eliminacion de lead
             fetch('/eliminar-lead', {
                 method: 'POST',
@@ -212,7 +217,7 @@
             }).then(data => {
                 console.log(data);
                 // Procesar la respuesta y actualizar el DOM
-                const respuestaHtml = data.map(lead => `
+                const respuestaHtml = data.leads.map(lead => `
                     <tr>
                         <td>${lead.Nombre}</td>
                         <td>${lead.Correo}</td>
@@ -239,6 +244,9 @@
                             ${respuestaHtml}
                         </tbody>
                     </table>`;
+
+                // Volver a realizar la búsqueda con el término almacenado
+                buscarLeads();
             }).catch(err => {
                 console.log(err);
             });
