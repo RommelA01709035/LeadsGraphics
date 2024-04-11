@@ -669,6 +669,27 @@ INSERT INTO `workspace` (`IDWorkspace`, `Numero_Versiones`) VALUES
 	(19, 3),
 	(20, 2);
 
+-- Volcando estructura para tabla leadgraphs.usuario_historial
+CREATE TABLE IF NOT EXISTS `usuario_historial` (
+  `IDUsuario_Historial` int(11) NOT NULL AUTO_INCREMENT,
+  `IDUsuario` int(11) DEFAULT NULL,
+  `IDHistorial` int(11) DEFAULT NULL,
+  `Descripcion` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`IDUsuario_Historial`),
+  KEY `IDUsuario` (`IDUsuario`),
+  KEY `IDHistorial` (`IDHistorial`),
+  CONSTRAINT `usuario_historial_ibfk_1` FOREIGN KEY (`IDUsuario`) REFERENCES `usuario` (`IDUsuario`),
+  CONSTRAINT `usuario_historial_ibfk_2` FOREIGN KEY (`IDHistorial`) REFERENCES `historial` (`IDHistorial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla leadgraphs.usuario_historial: ~0 rows (aproximadamente)
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
