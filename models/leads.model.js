@@ -43,7 +43,7 @@ module.exports = class Leads {
         if(id) {
             return this.fetchOne(id);
         } else {
-            this.fetchAll();
+            return this.fetchAll();
         }
     }
 

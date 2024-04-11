@@ -72,45 +72,48 @@ const Leads = require('../models/leads.model');
 
     };
         
-    exports.buscarLeads = async (req, res) => {
+    exports.buscarLeads = async (request, response, next) => {
         try {
-            const nombre = req.params.nombre;
+            const nombre = request.params.nombre || '';
             const leads = await Leads.buscarPorNombre(nombre);
 
             console.log('Datos de leads encontrados:', leads); // Agrega este log para imprimir los datos encontrados
 
         
-            res.status(200).json(leads);
+            response.status(200).json(leads);
         } catch (error) {
             console.error('Error al buscar leads:', error);
-            res.status(500).json({ error: 'Ocurrió un error al buscar leads' });
+            response.status(500).json({ error: 'Ocurrió un error al buscar leads' });
         }
     };
-
+    /*
     exports.eliminarLead = (request, response, next) => {
         Leads.deleteLead(request.body.IDLead)
-        .then(() => {
-            return Leads.fetch();
-        })
-        .then((leads) => {
-            return response.status(200).json(leads);
-        })
-        .catch((error) => {console.log(error)});
-    }
-
-    /*
-    exports.eliminarLead = async (req, res) => {
-        try {
-            const id = req.params.IDLead;
-            const leads = await Leads.fetchOne(id);
-            console.log('Lead a Eliminar: ', id);
-
-            await Leads.deleteLead(id);
-            console.log('Lead elminado');
-            res.status(200).json(leads);
-        } catch (error) {
-            console.error('Error al eliminar Lead');
-            res.status(500).json({ error: 'Ocurrió un error al elmininar leads' });
-        }
+            .then(() => {
+                return Leads.fetch();
+            })
+            .then(([leads, fieldData]) => {
+                return response.status(200).json({leads: leads});
+            })
+            .catch((error) => {
+                console.log(error);
+                return response.status(500).json({error: 'Ocurrió un error al eliminar Lead.'})
+            });
     };
     */
+
+    exports.eliminarLead = async (request, response, next) => {
+        try {
+            const leadId = request.body.IDLead;
+            // Eliminar el lead de la base de datos
+            await Leads.deleteLead(leadId);
+            // Obtener los leads actualizados después de la eliminación
+            const [leads, fieldData] = await Leads.fetchAll();
+            // Devolver los leads actualizados en la respuesta
+            response.status(200).json({ leads: leads });
+        } catch (error) {
+            console.error('Error al eliminar lead:', error);
+            response.status(500).json({ error: 'Ocurrió un error al eliminar Lead.' });
+        }
+    };
+    
