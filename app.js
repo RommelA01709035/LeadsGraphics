@@ -22,6 +22,11 @@ app.use(bodyParser.json());
 
 const Swal = require('sweetalert2')
 
+//Agregar protección contra ataques de CSRF
+const csrf = require('csurf');
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
 //Middleware
 app.use((request, response, next) => {
   console.log('Middleware!');
@@ -34,7 +39,6 @@ app.use('/', rutaLogin);
 const rutaInicio = require('./routes/inicio.routes');
 app.use('/homepage', rutaInicio);
 
-
 const rutaGrafica = require('./routes/grafica.routes');
 app.use('/', rutaGrafica);
 
@@ -44,5 +48,7 @@ app.use('/', rutaLeads);
 const rutaUsuarios = require('./routes/usuario.routes');
 app.use('/', rutaUsuarios);
 
+const rutaRegistro = require('./routes/registro.routes');
+app.use('/', rutaRegistro);
 
 app.listen(3000);

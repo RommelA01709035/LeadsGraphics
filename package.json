@@ -4,7 +4,8 @@
   "description": "Proyecto independiente al sistema de leadsales para la materia TC2005B ",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "mysql2": "^3.9.2",
+    "nodemon": "^3.1.0",
     "sweetalert2": "^11.10.7"
   },
   "devDependencies": {

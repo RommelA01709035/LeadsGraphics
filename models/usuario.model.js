@@ -15,6 +15,8 @@ module.exports = class Usuario {
         this.id = usuarioId;
     }
 
+    
+
 
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
