@@ -105,7 +105,14 @@
                                             <td><%= lead.Telefono %></td>
                                             <td>
                                                 <!-- Botones de acción -->
-                                                <button class="button is-info">Modificar Lead</button>
+                                                <% if (lead) { %>
+                                                    
+                                                    <a href="/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
+                                                    
+                                                <% } else { %>
+                                                    <p>Lead no encontrado</p>
+                                                <% } %>
+
                                                 <button class="button is-danger">Eliminar Lead</button>
                                             </td>
                                         </tr>
@@ -138,7 +145,7 @@
                                         <td>${lead.Telefono}</td>
                                         <td>
                                             <!-- Botones de acción -->
-                                            <button class="button is-info">Modificar Lead</button>
+                                            <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
                                             <button class="button is-danger">Eliminar Lead</button>
                                         </td>
                                     </tr>`).join('');

@@ -6,7 +6,7 @@
             const [leads, fieldData] = await Leads.fetchAll();
 
             console.log(leads);
-            res.render('consultar_lead', { leads });
+            res.render('consultar_lead', {leads: leads });
 
             // No es necesario crear una instancia de Leads aquí
         } catch (error) {
@@ -85,5 +85,30 @@
                 res.status(500).json({ error: 'Ocurrió un error al buscar leads' });
             }
 
+        };
 
-    };
+        exports.renderModificarLeadPage = async (req, res) => {
+            try {
+
+                const leadId = req.params.lead_id;
+
+                const [lead, fieldData] = await Leads.fetchOne(leadId);
+
+                // Verificar si se encontró el lead
+                if (lead.length == 0) {
+                    // Si el lead no se encuentra, puedes manejar el error o redirigir a alguna página de error
+                    return res.status(404).send('Lead no encontrado');
+                }
+
+                else{
+
+                // Renderiza la vista de modificar lead
+                res.render('modificar_lead', { lead });
+
+                }
+
+            } catch (error) {
+                console.error('Error al renderizar la vista de modificar lead:', error);
+                res.status(500).send('Error al renderizar la vista de modificar lead');
+            }
+        };
