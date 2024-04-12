@@ -6,8 +6,10 @@ const Leads = require('../models/leads.model');
         try {
             const [leads, fieldData] = await Leads.fetchAll();
 
+            const message = '';
+
             console.log(leads);
-            res.render('consultar_lead', { leads });
+            res.render('consultar_lead', { leads, message });
 
             // No es necesario crear una instancia de Leads aquí
         } catch (error) {
@@ -93,7 +95,7 @@ const Leads = require('../models/leads.model');
                 return Leads.fetch();
             })
             .then(([leads, fieldData]) => {
-                return response.status(200).json({leads: leads});
+                return response.status(200).json({leads: leads, message: message});
             })
             .catch((error) => {
                 console.log(error);
@@ -110,7 +112,9 @@ const Leads = require('../models/leads.model');
 
             const [leads, fieldData] = await Leads.fetchAll(); // Obtener los leads actualizados después de la eliminación
 
-            response.status(200).json({ leads: leads }); // Devolver los leads actualizados en la respuesta
+            const message = `El Lead ha sido eliminado correctamente.`;
+
+            response.status(200).json({ leads: leads, message: message}); // Devolver los leads actualizados en la respuesta
         } catch (error) {
             console.error('Error al eliminar lead:', error);
             response.status(500).json({ error: 'Ocurrió un error al eliminar Lead.' });

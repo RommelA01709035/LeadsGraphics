@@ -51,6 +51,19 @@
             max-height: 700px; /* Establece aquí la altura máxima deseada */
             overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
         }
+
+        .notification-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; 
+        }
+
+        .control {
+            border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
+            border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
+        }
     </style>
 </head>
 
@@ -59,7 +72,13 @@
         <div class="columns">
             <section class="section">
                 <div class="container">
-                    
+                    <div class="notification-container">
+                        <% if (message) { %>
+                            <div class="notification is-success">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                    </div>
                     <h1 class="title">Consultar Leads</h1>
 
                     <div class="is-flex" style="justify-content: space-between;">
@@ -247,6 +266,22 @@
 
                 // Volver a realizar la búsqueda con el término almacenado
                 buscarLeads();
+
+                // Mostrar el mensaje si está presente
+                if (data.message) {
+                    const notificationContainer = document.querySelector('.notification-container');
+                    const notification = document.createElement('div');
+                    notification.classList.add('notification', 'is-success');
+                    notification.innerHTML = `
+                        ${data.message}
+                        <button class="delete"></button>`;
+                    notificationContainer.appendChild(notification);
+
+                    // Eliminar la notificación después de un tiempo
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 5000);
+                }
             }).catch(err => {
                 console.log(err);
             });
