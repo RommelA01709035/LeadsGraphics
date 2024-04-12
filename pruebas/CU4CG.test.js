@@ -44,7 +44,7 @@ describe('Pruebas de consultar gráfica', () => {
         const Archivado = true
         const Creado_Manualmente = 0
 
-        const [rows1] = await Usuario.fetchOne_user(IDUsuario);
+        const [rows1] = await Usuario.fetchOne_Graph(IDUsuario, IDHistorial, IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Creado, Hora_Creacion, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente);
         const [rows2] = await Usuario.fetchOne_user_change(IDUsuario,gmailCambiado);
         console.log(rows1); 
         console.log(rows2);
@@ -77,7 +77,7 @@ describe('Pruebas de consultar gráfica', () => {
         const Etapa = "Contactados"
         const Archivado = true
         const Creado_Manualmente = 0
-        const [rows] = await Usuario.fetchOne_user(IDUsuario);
+        const [rows] = await Usuario.fetchOne_user(IDUsuario, IDHistorial, IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Creado, Hora_Creacion, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente);
         console.log(rows);
         expect(rows.length).toBe(0);
     });
