@@ -1,4 +1,5 @@
 const db = require('../util/database');
+const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
 
@@ -14,10 +15,32 @@ module.exports = class Usuario {
         this.telefono = usuarioTelefono;
         this.id = usuarioId;
     }
+    
     static createUserContructor(nombre, correo, celular, contrasena) {
         return new Usuario(nombre, correo, celular, contrasena);
     }
-
+    
+    static create(nombre, correo, celular, contrasena) {
+        return bcrypt.hash(contrasena, 12).then((contrasena_cifrada) => {
+            return db.execute(
+                `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
+                VALUES (?, ?, ?, ?, 1);`,
+                [nombre, correo, celular, contrasena_cifrada]
+            ).then(() => {
+                return db.execute(
+                    `
+                    SELECT nombre_usuario, Correo
+                    FROM usuario 
+                    WHERE nombre_usuario = ?;
+                    `, [nombre]
+                );
+            });
+        }).catch((error) => {
+            console.log(error);
+            throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
+        }); 
+    }
+    
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
     }
@@ -68,27 +91,5 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
     
-    static create(nombre, correo, celular, contrasena) {
-        db.execute(            
-            `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
-            VALUES (?, ?, ?, ?, 1);`,
-            [nombre, correo, celular, contrasena]
-        );
-        db.execute(
-            `
-            CALL generarMatricula(?,?,?)
-            `,
-            [nombre, correo, null]
-        );
-
-        return db.execute(
-         `
-        SELECT nombre_usuario, Matricula as matri
-        FROM usuario 
-        WHERE nombre_usuario = ?;
-         
-         `, [nombre]
-        )
-    }
     
 }

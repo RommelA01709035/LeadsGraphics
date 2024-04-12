@@ -28,25 +28,18 @@
         .form-container {
             width: 400px;
         }
-
         .notification-container {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
             z-index: 1000; 
         }
+
         </style>
     </head>
     <body>
-        <div class="notification-container mb-4">
-            <% if (message) { %>
-                <div class="notification is-info">
-                    <%= message %>
-                    <button class="delete" aria-label="delete"></button>
-                </div>
-            <% } %>
-        </div>
         <div class="page-container">
             <div class="container">
                 <div class="box">
@@ -75,17 +68,28 @@
                                         <br>
                             
                                         <div class="field has-text-centered">
-                                            <button type="submit" class="button is-primary" style="background-color: #F649D0;">Iniciar sesión</button>
+                                            <button type="submit" class="button is-primary is-fullwidth" style="background-color: #F649D0;">Iniciar sesión</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </form>
-                        <a href="/signup" class="button is-link">Registrate</a>
+                        <a href="/signup" class="button is-link is-fullwidth mt-2">Registrate</a>
                     </section>
                 </div>
             </div>
         </div>
+
+
+        <div class="notification-container mb-4">
+            <% if (message) { %>
+                <div class="notification is-info">
+                    <%= message %>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+            <% } %>
+        </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const notifications = document.querySelectorAll('.notification');
