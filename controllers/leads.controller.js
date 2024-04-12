@@ -93,6 +93,7 @@
                 const leadId = req.params.lead_id;
 
                 const [lead, fieldData] = await Leads.fetchOne(leadId);
+                
 
                 // Verificar si se encontró el lead
                 if (lead.length == 0) {
@@ -102,8 +103,10 @@
 
                 else{
 
+                    console.log('Datos del lead en renderModificarLeadPage:', lead);
+
                 // Renderiza la vista de modificar lead
-                res.render('modificar_lead', { lead });
+                res.render('modificar_lead', { lead: lead[0] });
 
                 }
 
