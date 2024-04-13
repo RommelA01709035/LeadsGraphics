@@ -21,145 +21,143 @@
         .title {
             margin-bottom: 2rem; /* Ajusta el espacio entre el título y el formulario */
         }
-
-                /* Estilo adicional para el título */
-        .title-divider {
-            margin-bottom: 1rem; /* Ajusta el espacio entre el título y el formulario */
-        }
     </style>
 </head>
 <body>
     <%- include('includes/naveside.ejs') %>
-    <div class="main-content columns">
-        
-        <div class="column is-half">
-            <head>
-                <h1 class="title">Modificar Lead <%= lead.Nombre %></h1>
-            </head>
-            <form action="/modificar-lead/<%= lead.IDLead %>" method="POST">
-                <div class="field">
-                    <label class="label">Nombre</label>
-                    <div class="control">
-                        <input class="input" type="text" name="Nombre" value="<%= lead.Nombre %>" placeholder="Nombre" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Correo</label>
-                    <div class="control">
-                        <input class="input" type="email" name="Correo" value="<%= lead.Correo %>" placeholder="Correo" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Compañía</label>
-                    <div class="control">
-                        <input class="input" type="text" name="Compania" value="<%= lead.Compania %>" placeholder="Compañía" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Fecha del Primer Mensaje</label>
-                    <div class="control">
-                        <input class="input" type="date" name="Fecha_Primer_Mensaje" value="<%= lead.Fecha_Primer_Mensaje.toISOString().split('T')[0] %>" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Hora del Primer Mensaje</label>
-                    <div class="control">
-                        <input class="input" type="time" name="Hora_Primer_Mensaje" value="<%= lead.Hora_Primer_Mensaje %>" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Primer Mensaje</label>
-                    <div class="control">
-                        <textarea class="textarea" name="Primer_Mensaje" placeholder="Primer Mensaje"><%= lead.Primer_Mensaje %></textarea>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Fecha del Último Mensaje</label>
-                    <div class="control">
-                        <input class="input" type="date" name="Fecha_Ultimo_Mensaje" value="<%= lead.Fecha_Ultimo_Mensaje.toISOString().split('T')[0] %>" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Hora del Último Mensaje</label>
-                    <div class="control">
-                        <input class="input" type="time" name="Hora_Ultimo_Mensaje" value="<%= lead.Hora_Ultimo_Mensaje %>" required>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Último Mensaje</label>
-                    <div class="control">
-                        <textarea class="textarea" name="Ultimo_Mensaje" placeholder="Último Mensaje"><%= lead.Ultimo_Mensaje %></textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="column is-half">
-            <div class="field">
-                <label class="label">Teléfono</label>
-                <div class="control">
-                    <input class="input" type="text" name="Telefono" value="<%= lead.Telefono %>" placeholder="Teléfono" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Valor</label>
-                <div class="control">
-                    <input class="input" type="number" name="Valor" value="<%= lead.Valor %>" placeholder="Valor">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Ganado</label>
-                <div class="control">
-                    <input class="input" type="number" name="Ganado" value="<%= lead.Ganado %>" placeholder="Ganado">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Etiqueta</label>
-                <div class="control">
-                    <input class="input" type="text" name="Etiqueta" value="<%= lead.Etiqueta %>" placeholder="Etiqueta">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Estado Lead</label>
-                <div class="control">
-                    <input class="input" type="text" name="Estado_Lead" value="<%= lead.Estado_Lead %>" placeholder="Estado Lead">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Seller Asignado</label>
-                <div class="control">
-                    <input class="input" type="text" name="Seller_Asignado" value="<%= lead.Seller_Asignado %>" placeholder="Seller Asignado">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Embudo</label>
-                <div class="control">
-                    <input class="input" type="text" name="Embudo" value="<%= lead.Embudo %>" placeholder="Embudo">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Etapa</label>
-                <div class="control">
-                    <input class="input" type="text" name="Etapa" value="<%= lead.Etapa %>" placeholder="Etapa">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Archivado</label>
-                <div class="control">
-                    <input class="input" type="text" name="Archivado" value="<%= lead.Archivado %>" placeholder="Archivado">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Creado Manualmente</label>
-                <div class="control">
-                    <input class="input" type="text" name="Creado_Manualmente" value="<%= lead.Creado_Manualmente %>" placeholder="Creado Manualmente">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button class="button is-primary" type="submit">Actualizar Cambios</button>
-                </div>
+      <div class="main-content">
+        <h1 class="title">Modificar Lead <%= lead.Nombre %></h1>
+
+    <form action="/modificar-lead/<%= lead.IDLead %>" method="POST">
+
+        <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control">
+                <input class="input" type="text" name="Nombre" value="<%= lead.Nombre %>" placeholder="Nombre" required>
             </div>
         </div>
-    </div>
+        <div class="field">
+            <label class="label">Correo</label>
+            <div class="control">
+                <input class="input" type="email" name="Correo" value="<%= lead.Correo %>" placeholder="Correo" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Compañía</label>
+            <div class="control">
+                <input class="input" type="text" name="Compania" value="<%= lead.Compania %>" placeholder="Compañía" required>
+
+            <label class="label">Fecha del Primer Mensaje</label>
+            <div class="control">
+                <input class="input" type="date" name="Fecha_Primer_Mensaje" value="<%= lead.Fecha_Primer_Mensaje.toISOString().split('T')[0] %>" required>
+
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Hora del Primer Mensaje</label>
+            <div class="control">
+                <!-- Ajusta el step para incluir segundos -->
+                <input class="input" type="time" name="Hora_Primer_Mensaje" value="<%= lead.Hora_Primer_Mensaje %>" required step="1">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Primer Mensaje</label>
+            <div class="control">
+                <textarea class="textarea" name="Primer_Mensaje" placeholder="Primer Mensaje"><%= lead.Primer_Mensaje %></textarea>
+
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Fecha del Último Mensaje</label>
+            <div class="control">
+                <input class="input" type="date" name="Fecha_Ultimo_Mensaje" value="<%= lead.Fecha_Ultimo_Mensaje.toISOString().split('T')[0] %>" required>
+
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Hora del Último Mensaje</label>
+            <div class="control">
+                <!-- Ajusta el step para incluir segundos -->
+                <input class="input" type="time" name="Hora_Ultimo_Mensaje" value="<%= lead.Hora_Ultimo_Mensaje %>" required step="1">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Último Mensaje</label>
+            <div class="control">
+                <textarea class="textarea" name="Ultimo_Mensaje" placeholder="Último Mensaje"><%= lead.Ultimo_Mensaje %></textarea>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Teléfono</label>
+            <div class="control">
+                <input class="input" type="text" name="Telefono" value="<%= lead.Telefono %>" placeholder="Teléfono" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Valor</label>
+            <div class="control">
+                <input class="input" type="number" name="Valor" value="<%= lead.Valor %>" placeholder="Valor">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Ganado</label>
+            <div class="control">
+                <input class="input" type="number" name="Ganado" value="<%= lead.Ganado %>" placeholder="Ganado">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Etiqueta</label>
+            <div class="control">
+                <input class="input" type="text" name="Etiqueta" value="<%= lead.Etiqueta %>" placeholder="Etiqueta">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Estado Lead</label>
+            <div class="control">
+                <input class="input" type="text" name="Estado_Lead" value="<%= lead.Estado_Lead %>" placeholder="Estado Lead">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Seller Asignado</label>
+            <div class="control">
+                <input class="input" type="text" name="Seller_Asignado" value="<%= lead.Seller_Asignado %>" placeholder="Seller Asignado">
+            </div>
+        </div>
+
+
+        <div class="field">
+            <label class="label">Embudo</label>
+            <div class="control">
+                <input class="input" type="text" name="Embudo" value="<%= lead.Embudo %>" placeholder="Embudo">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Etapa</label>
+            <div class="control">
+                <input class="input" type="text" name="Etapa" value="<%= lead.Etapa %>" placeholder="Etapa">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Archivado</label>
+            <div class="control">
+                <input class="input" type="text" name="Archivado" value="<%= lead.Archivado %>" placeholder="Archivado">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Creado Manualmente</label>
+            <div class="control">
+                <input class="input" type="text" name="Creado_Manualmente" value="<%= lead.Creado_Manualmente %>" placeholder="Creado Manualmente">
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary" type="submit">Actualizar Cambios</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
 </body>
 </html>
