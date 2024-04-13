@@ -8,6 +8,7 @@ router.get('/agregar-lead', leadsController.renderAddLeadPage);
 router.get('/modificar-lead/:lead_id', leadsController.renderModificarLeadPage);
 
 router.post('/agregar-lead', leadsController.agregarLead);
+router.post('/modificar-lead/:lead_id', leadsController.guardarLead);
 
 
 module.exports = router;

@@ -93,6 +93,9 @@
                                         <th>Correo</th>
                                         <th>Compañía</th>
                                         <th>Teléfono</th>
+                                        <th>Seller Asignado</th>
+                                        <th>Último Mensaje</th>
+                                        <th>Hora Último Mensaje</th>
                                         <th>Acciones</th> <!-- Agregado para los botones de acción -->
                                     </tr>
                                 </thead>
@@ -103,17 +106,23 @@
                                             <td><%= lead.Correo %></td>
                                             <td><%= lead.Compania %></td>
                                             <td><%= lead.Telefono %></td>
+                                            <td><%= lead.Seller_Asignado %></td>
+                                            <td><%= lead.Ultimo_Mensaje %></td>
+                                            <td><%= lead.Hora_Ultimo_Mensaje %></td>
                                             <td>
-                                                <!-- Botones de acción -->
-                                                <% if (lead) { %>
+                                                <!-- Contenedor para los botones de acción -->
+                                                <div class="buttons">
+                                                    <% if (lead) { %>
+                                                        <!-- Botón para modificar el lead -->
+                                                        <a href="/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
+                                                    <% } else { %>
+                                                        <!-- Si no se encuentra el lead -->
+                                                        <p>Lead no encontrado</p>
+                                                    <% } %>
                                                     
-                                                    <a href="/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
-                                                    
-                                                <% } else { %>
-                                                    <p>Lead no encontrado</p>
-                                                <% } %>
-
-                                                <button class="button is-danger">Eliminar Lead</button>
+                                                    <!-- Botón para eliminar el lead -->
+                                                    <button class="button is-danger">Eliminar Lead</button>
+                                                </div>
                                             </td>
                                         </tr>
                                     <% } %>
@@ -143,6 +152,9 @@
                                         <td>${lead.Correo}</td>
                                         <td>${lead.Compania}</td>
                                         <td>${lead.Telefono}</td>
+                                        <td>${lead.Seller_Asignado}</td>
+                                        <td>${lead.Ultimo_Mensaje}</td>
+                                        <td>${lead.Hora_Ultimo_Mensaje}</td>
                                         <td>
                                             <!-- Botones de acción -->
                                             <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
@@ -157,6 +169,9 @@
                                                 <th>Correo</th>
                                                 <th>Compañía</th>
                                                 <th>Teléfono</th>
+                                                <th>Seller Asignado</th>
+                                                <th>Último Mensaje</th>
+                                                <th>Hora Último Mensaje</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
@@ -169,6 +184,7 @@
                             });
                         });
                     </script>
+                    
     
     <script>
         function confirmDelete(leadId) {

@@ -115,3 +115,23 @@
                 res.status(500).send('Error al renderizar la vista de modificar lead');
             }
         };
+
+        exports.guardarLead = async (req, res) => {
+            const leadId = req.params.lead_id; // Obtener el ID del lead de los parámetros de la URL
+            const leadData = req.body; // Obtener los datos del lead del cuerpo de la solicitud
+        
+            try {
+
+                console.log('Nuevos datos modificados:', leadData);
+
+                // Actualizar el lead en la base de datos utilizando el modelo
+                const lead = await Leads.actualizarLead(leadId, leadData);
+        
+                // Enviar una respuesta al cliente
+                res.redirect('/leads');
+
+            } catch (error) {
+                console.error('Error al guardar lead:', error);
+                res.status(500).json({ error: 'Ocurrió un error al guardar el lead' });
+            }
+        };

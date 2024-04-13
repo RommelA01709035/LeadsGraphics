@@ -79,5 +79,71 @@ module.exports = class Leads {
         );
         return result[0]; // Devuelve el resultado de la inserción
     }
+
+
+
+    static async actualizarLead(leadId, leadData) {
+        try {
+            // Actualizar el lead en la base de datos utilizando una consulta SQL
+            const query = `
+                UPDATE leads
+                SET 
+                    Nombre = ?,
+                    Correo = ?,
+                    Compania = ?,
+                    Fecha_Primer_Mensaje = ?,
+                    Hora_Primer_Mensaje = ?,
+                    Primer_Mensaje = ?,
+                    Fecha_Ultimo_Mensaje = ?,
+                    Hora_Ultimo_Mensaje = ?,
+                    Ultimo_Mensaje = ?,
+                    Telefono = ?,
+                    Valor = ?,
+                    Ganado = ?,
+                    Etiqueta = ?,
+                    Estado_Lead = ?,
+                    Seller_Asignado = ?,
+                    IDHistorial = ?,
+                    IDWorkspace = ?,
+                    Embudo = ?,
+                    Etapa = ?,
+                    Archivado = ?,
+                    Creado_Manualmente = ?
+                WHERE IDLead = ?`;
     
+            const values = [
+                leadData.Nombre,
+                leadData.Correo,
+                leadData.Compania,
+                leadData.Fecha_Primer_Mensaje,
+                leadData.Hora_Primer_Mensaje,
+                leadData.Primer_Mensaje,
+                leadData.Fecha_Ultimo_Mensaje,
+                leadData.Hora_Ultimo_Mensaje,
+                leadData.Ultimo_Mensaje,
+                leadData.Telefono,
+                leadData.Valor,
+                leadData.Ganado,
+                leadData.Etiqueta,
+                leadData.Estado_Lead,
+                leadData.Seller_Asignado,
+                leadData.IDHistorial,
+                leadData.IDWorkspace,
+                leadData.Embudo,
+                leadData.Etapa,
+                leadData.Archivado,
+                leadData.Creado_Manualmente,
+                leadId
+            ];
+    
+            await db.execute(query, values);
+    
+            // Devolver el lead actualizado
+            return leadData;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+
 }
