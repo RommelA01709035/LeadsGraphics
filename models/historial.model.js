@@ -2,10 +2,10 @@ const db = require('../util/database');
 
 module.exports = class Historial {
 
-    constructor(idUsuarioHistorial, idHistorial, idUsuario, descripcion){
+    constructor(idUsuarioHistorial, idUsuario, idHistorial, descripcion){
         this.IDUsuario_Historial = idUsuarioHistorial,
-        this.IDHistorial = idHistorial,
         this.IDUsuario = idUsuario,
+        this.IDHistorial = idHistorial,
         this.Descripcion = descripcion
     };
 
@@ -25,6 +25,11 @@ module.exports = class Historial {
         }
     };
 
-    
+    static registrarAccion(idUH, idU, idH, descripcion){
+        return db.execute(`
+        INSERT INTO usuario_historial (IDUsuario_Historial, IDUsuario, IDHistorial, Desripcion) VALUES (?,?,?,?)
+        `, [idUH, idU, idH, descripcion]);
+    };
+
 
 };
