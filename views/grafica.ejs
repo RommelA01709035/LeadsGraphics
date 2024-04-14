@@ -113,7 +113,7 @@
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
+            labels = data.map(entry => `${getMonthName(entry.mes)}-${entry.cantidad_leads}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
@@ -195,6 +195,13 @@
             document.getElementById('myChart'),
             config
         );
+        function getMonthName(monthNumber) {
+            const months = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
+            return months[monthNumber - 1] || '';
+        }
 
         function downloadChart() {
             const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
