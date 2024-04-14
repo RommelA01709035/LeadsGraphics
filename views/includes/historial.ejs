@@ -28,7 +28,6 @@
         .table-shadow td,
         .table-shadow th {
             border-right: 2px solid #000000; /* Color del borde vertical */
-            width: 1000px;
         }
 
 
@@ -45,13 +44,7 @@
             color: white;
         }
 
-        .notification-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000; 
-        }
+     
 
         .control {
             border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
@@ -59,45 +52,49 @@
         }
 
         
+        /* Posicionar a la derecha */
+        .main-content {
+            margin-right: 100px; /* Elimina el margen derecho */
+        }
+
+        .custom-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 30%; /* Ancho del sidebar */
+            background-color: #a5a7f4; /* Color de fondo del sidebar */
+            overflow-y: auto; /* Permitir desplazamiento vertical si el contenido es demasiado largo */
+            padding: 20px; /* Espacio interior */
+            z-index: 1000;
+        }
+        .custom-sidebar:hover {
+            transition: width 0.5s ease;
+            width: 15%; /* Ancho expandido cuando se pasa el mouse sobre el sidebar */
+        }
     </style>
 </head>
 <body>
   <div class="main-content">
-    <div class="columns">
-      <section class="section">
-          <div class="container">
-              <div class="notification-container">
-                  <!--<% if (message) { %>
-                      <div class="notification is-success">
-                          <%= message %>
-                          <button class="delete" aria-label="delete"></button>
-                      </div>
-                  <% } %>-->
-              </div>
-              <h1 class="title">Consultar Historial</h1>
-              <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                  <thead>
-                      <tr>
-                          <th class="table-shadow">Nombre del usuario</th>
-                          <th class="table-shadow">Acción </th> <!-- Aquí especificamos el ancho -->
-                          <th class="table-shadow">Fecha</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <!--<% usuario.forEach(user => { %>
-                          <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>-->
-                          <tr class="<%= rowClass %>">
-                              <td class="table-shadow">nombre_usuario</td>
-                              <td class="table-shadow">Ha eliminado al Usuario Juan Perez Urtiaga con el ID 34 y con rol seller.</td> <!-- Aquí especificamos el ancho -->
-                              <td class="table-shadow">fecha</td>
-                          </tr>
-                     <!-- <% }); %> -->
-                  </tbody>
-              </table>
-          </div>
-      </section>
+    <div class="custom-sidebar">
+        <h1 class="title">Consultar Historial</h1>
+        <table class="table is-bordered is-striped is-fullwidth table-shadow">
+            <thead>
+                <tr>
+                    <th class="table-shadow">Nombre del usuario</th>
+                    <th class="table-shadow">Acción</th>
+                    <th class="table-shadow">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-shadow">
+                    <td>nombre_usuario</td>
+                    <td>Ha eliminado al Usuario Juan Perez Urtiaga con el ID 34 y con rol seller.</td>
+                    <td>fecha</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
   </div>
-  </div>
-    
 </body>
 </html>
