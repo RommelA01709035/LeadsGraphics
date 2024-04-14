@@ -1,4 +1,3 @@
-<%- include('includes/naveside.ejs') %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -61,119 +60,120 @@
     </style>
 </head>
 <body>
-  <div class="main-content">
-    <div class="columns">
-      <section class="section">
-          <div class="container">
-              <div class="notification-container">
-                  <% if (message) { %>
-                      <div class="notification is-success">
-                          <%= message %>
-                          <button class="delete" aria-label="delete"></button>
-                      </div>
-                  <% } %>
-              </div>
-              <h1 class="title">Consultar Usuarios</h1>
-              <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                  <thead>
-                      <tr>
-                          <th>Nombre</th>
-                          <th>Correo</th>
-                          <th>Teléfono</th>
-                          <th>ID</th>
-                          <th class="is-narrow">Acciones</th> 
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <% usuario.forEach(user => { %>
-                          <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>                         
-                          <tr class="<%= rowClass %>">
-                              <td><%= user.nombre_usuario %></td>
-                              <td><%= user.Correo %></td>
-                              <td><%= user.Celular %></td>
-                              <td><%= user.IDUsuario %></td>
-                              <td class="is-narrow">
-                                  <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
-                                      <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
-                                      <input type="hidden" name="id" value="<%= user.IDUsuario %>">
-                                      <div class="field is-grouped">
-                                          <div class="control">
-                                              <button class="button is-info is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
-                                          </div>
-                                          <% if(user.Habilitado == 0){%>
-                                            <div class="control">
-                                                <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
-                                            </div>
-                                            <%}else{%>
-                                                <div class="control">
-                                                    <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
+    <%- include('includes/naveside.ejs') %>
+        <div class="main-content">
+            <div class="columns">
+                <section class="section">
+                    <div class="container">
+                        <div class="notification-container">
+                            <% if (message) { %>
+                                <div class="notification is-success">
+                                    <%= message %>
+                                    <button class="delete" aria-label="delete"></button>
+                                </div>
+                            <% } %>
+                        </div>
+                        <h1 class="title">Consultar Usuarios</h1>
+                        <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>ID</th>
+                                    <th class="is-narrow">Acciones</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% usuario.forEach(user => { %>
+                                    <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>                         
+                                    <tr class="<%= rowClass %>">
+                                        <td><%= user.nombre_usuario %></td>
+                                        <td><%= user.Correo %></td>
+                                        <td><%= user.Celular %></td>
+                                        <td><%= user.IDUsuario %></td>
+                                        <td class="is-narrow">
+                                            <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
+                                                <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
+                                                <input type="hidden" name="id" value="<%= user.IDUsuario %>">
+                                                <div class="field is-grouped">
+                                                    <div class="control">
+                                                        <button class="button is-info is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+                                                    </div>
+                                                    <% if(user.Habilitado == 0){%>
+                                                        <div class="control">
+                                                            <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
+                                                        </div>
+                                                        <%}else{%>
+                                                            <div class="control">
+                                                                <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
+                                                            </div>
+                                                        
+                                                        <%}%>
+                                                    
                                                 </div>
-                                               
-                                            <%}%>
-                                          
-                                      </div>
-                                  </form>
-                              </td>
-                          </tr>
-                      <% }); %>
-                  </tbody>
-              </table>
-          </div>
-      </section>
-  </div>
-  </div>
-    
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        function confirmDelete(userId) {
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Puedes revertir la decisón después",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, eliminarlo"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById("deleteForm_" + userId).submit();
-                }
-            });
-        }
-
-        function confirmReactivate(userId) {
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Puedes revertir la decisión después",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, reactivalo"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = document.getElementById("deleteForm_" + userId);
-                    form.action = "/reactivate-usuario"; 
-                    form.submit();
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const notifications = document.querySelectorAll('.notification');
-
-            notifications.forEach(notification => {
-                const closeButton = notification.querySelector('.delete');
-
-                closeButton.addEventListener('click', function () {
-                    notification.remove(); 
+        <script>
+            function confirmDelete(userId) {
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Puedes revertir la decisón después",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminarlo"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("deleteForm_" + userId).submit();
+                    }
                 });
+            }
 
-                setTimeout(function () {
-                    notification.remove(); 
-                }, 5000);
+            function confirmReactivate(userId) {
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Puedes revertir la decisión después",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, reactivalo"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById("deleteForm_" + userId);
+                        form.action = "/reactivate-usuario"; 
+                        form.submit();
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const notifications = document.querySelectorAll('.notification');
+
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 5000);
+                });
             });
-        });
-    </script>
+        </script>
 </body>
 </html>
