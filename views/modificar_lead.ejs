@@ -145,18 +145,20 @@
                 <input class="input" type="text" name="Archivado" value="<%= lead.Archivado %>" placeholder="Archivado">
             </div>
         </div>
-        <div class="field">
-            <label class="label">Creado Manualmente</label>
-            <div class="control">
-                <input class="input" type="text" name="Creado_Manualmente" value="<%= lead.Creado_Manualmente %>" placeholder="Creado Manualmente">
-            </div>
-        </div>
+
         <div class="field">
             <div class="control">
                 <button class="button is-primary" type="submit">Actualizar Cambios</button>
             </div>
         </div>
     </form>
+
+    <div class="field">
+        <div class="control">
+            <a href="/leads" class="button is-danger">Cancelar</a>
+        </div>
+    </div>
+
   </div>
 </div>
 </body>

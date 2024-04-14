@@ -58,7 +58,14 @@ module.exports = class Leads {
 
     // Método para guardar un nuevo lead en la base de datos
     async save() {
+
+        this.IDWorkspace = 1;
+        this.IDHistorial = 1;
+        this.Creado_Manualmente = 1;
+
         const values = Object.values(this).map(val => (val === undefined ? null : val));
+
+        console.log('Valores a insertar en la base de datos:', values);
     
         // Mapear los nombres de las columnas y unirlos en una cadena separada por comas
         const columns = Object.keys(this).join(', ');
@@ -108,7 +115,7 @@ module.exports = class Leads {
                     Embudo = ?,
                     Etapa = ?,
                     Archivado = ?,
-                    Creado_Manualmente = ?
+                    Creado_Manualmente = 1
                 WHERE IDLead = ?`;
     
             const values = [
