@@ -282,6 +282,21 @@
                         notification.remove();
                     }, 5000);
                 }
+
+                if(data.error) {
+                    const notificationContainer = document.querySelector('.notification-container');
+                    const notification = document.createElement('div');
+                    notification.classList.add('notification', 'is-danger');
+                    notification.innerHTML = `
+                        ${data.error}
+                        <button class="delete"></button>`;
+                    notificationContainer.appendChild(notification);
+
+                    // Eliminar la notificación después de un tiempo
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 5000);
+                }
             }).catch(err => {
                 console.log(err);
             });
