@@ -76,7 +76,7 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
 
-    static fetchOne_delete_lead(IDLead, Telefono) {
-        return db.execute('DELETE FROM leads WHERE IDLead = ? AND Telefono = ?', [IDLead, Telefono]);
-    }
+    static deleteLead(id){
+        return db.execute('CALL deleteLead(?)',[id])
+    };
 };
