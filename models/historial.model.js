@@ -25,10 +25,10 @@ module.exports = class Historial {
         }
     };
 
-    static registrarAccion(idUH, idU, idH, descripcion){
+    static registrarAccion(idU, idH, descripcion){
         return db.execute(`
-        INSERT INTO usuario_historial (IDUsuario_Historial, IDUsuario, IDHistorial, Desripcion) VALUES (?,?,?,?)
-        `, [idUH, idU, idH, descripcion]);
+        INSERT INTO usuario_historial (IDUsuario, IDHistorial, Desripcion, Fecha) VALUES (?,?,?,NOW())
+        `, [idU, idH, descripcion]);
     };
 
 
