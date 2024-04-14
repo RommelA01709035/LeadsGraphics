@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         body, html {
             height: 100%;
@@ -39,7 +40,7 @@
                     <div class="image-container">
                         <img src="/multimedia/logo.png">
                     </div>
-                    <form class="form-container" action="/signup" method="POST">
+                    <form class="form-container" action="/signup" method="POST" onsubmit="return validarContraseñas()">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <div class="field">
                             <label class="label" for="username">Nombre de Usuario:</label>
@@ -57,6 +58,10 @@
                             <label class="label" for="contrasena">Contraseña:</label>
                             <input id="contrasena" name="contrasena" class="input" type="password" required>
                         </div>
+                        <div class="field">
+                            <label class="label" for="confirmar_contrasena">Confirmar Contraseña:</label>
+                            <input id="confirmar_contrasena" name="confirmar_contrasena" class="input" type="password" required>
+                        </div>
                         <br>
                         <div class="field has-text-centered">
                             <button type="submit" class="button is-primary">Registrarse</button>
@@ -66,5 +71,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function validarContraseñas() {
+            var contrasena = document.getElementById("contrasena").value;
+            var confirmarContrasena = document.getElementById("confirmar_contrasena").value;
+
+            if (contrasena !== confirmarContrasena) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Las contraseñas no coinciden.",
+                    footer: '<a href="#">¿Por qué tengo este problema?</a>'
+                });
+                return false; 
+            }
+            return true; 
+        }
+    </script>
 </body>
 </html>
