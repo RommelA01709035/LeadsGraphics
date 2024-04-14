@@ -85,11 +85,13 @@ module.exports = class Leads {
                 this.Seller_Asignado, this.Embudo, this.Etapa, this.Archivado, this.Creado_Manualmente
             ]
         );
-        return result[0]; // Devuelve el resultado de la inserción
+
+        // Devuelve el resultado de la inserción
+        return result[0];
     }
 
     static deleteLead(id){
-        return db.execute('CALL deleteLead(?)',[id])
+        return db.execute('CALL deleteLead(?)',[id]);
     };
     
 }

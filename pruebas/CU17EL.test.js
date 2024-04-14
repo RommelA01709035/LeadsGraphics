@@ -9,7 +9,7 @@ describe('Pruebas para Eliminar Lead', () => {
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'JulianSQL',
+            password: '',
             database: 'leadgraphs'
         });
     });
