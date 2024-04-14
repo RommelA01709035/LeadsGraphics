@@ -98,7 +98,7 @@
                 // Verificar si se encontró el lead
                 if (lead.length == 0) {
                     // Si el lead no se encuentra, puedes manejar el error o redirigir a alguna página de error
-                    return res.status(404).send('Lead no encontrado');
+                    return res.status(404).render('error404', { message: 'Lead no encontrado' });
                 }
 
                 else{

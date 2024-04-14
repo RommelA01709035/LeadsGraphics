@@ -137,7 +137,6 @@ module.exports = class Leads {
                 leadData.Embudo,
                 leadData.Etapa,
                 leadData.Archivado,
-                leadData.Creado_Manualmente,
                 leadId
             ];
     
