@@ -20,7 +20,7 @@ describe('Pruebas para Eliminar Lead', () => {
 
     test('elimina lead correcto', async () => {
         const Usuario = {
-            IDUsuario: 1,
+            IDUsuario: 15,
         }
         
         // Verificar que exista antes de la eliminacion
