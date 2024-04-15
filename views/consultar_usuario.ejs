@@ -94,6 +94,7 @@
                                         <td><%= user.IDUsuario %></td>
                                         <td class="is-narrow">
                                             <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
                                                 <input type="hidden" name="id" value="<%= user.IDUsuario %>">
                                                 <div class="field is-grouped">
@@ -104,12 +105,12 @@
                                                         <div class="control">
                                                             <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
                                                         </div>
-                                                        <%}else{%>
-                                                            <div class="control">
-                                                                <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
-                                                            </div>
-                                                        
-                                                        <%}%>
+                                                    <%}else{%>
+                                                        <div class="control">
+                                                            <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
+                                                        </div>
+                                                    
+                                                    <%}%>
                                                     
                                                 </div>
                                             </form>

@@ -77,7 +77,7 @@ module.exports = class Usuario {
         `,[IDUsuario, nombre_usuario])
     }
 
-    static reactive_user(nombre_usuario, IDUsuario){
+    static reactivate_user(nombre_usuario, IDUsuario){
         db.execute(
             `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
             [nombre_usuario, IDUsuario]

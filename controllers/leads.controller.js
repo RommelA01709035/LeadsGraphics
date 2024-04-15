@@ -1,17 +1,17 @@
 const Leads = require('../models/leads.model');
 const pool = require('../util/database');
 
-exports.getLeadsPage = async (req, res) => {
+exports.getLeadsPage = async (request, response, next) => {
     try {
         const [leads, fieldData] = await Leads.fetchAll();
 
         console.log(leads);
-        res.render('consultar_lead', {leads: leads ,csrfToken: request.csrfToken(),});
+        response.render('consultar_lead', {leads: leads ,csrfToken: request.csrfToken(),});
 
         // No es necesario crear una instancia de Leads aquí
     } catch (error) {
         console.error('Error al obtener leads:', error);
-        res.status(500).send('Error al obtener leads');
+        response.status(500).send('Error al obtener leads');
     }
 };
 
