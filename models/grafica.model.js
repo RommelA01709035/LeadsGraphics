@@ -7,16 +7,38 @@ module.exports = class Grafica {
         this.y = y_
     }
 
+    static getAverage(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getAverage(?, ?) as promedio;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
 
-    static getLeadsMonthCategory(startMonth, endMonth) {
+    static getMax(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMax(?, ?) as maximo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+
+    static getMin(startMonth, endMonth){
+        return db.execute(
+          `
+          SELECT getMin(?, ?) as minimo;
+          ` ,
+          [startMonth, endMonth] 
+        );
+    }
+    static getCount(startMonth, endMonth) {
         return db.execute(
             `
-            SELECT MONTH(Creado) AS mes, COUNT(*) AS cantidad_leads, estado_lead
+            SELECT COUNT(*) AS total_tuplas
             FROM leads
             WHERE Creado BETWEEN ? AND ?
-            GROUP BY mes, estado_lead
-            ORDER BY mes
-
             `,
             [startMonth, endMonth]
         );
@@ -37,11 +59,11 @@ module.exports = class Grafica {
     static getPerCompany(startMonth, endMonth) {
         return db.execute(
             `
-            SELECT COUNT(Compania) AS cantidad_mensajes, Compania
+            SELECT COUNT(Compania) AS cantidad_leads, Compania
             FROM leads
             WHERE Creado BETWEEN ? AND ?
             GROUP BY Compania
-            ORDER BY cantidad_mensajes DESC
+            ORDER BY cantidad_leads DESC
             `,
             [startMonth, endMonth]
         );

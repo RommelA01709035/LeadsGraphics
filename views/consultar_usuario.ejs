@@ -1,3 +1,5 @@
+<%- include('includes/naveside.ejs') %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -56,170 +58,63 @@
             border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
             border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
         }
-
-
-
     </style>
 </head>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Usuarios</title>
-    <!-- Enlace a Bulma CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-</head>
 <body>
+  <div class="main-content">
     <div class="columns">
-        <!--Sidebar-->
-        <div class="column is-1 is-hidden-mobile is-hidden-touch sidebar colorFondoClaro">
-          <aside class="menu">
-          <!--Contenido del sidebar-->
-            <ul class="menu-list">
-              <li class="mt-2">
-                <a href="/homepage" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-right-to-bracket fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a href="/usuarios" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                        <span class="icon">
-                          <i class="fa-solid fa-users fa-2xl has-text-black"></i>
-                        </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a href="/leads" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-file fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a href="/grafica" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-chart-pie fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a href="#" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-circle-info fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-            </ul>
-            <ul class="menu-list">
-              <li class="mt-2">
-                <a class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-gear fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-circle-user fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li class="mt-2">
-                <a href="/logout" class="columns is-spaced">
-                  <span class="column is-narrow">
-                    <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-door-open fa-2xl has-text-black"></i>
-                      </span>
-                    </span>
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </aside>
-        </div>
-        <section class="section">
-            <div class="container">
-                <div class="notification-container">
-                    <% if (message) { %>
-                        <div class="notification is-success">
-                            <%= message %>
-                            <button class="delete" aria-label="delete"></button>
-                        </div>
-                    <% } %>
-                </div>
-                <h1 class="title">Consultar Usuarios</h1>
-                <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Teléfono</th>
-                            <th>ID</th>
-                            <th class="is-narrow">Acciones</th> 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% usuario.forEach(user => { %>
-                            <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>
-                            <tr class="<%= rowClass %>">
-                                <td><%= user.nombre_usuario %></td>
-                                <td><%= user.Correo %></td>
-                                <td><%= user.Celular %></td>
-                                <td><%= user.IDUsuario %></td>
-                                <td class="is-narrow">
-                                    <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
-                                        <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
-                                        <input type="hidden" name="id" value="<%= user.IDUsuario %>">
-                                        <div class="field is-grouped">
-                                            <div class="control">
-                                                <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
-                                            </div>
-                                            <div class="control">
-                                                <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </div>
+      <section class="section">
+          <div class="container">
+              <div class="notification-container">
+                  <% if (message) { %>
+                      <div class="notification is-success">
+                          <%= message %>
+                          <button class="delete" aria-label="delete"></button>
+                      </div>
+                  <% } %>
+              </div>
+              <h1 class="title">Consultar Usuarios</h1>
+              <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                  <thead>
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Correo</th>
+                          <th>Teléfono</th>
+                          <th>ID</th>
+                          <th class="is-narrow">Acciones</th> 
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% usuario.forEach(user => { %>
+                          <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>
+                          <tr class="<%= rowClass %>">
+                              <td><%= user.nombre_usuario %></td>
+                              <td><%= user.Correo %></td>
+                              <td><%= user.Celular %></td>
+                              <td><%= user.IDUsuario %></td>
+                              <td class="is-narrow">
+                                  <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
+                                      <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
+                                      <input type="hidden" name="id" value="<%= user.IDUsuario %>">
+                                      <div class="field is-grouped">
+                                          <div class="control">
+                                              <button class="button is-primary is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+                                          </div>
+                                          <div class="control">
+                                              <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </td>
+                          </tr>
+                      <% }); %>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+  </div>
+  </div>
+    
 
     <script>
         function confirmDelete(userId) {
@@ -256,4 +151,3 @@
     </script>
 </body>
 </html>
-

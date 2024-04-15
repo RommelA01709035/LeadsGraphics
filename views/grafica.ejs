@@ -1,62 +1,105 @@
 <%- include('includes/head.ejs') %>
-    <div id="grafica-container" class="mt-5">
-        <h2 class="title is-2 has-text-centered"> <%= titulo%></h2> 
-        
-        <canvas id="myChart" ></canvas>
-        <% if (caso === "LastMessage") { %>
-            <div>
-                <p>Mensajes encontrados:</p>
-                <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
-            </div>
-        <% } %>
-    </div>
-    <div class="box mt-4">
+<%- include('includes/naveside.ejs') %>
+
+<style>
+    #grafica-container {
+        max-width: 400px; 
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .canvas-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .canvas-container canvas {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .remove-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        background-color: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container mt-4 ml-8">
+    <div class="box ">
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Avergae</p>
-                <p class="title">3,456</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Max</p>
-                <p class="title">123</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Mininum</p>
-                <p class="title">456K</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Register Number</p>
-                <p class="title">789</p>
-              </div>
-            </div>
-        </nav>
-    </div>
-    
-    <div class="columns is-centered has-text-centered is-centered is-vcentered mt-1">
-        <div class="column is-half">
-
-                <div class="box">
-                    <div class="columns">
-                        <div class="column">
-                            <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
-                        </div>
-                        <div class="column">
-                            <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
-                        </div>
-                    </div>
+                <div>
+                    <p class="heading">Average</p>
+                    <p class="title"><%= _Average = average.map(entry => entry.promedio); %></p>
                 </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Max</p>
+                    <p class="title"><%= _Max = maximo.map(entry => entry.maximo); %></p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Mininum</p>
+                    <p class="title"><%= _Min = minimo.map(entry => entry.minimo); %></p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Numero de leads en el estudio</p>
+                    <p class="title"><%= _Count = registers.map(entry => entry.total_tuplas); %></p>
+                </div>
+            </div>        
+        </nav>
+        
+<div class="container mt-5 ">
+    <h2 class="title is-2 has-text-centered"><%= titulo%></h2> 
+    <div class="columns is-centered">
+        <div class="column is-8">
+            <div class="box">
+                <canvas id="myChart"></canvas>
+            </div>
+            <% if (caso === "LastMessage") { %>
+                <div class="box mt-3">
+                    <p>Mensajes encontrados:</p>
+                    <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
+                </div>
+            <% } %>
         </div>
     </div>
 
- 
-    
+    <div class="columns is-centered mt-3">
+        <div class="column is-half">
+            <div class="box">
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
+                    </div>
+                    <div class="column">
+                        <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+
 
 
 
@@ -72,16 +115,12 @@
             
             labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
             values = data.map(entry => entry.cantidad_leads);
-
-        <% } else if(caso == "leadsPorMesCategory"){ %>
-            labels = data.map(entry => `${entry.mes}-${entry.estado_lead}`);
-            values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
-            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.Compania}`);
-            values = data.map(entry => entry.cantidad_mensajes);
+            labels = data.map(entry => `${entry.cantidad_leads}-${entry.Compania}`);
+            values = data.map(entry => entry.cantidad_leads);
         <%}%>
         
     
