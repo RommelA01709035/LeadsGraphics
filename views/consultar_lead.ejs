@@ -1,4 +1,3 @@
-<%- include('includes/naveside.ejs') %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -68,71 +67,77 @@
 </head>
 
 <body>
-    <div class="main-content">
-        <div class="columns">
-            <section class="section">
-                <div class="container">
-                    <div class="notification-container">
-                        <% if (message) { %>
-                            <div class="notification is-success">
-                                <%= message %>
-                            </div>
-                        <% } %>
-                    </div>
-                    <h1 class="title">Consultar Leads</h1>
+    <%- include('includes/naveside.ejs') %>
+        <div class="main-content">
+            <div class="columns">
+                <section class="section">
+                    <div class="container">
+                        <div class="notification-container">
+                            <% if (message) { %>
+                                <div class="notification is-success">
+                                    <%= message %>
+                                </div>
+                            <% } %>
+                        </div>
+                        <h1 class="title">Consultar Leads</h1>
 
-                    <div class="is-flex" style="justify-content: space-between;">
-                        <!-- Barra de búsqueda -->
-                        <div class="control">
-                            <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
-                        </div>
-                    
-                        <!-- Botón para agregar leads -->
-                        <div>
-                            <a href="/agregar-lead" class="button is-info">Agregar Lead</a>
-                        </div>
-                    </div>
-                    <br><br>
-                    
-                    <!-- Contenedor para mostrar los resultados de la búsqueda -->
-                    <div id="respuesta_ajax" class="table-body">
-                        <% if (leads.length < 1) { %>
-                            <!-- Mensaje si no se encuentran leads -->
-                            <div class="notification is-info">
-                                <button class="delete"></button>
-                                No se encontraron leads.            
+                        <div class="is-flex" style="justify-content: space-between;">
+                            <!-- Barra de búsqueda -->
+                            <div class="control">
+                                <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
                             </div>
-                        <% } else { %>
-                            <!-- Contenedor para los leads encontrados -->
                         
-                            <table class="table is-fullwidth is-hoverable">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Correo</th>
-                                        <th>Compañía</th>
-                                        <th>Teléfono</th>
-                                        <th>Acciones</th> <!-- Agregado para los botones de acción -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (let lead of leads) { %>
+                            <!-- Botón para agregar leads -->
+                            <div>
+                                <a href="/agregar-lead" class="button is-info">Agregar Lead</a>
+                            </div>
+                        </div>
+                        <br><br>
+                        
+                        <!-- Contenedor para mostrar los resultados de la búsqueda -->
+                        <div id="respuesta_ajax" class="table-body">
+                            <% if (leads.length < 1) { %>
+                                <!-- Mensaje si no se encuentran leads -->
+                                <div class="notification is-info">
+                                    <button class="delete"></button>
+                                    No se encontraron leads.            
+                                </div>
+                            <% } else { %>
+                                <!-- Contenedor para los leads encontrados -->
+                            
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
                                         <tr>
-                                            <td><%= lead.Nombre %></td>
-                                            <td><%= lead.Correo %></td>
-                                            <td><%= lead.Compania %></td>
-                                            <td><%= lead.Telefono %></td>
-                                            <td>
-                                                <!-- Botones de acción -->
-                                                <button class="button is-info">Modificar Lead</button>
-                                                <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar Lead</button>
-                                            </td>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Compañía</th>
+                                            <th>Teléfono</th>
+                                            <th>Acciones</th> <!-- Agregado para los botones de acción -->
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        <% } %>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let lead of leads) { %>
+                                            <tr>
+                                                <td><%= lead.Nombre %></td>
+                                                <td><%= lead.Correo %></td>
+                                                <td><%= lead.Compania %></td>
+                                                <td><%= lead.Telefono %></td>
+                                                <td>
+                                                    <!-- Botones de acción -->
+                                                    <button class="button is-info">Modificar Lead</button>
+                                                    <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar Lead</button>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            <% } %>
+                        </div>
                     </div>
+                </section>
+            </div>
+        </div>
+    </div>
 
     <!-- Script para la solicitud AJAX -->
     <script>
