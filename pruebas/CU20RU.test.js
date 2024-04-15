@@ -2,7 +2,7 @@
 const mysql = require('mysql2/promise');
 const Usuario = require('./consult');
 
-describe('Pruebas de eliminar usuario', () => {
+describe('Pruebas de reactivar usuario (owner)', () => {
     let connection;
 
     beforeAll(async () => {
@@ -18,8 +18,11 @@ describe('Pruebas de eliminar usuario', () => {
         await connection.end();
     });
 
-    test('Reactiva usuario correcto', async () => {
+    test('Reactiva usuario (owner) correcto', async () => {
         const IDUsuario = 12;
+        const nombre_usuario = "Ana"
+        const nombre_usuario = "Ana"
+        const nombre_usuario = "Ana"
         const nombre_usuario = "Ana"
         const Habilitado = 1
 
