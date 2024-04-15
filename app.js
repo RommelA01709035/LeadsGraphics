@@ -6,6 +6,8 @@ app.set('views', 'views');
 
 const session = require('express-session');
 
+
+
 app.use(session({
   secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
   resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
@@ -21,6 +23,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 const Swal = require('sweetalert2')
+
+//Agregar protección contra ataques de CSRF
+const csrf = require('csurf');
+const csrfProtection = csrf();
+app.use(csrfProtection); 
 
 //Middleware
 app.use((request, response, next) => {

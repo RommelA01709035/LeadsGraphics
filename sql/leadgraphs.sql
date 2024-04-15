@@ -341,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `Celular` varchar(20) DEFAULT NULL,
   `Correo` varchar(40) DEFAULT NULL,
   `Contrasena` varchar(600) DEFAULT NULL,
-  `Fecha_Ingreso` date DEFAULT NULL,
+  `Fecha_Ingreso` date DEFAULT CURRENT_TIMESTAMP,
   `Habilitado` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`IDUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -368,6 +368,7 @@ INSERT INTO `usuario` (`IDUsuario`, `nombre_usuario`, `Celular`, `Correo`, `Cont
 	(18, 'Patricia', '555-555-6666', 'patricia@gmail.com', 'patty789', '2024-03-23', 1),
 	(19, 'Héctor', '555-777-8888', 'hector@gmail.com', 'hect123', '2024-03-24', 1),
 	(20, 'Carmen', '555-999-0000', 'carmen@gmail.com', 'carmencita456', '2024-03-25', 1);
+ALTER TABLE usuario MODIFY COLUMN IDUsuario INT AUTO_INCREMENT;
 
 -- Volcando estructura para tabla leadgraphs.usuario_workspace
 CREATE TABLE IF NOT EXISTS `usuario_workspace` (
@@ -612,6 +613,7 @@ INSERT  INTO `leads` (`IDLead`, `IDHistorial`, `IDWorkspace`, `Telefono`, `Nombr
 
 UPDATE leads
 SET Correo = CONCAT(Nombre, '@gmail.com')
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
