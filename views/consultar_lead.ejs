@@ -1,4 +1,4 @@
-<!-- consultar_lead.ejs -->
+<%- include('includes/naveside.ejs') %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -10,11 +10,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Estilo personalizado para la sombra de la tabla */
         .table-shadow {
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ajusta los valores según prefieras */
+            border: #6949f6;
         }
+
+        .has-background-danger td {
+            color: white; /* Hace que el texto sea blanco */
+        }
+
+        
+        .has-background-danger {
+            border: 2px solid #000000; /* Cambia el color del borde según tu preferencia */
+        }
+
+        .table-shadow td,
+        .table-shadow th {
+            border-right: 2px solid #000000; /* Color del borde vertical */
+        }
+
 
         /* Estilo personalizado para cambiar el color de los botones */
         .custom-button {
@@ -28,139 +45,179 @@
             background-color: #F8C9EE; /* Cambia el color a un tono más claro */
             color: white;
         }
+
+            /* Establecer una altura fija para el cuerpo de la tabla */
+        .table-body {
+            max-height: 700px; /* Establece aquí la altura máxima deseada */
+            overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+        }
     </style>
 </head>
+
 <body>
-    <div class="columns">
-    <div class="column is-1 is-hidden-mobile is-hidden-touch sidebar colorFondoClaro">
-        <aside class="menu">
-        <!--Contenido del sidebar-->
-          <ul class="menu-list">
-            <li class="mt-2">
-              <a href="/homepage" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-right-to-bracket fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a href="/usuarios" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                      <span class="icon">
-                        <i class="fa-solid fa-users fa-2xl has-text-black"></i>
-                      </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a href="/leads" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-file fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a href="/grafica" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-chart-pie fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a href="#" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-circle-info fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-          </ul>
-          <ul class="menu-list">
-            <li class="mt-2">
-              <a class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-gear fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-circle-user fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li class="mt-2">
-              <a href="/logout" class="columns is-spaced">
-                <span class="column is-narrow">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-door-open fa-2xl has-text-black"></i>
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </aside>
-      </div>
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Consultar Leads</h1>
-            <!-- Agrega la clase "table-shadow" para aplicar la sombra a la tabla -->
-            <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Compañía</th>
-                        <th>Teléfono</th>
-                        <th class="is-narrow">Acciones</th> <!-- Columna para botones de acciones -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <% leads.forEach(lead => { %>
-                        <tr>
-                            <td><%= lead.Nombre %></td>
-                            <td><%= lead.Correo %></td>
-                            <td><%= lead.Compania %></td>
-                            <td><%= lead.Telefono %></td>
-                            <td class="is-narrow">
-                                <!-- Botones para modificar y eliminar un lead -->
-                                <button class="button custom-button">Modificar Lead</button>
-                                <button class="button custom-button">Eliminar Lead</button>
-                            </td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    </div>
+    <div class="main-content">
+        <div class="columns">
+            <section class="section">
+                <div class="container">
+                    
+                    <h1 class="title">Consultar Leads</h1>
+                    
+                    <div class="is-flex" style="justify-content: space-between;">
+                        <!-- Barra de búsqueda -->
+                        <div class="control">
+                            <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
+                        </div>
+                    
+                        <!-- Botón para agregar leads -->
+                        <div>
+                            <a href="/agregar-lead" class="button is-info">Agregar Lead</a>
+                        </div>
+                    </div>
+                    <br><br>
+                    
+                    <!-- Contenedor para mostrar los resultados de la búsqueda -->
+                    <div id="respuesta_ajax" class="table-body">
+                        <% if (leads.length < 1) { %>
+                            <!-- Mensaje si no se encuentran leads -->
+                            <div class="notification is-info">
+                                <button class="delete"></button>
+                                No se encontraron leads.            
+                            </div>
+                        <% } else { %>
+                            <!-- Contenedor para los leads encontrados -->
+                        
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Compañía</th>
+                                        <th>Teléfono</th>
+                                        <th>Seller Asignado</th>
+                                        <th>Último Mensaje</th>
+                                        <th>Hora Último Mensaje</th>
+                                        <th>Acciones</th> <!-- Agregado para los botones de acción -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let lead of leads) { %>
+                                        <tr>
+                                            <td><%= lead.Nombre %></td>
+                                            <td><%= lead.Correo %></td>
+                                            <td><%= lead.Compania %></td>
+                                            <td><%= lead.Telefono %></td>
+                                            <td><%= lead.Seller_Asignado %></td>
+                                            <td><%= lead.Ultimo_Mensaje %></td>
+                                            <td><%= lead.Hora_Ultimo_Mensaje %></td>
+                                            <td>
+                                                <!-- Contenedor para los botones de acción -->
+                                                <div class="buttons">
+                                                    <% if (lead) { %>
+                                                        <!-- Botón para modificar el lead -->
+                                                        <a href="/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
+                                                    <% } else { %>
+                                                        <!-- Si no se encuentra el lead -->
+                                                        <p>Lead no encontrado</p>
+                                                    <% } %>
+                                                    
+                                                    <!-- Botón para eliminar el lead -->
+                                                    <button class="button is-danger">Eliminar Lead</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        <% } %>
+                    </div>
+
+                    <!-- Script para la solicitud AJAX -->
+                    <script>
+                        document.getElementById('buscar').addEventListener('input', () => {
+                            const valor_busqueda = document.getElementById('buscar').value;
+                            
+                            // Realizar la solicitud AJAX
+                            fetch(`/buscar/${encodeURIComponent(valor_busqueda)}`, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            }).then((result) => {
+                                return result.json(); // Convertir la respuesta a JSON
+                            }).then((data) => {
+                                // Procesar la respuesta y actualizar el DOM
+                                const respuestaHtml = data.map(lead => `
+                                    <tr>
+                                        <td>${lead.Nombre}</td>
+                                        <td>${lead.Correo}</td>
+                                        <td>${lead.Compania}</td>
+                                        <td>${lead.Telefono}</td>
+                                        <td>${lead.Seller_Asignado}</td>
+                                        <td>${lead.Ultimo_Mensaje}</td>
+                                        <td>${lead.Hora_Ultimo_Mensaje}</td>
+                                        <td>
+                                            <!-- Botones de acción -->
+                                            <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
+                                            <button class="button is-danger">Eliminar Lead</button>
+                                        </td>
+                                    </tr>`).join('');
+                                document.getElementById('respuesta_ajax').innerHTML = `
+                                    <table class="table is-fullwidth is-hoverable">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Correo</th>
+                                                <th>Compañía</th>
+                                                <th>Teléfono</th>
+                                                <th>Seller Asignado</th>
+                                                <th>Último Mensaje</th>
+                                                <th>Hora Último Mensaje</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${respuestaHtml}
+                                        </tbody>
+                                    </table>`;
+                            }).catch(err => {
+                                console.log(err);
+                            });
+                        });
+                    </script>
+                    
+    
+    <script>
+        function confirmDelete(leadId) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "¡No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminarlo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("deleteForm_" + leadId).submit();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const notifications = document.querySelectorAll('.notification');
+
+            notifications.forEach(notification => {
+                const closeButton = notification.querySelector('.delete');
+
+                closeButton.addEventListener('click', function () {
+                    notification.remove(); 
+                });
+
+                setTimeout(function () {
+                    notification.remove(); 
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>
