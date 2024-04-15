@@ -1,5 +1,5 @@
 const Usuario = require('../models/usuario.model');
-
+const Historial = require('../models/historial.model');
 exports.getUsuarioPage = async (req, res) => {
     try {
         const [usuario, fieldData] = await Usuario.fetchAll();
@@ -22,6 +22,7 @@ exports.post_delete_Usuario = (request, response, next) => {
     const { nombre, id } = request.body;
     console.log(nombre);
     console.log(id);
+    const nombre_usuario = request.session.username;
 
     Usuario.delete_logical_user(nombre, id)
     .then(([rows, fieldData]) => {
