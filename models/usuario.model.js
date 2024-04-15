@@ -58,6 +58,11 @@ module.exports = class Usuario {
         }
     }
 
+    static fetchUser(username, password){
+        return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
+        [username]);
+    }
+
     static delete_logical_user(nombre_usuario, IDUsuario) {
         db.execute(
             `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,

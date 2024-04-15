@@ -84,8 +84,12 @@
         <div class="notification-container mb-4">
             <% if (message) { %>
                 <div class="notification is-info">
-                    <%= message %>
+                    <strong><%= message %></strong>
                     <button class="delete" aria-label="delete"></button>
+                </div>
+            <% } else if (error) { %>
+                <div class="notification is-danger">
+                    <strong><%= error %></strong>
                 </div>
             <% } %>
         </div>

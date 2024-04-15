@@ -18,10 +18,34 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    console.log(request.body);
-    console.log('Redirigir a homepage');
-    request.session.username = request.body.username;
-    response.redirect('/homepage');
+    console.log(request.body.username);
+    console.log(request.body.password);
+    Usuario.fetchUser(request.body.username)
+        .then(([usuarios, fieldData]) => {
+            if(usuarios.length == 1) {
+                const usuario = usuarios[0];
+                console.log(usuario);
+                bcrypt.compare(request.body.password, usuario.Contrasena)
+                    .then(doMatch => {
+                        if (doMatch) {
+                            request.session.isLoggedIn = true;
+                            request.session.username = usuario.username;
+                            return request.session.save(err => {
+                                response.redirect('/homepage');
+                            });
+                        } else {
+                            request.session.error = 'El usuario y/o contraseña son incorrectos';
+                            return response.redirect('/login');
+                        }
+                    }).catch(err => {
+                        response.redirect('/login')
+                    });
+            } else {
+                request.session.error = 'El usuario y/o contraseña son incorrectos';
+                response.redirect('/login');
+            }
+        })
+        .catch((error) => {console.log(error)});
 };
 
 exports.get_logout = (request, response, next) => {
