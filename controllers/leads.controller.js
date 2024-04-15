@@ -6,7 +6,7 @@ exports.getLeadsPage = async (req, res) => {
         const [leads, fieldData] = await Leads.fetchAll();
 
         console.log(leads);
-        res.render('consultar_lead', {leads: leads });
+        res.render('consultar_lead', {leads: leads ,csrfToken: request.csrfToken(),});
 
         // No es necesario crear una instancia de Leads aquí
     } catch (error) {

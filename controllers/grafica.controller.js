@@ -7,7 +7,7 @@ exports.get_crea_grafica = (request, response, next) => {
     const startDate = new Date().toISOString().split('T')[0]; 
     const minDate = "XXXX-XX-XX"; 
     const maxDate = "XXXX-XX-XX"; 
-    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate, vista: vista});
+    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate, vista: vista, username: request.session.username || '',});
 };
 
 
@@ -78,7 +78,17 @@ exports.post_grafica = (request, response, next) => {
                                     registers.forEach(tupla => {
                                         console.log(tupla);
                                     });
-                                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por mes", average:average, maximo: maximo, minimo: minimo, registers: registers});
+                                    response.render('grafica', { 
+                                        data: data, opcion: opcion , 
+                                        caso: caso, startMonth: startMonth, 
+                                        endMonth: endMonth,
+                                        titulo: "Leads por mes", 
+                                        average:average, 
+                                        maximo: maximo, 
+                                        minimo: minimo, 
+                                        registers: registers, 
+                                        csrfToken: request.csrfToken(),
+                                        username: request.session.username || '',});
                                 }).catch(error => {
                                     console.log(error);
                                     response.status(500).json({ message: "Error en minimo" });
@@ -162,7 +172,18 @@ exports.post_grafica = (request, response, next) => {
                                     });
                                     
                                     
-                                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads con esta palabra", average:average, maximo: maximo, minimo: minimo, registers: registers});
+                                    response.render('grafica', { data: data, 
+                                        opcion: opcion,
+                                        caso: caso, 
+                                        startMonth: startMonth, 
+                                        endMonth: endMonth,
+                                        titulo: "Leads con esta palabra", 
+                                        average:average, 
+                                        maximo: maximo, 
+                                        minimo: minimo, 
+                                        registers: registers,
+                                        csrfToken: request.csrfToken(),
+                                        username: request.session.username || '',});
                                 }).catch(error => {
                                     console.log(error);
                                     response.status(500).json({ message: "Error en minimo" });
@@ -192,7 +213,14 @@ exports.post_grafica = (request, response, next) => {
                 else {
                     console.log("ENtraste al Else")
                     console.log(opcion);
-                    response.render('crea-grafica', { opcion: "LastMessage", startMonth: startMonth, endMonth: endMonth, caso: caso, titulo: ""});
+                    response.render('crea-grafica', { 
+                    opcion: "LastMessage", 
+                    startMonth: startMonth,
+                    endMonth: endMonth,
+                    caso: caso,
+                    titulo: "",
+                    csrfToken: request.csrfToken(),
+                    username: request.session.username || '',});
                 }
             
             break;
@@ -251,7 +279,19 @@ exports.post_grafica = (request, response, next) => {
                                     });
                                     
                                     
-                                    response.render('grafica', { data: data, opcion: opcion , caso: caso, startMonth: startMonth, endMonth: endMonth, titulo: "Leads por compañia", average:average, maximo: maximo, minimo: minimo, registers: registers});
+                                    response.render('grafica', { 
+                                        data: data, 
+                                        opcion: opcion , 
+                                        caso: caso, 
+                                        startMonth: startMonth, 
+                                        endMonth: endMonth, 
+                                        titulo: "Leads por compañia", 
+                                        average:average, 
+                                        maximo: maximo, 
+                                        minimo: minimo, 
+                                        registers: registers,
+                                        csrfToken: request.csrfToken(),
+                                        username: request.session.username || '',});
                                 
                                 }).catch(error => {
                                     console.log(error);

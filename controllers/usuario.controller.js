@@ -5,7 +5,8 @@ exports.getUsuarioPage = async (req, res) => {
         const [usuario, fieldData] = await Usuario.fetchAll();
         console.log(usuario);
 
-        res.render('consultar_usuario', { usuario: usuario, message: false});
+        res.render('consultar_usuario', { usuario: usuario, message: false, 
+            username: request.session.username || '',});
         
         const instanciaUsuario = new Usuario("nombre", "correo", "telefono", "id");
         console.log("Instancia del modelo creada:", instanciaUsuario);
@@ -30,7 +31,9 @@ exports.post_delete_Usuario = (request, response, next) => {
             Correo: row.Correo,
             Celular: row.Celular,
             IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado
+            Habilitado: row.Habilitado,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
         }));
 
         const usuarioEliminado = {
@@ -57,7 +60,9 @@ exports.post_delete_Usuario = (request, response, next) => {
             data.forEach(tupla => {
                 console.log(tupla);
             });
-            response.render('consultar_usuario', { data: data, usuario: usuario, message: message });
+            response.render('consultar_usuario', { data: data, usuario: usuario, message: message, 
+                csrfToken: request.csrfToken(),
+                username: request.session.username || '',});
         }).catch(error => {
             console.log(error);
             response.status(500).json({ message: "Error no se encontraron usuarios" });
@@ -83,7 +88,9 @@ exports.post_reactivate_Usuario = (request, response, next) => {
             Correo: row.Correo,
             Celular: row.Celular,
             IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado
+            Habilitado: row.Habilitado,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
         }));
 
         const usuarioReactivado = {
@@ -111,7 +118,9 @@ exports.post_reactivate_Usuario = (request, response, next) => {
             data.forEach(tupla => {
                 console.log(tupla);
             });
-            response.render('consultar_usuario', { data: data, usuario: usuario, message: message });
+            response.render('consultar_usuario', { data: data, usuario: usuario, message: message,
+                csrfToken: request.csrfToken(),
+                username: request.session.username || '', });
         }).catch(error => {
             console.log(error);
             response.status(500).json({ message: "Error no se encontraron usuarios" });
