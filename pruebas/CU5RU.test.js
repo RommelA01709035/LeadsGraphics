@@ -20,13 +20,16 @@ describe('Pruebas de registrarse', () => {
 
     test('Usuario se registra correctamente', async () => {
         const username = 'Alejandro';
-        const gmail = "alejandro@yahoo.com";
-        const telefono = '4426574453';
-        const [rows1] = await Usuario.fetchOne_user(IDUsuario);
-        const [rows2] = await Usuario.fetchOne_user_change(IDUsuario,gmailCambiado);
-        console.log(rows1); 
+        const correo = "alejandro@yahoo.com";
+        const celular = '4426574453';
+        const contrasenia = 'Alejandro123';
+        const [rows1] = await Usuario.fectchUser(username);
+        console.log(rows1);
+        expect(rows1.length).toBe(0);
+
+        const [rows2] = Usuario.create(username, correo, celular, contrasenia);
         console.log(rows2);
-        expect(rows1.length).toBe(1);
-        expect(rows1[0].Correo).toBe(gmailCambiado);
+        expect(rows2.length).toBe(1);
+        expect(rows2[0].correo).toBe(correo);
     });
 });
