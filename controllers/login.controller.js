@@ -18,13 +18,10 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    console.log(request.body.username);
-    console.log(request.body.password);
     Usuario.fetchUser(request.body.username)
         .then(([usuarios, fieldData]) => {
             if(usuarios.length == 1) {
                 const usuario = usuarios[0];
-                console.log(usuario);
                 bcrypt.compare(request.body.password, usuario.Contrasena)
                     .then(doMatch => {
                         if (doMatch) {
