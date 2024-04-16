@@ -270,9 +270,12 @@
                         <td>${lead.Correo}</td>
                         <td>${lead.Compania}</td>
                         <td>${lead.Telefono}</td>
+                        <td>${lead.Seller_Asignado}</td>
+                        <td>${lead.Ultimo_Mensaje}</td>
+                        <td>${lead.Hora_Ultimo_Mensaje}</td>
                         <td>
                             <!-- Botones de acción -->
-                            <button class="button is-info">Modificar Lead</button>
+                            <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
                             <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
                         </td>
                     </tr>`).join('');
@@ -284,6 +287,9 @@
                                 <th>Correo</th>
                                 <th>Compañía</th>
                                 <th>Teléfono</th>
+                                <th>Seller Asignado</th>
+                                <th>Último Mensaje</th>
+                                <th>Hora Último Mensaje</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
