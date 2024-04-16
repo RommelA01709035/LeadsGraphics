@@ -58,7 +58,12 @@ module.exports = class Usuario {
         }
     }
 
-    static fetchUser(email, password){
+    static fetchUser(username, password){
+        return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
+        [username]);
+    }
+
+    static fetchEmail(email, password){
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
     }

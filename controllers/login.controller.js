@@ -19,7 +19,7 @@ exports.get_login = (request, response, next) => {
 exports.post_login = (request, response, next) => {
     console.log(request.body.email);
     console.log(request.body.password);
-    Usuario.fetchUser(request.body.email)
+    Usuario.fetchEmail(request.body.email)
         .then(([usuarios, fieldData]) => {
             if(usuarios.length == 1) {
                 const usuario = usuarios[0];
