@@ -46,5 +46,25 @@ module.exports = class Usuario {
         
         `,[IDUsuario, nombre_usuario])
     }
+
+    static reactivate_user(nombre_usuario, IDUsuario){
+        db.execute(
+            `UPDATE usuario SET Habilitado = 1 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
+            [nombre_usuario, IDUsuario]
+        );
+
+        return db.execute(`
+        SELECT nombre_usuario, Habilitado, IDUsuario
+        FROM usuario 
+        WHERE IDUsuario = ? AND nombre_usuario = ?;
+        
+        `,[IDUsuario, nombre_usuario])
+    }
     
-}
+
+    static fetchOne_Count() {
+        return db.execute('SELECT COUNT(*) AS total FROM usuario');
+    }
+    
+    
+} 

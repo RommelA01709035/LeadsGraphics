@@ -1,8 +1,7 @@
-// test.js
 const mysql = require('mysql2/promise');
 const Usuario = require('./consult');
 
-describe('Pruebas de reactivar usuario (owner)', () => {
+describe('Pruebas de reactivar usuario', () => {
     let connection;
 
     beforeAll(async () => {
@@ -18,39 +17,25 @@ describe('Pruebas de reactivar usuario (owner)', () => {
         await connection.end();
     });
 
-    test('Reactiva usuario (owner) correcto', async () => {
+    test('Reactiva usuario correctamente', async () => {
         const IDUsuario = 12;
-        const nombre_usuario = "Ana"
-        const nombre_usuario = "Ana"
-        const nombre_usuario = "Ana"
-        const nombre_usuario = "Ana"
-        const Habilitado = 1
-
-        const [rows1] = await Usuario.reactive_user(nombre_usuario, IDUsuario);
-        const [rows2] = await Usuario.fetchOne_user_change(IDUsuario,gmailCambiado);
-        console.log(rows1); 
-        console.log(rows2);
-        expect(rows1.length).toBe(1);
-        expect(rows1[0].Correo).toBe(gmailCambiado);
+    
+        await Usuario.reactive_user(IDUsuario);
+    
+        const [rows] = await Usuario.fetchOne_user(IDUsuario);
+    
+        expect(rows.length).toBe(1);
+        expect(rows[0].Habilitado).toBe(1);
     });
     
-    test('No confirma la eliminación de usuario', async () => {
+    test('No se reactivó el usuario correctamente', async () => {
         const IDUsuario = 12;
-        const nombre_usuario = "Ana"
-        const Habilitado = 0
-
-        const [rows] = await Usuario.fetchOne_Reactivate(nombre_usuario, IDUsuario);
-        console.log(rows);
-    });
     
+        await Usuario.eliminate_user(IDUsuario);
+    
+        const [rows] = await Usuario.fetchOne_user(IDUsuario);
+    
+        expect(rows.length).toBe(1);
+        expect(rows[0].Habilitado).toBe(0);
+    });
 });
-
-
-
-
-/*static reactive_user(nombre_usuario, IDUsuario){
-    db.execute(
-        `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
-        [nombre_usuario, IDUsuario]
-    );
-*/

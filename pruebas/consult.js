@@ -72,30 +72,38 @@ module.exports = class Usuario {
 
     // CU de esta rama
     // CU4
-    static fetchOne_Graph() {
-        return db.execute('SELECT * FROM Lead');
-    }
-
-    static reactive_user(nombre_usuario, IDUsuario){
-        db.execute(
-            `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
-            [nombre_usuario, IDUsuario]
-        );}
 
     // CU6
+    static eliminate_user(IDUsuario){
+        return db.execute(
+            `UPDATE usuario SET Habilitado = 0 WHERE IDUsuario = ?;`,
+            [IDUsuario]
+        );}
 
     // CU19
-
-    static fetchOne_Reactivate() {
-        return db.execute('SELECT * FROM usuario');
+    static async registrarOwner(nombre_usuario, celular, correo, contrasena, fecha_Ingreso, habilitado) {
+        const contrasenaCifrada = await bcrypt.hash(contrasena, 12);
+        await db.execute(
+            'INSERT INTO usuario (nombre_usuario, celular, correo, contrasena, fecha_Ingreso, habilitado) VALUES (?, ?, ?, ?, ?, ?)',
+            [nombre_usuario, celular, correo, contrasenaCifrada, fecha_Ingreso, habilitado]
+        );
+        return await db.execute(
+            'SELECT * FROM usuario WHERE nombre_usuario = ? AND celular = ? AND correo = ? AND fecha_Ingreso = ? AND habilitado = ?',
+            [nombre_usuario, celular, correo, fecha_Ingreso, habilitado]
+        );
     }
-
-    static reactive_user(nombre_usuario, IDUsuario){
-        db.execute(
-            `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
-            [nombre_usuario, IDUsuario]
-        );}
     
-};
+    
+    
 
     // CU20
+    static reactive_user(IDUsuario) {
+        return db.execute(
+            'UPDATE usuario SET Habilitado = 1 WHERE IDUsuario = ?',
+                [IDUsuario]
+            );
+        }
+    
+}; 
+
+    

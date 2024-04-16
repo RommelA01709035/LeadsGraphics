@@ -18,35 +18,25 @@ describe('Pruebas de eliminar usuario', () => {
         await connection.end();
     });
 
-    test('Elimina usuario correcto', async () => {
+    test('Usuario deshabilitado después de eliminarlo', async () => {
         const IDUsuario = 12;
-        const nombre_usuario = "Ana"
-        const Celular = 555-222-3333
-        const Correo = "ana@gmail.com"
-        const Contrasena = "ana890"
-        const Fecha_Ingreso = "2024-03-17"
-        const Habilitado = 1
-
-        const [rows1] = await Usuario.fetchOne_user(IDUsuario);
-        const [rows2] = await Usuario.fetchOne_user_change(IDUsuario,gmailCambiado);
-        console.log(rows1); 
-        console.log(rows2);
-        expect(rows1.length).toBe(1);
-        expect(rows1[0].Correo).toBe(gmailCambiado);
-    });
     
-    test('No confirma la eliminación de usuario', async () => {
-        const IDUsuario = 12;
-        const nombre_usuario = "Ana"
-        const Celular = 555-222-3333
-        const Correo = "ana@gmail.com"
-        const Contrasena = "ana890"
-        const Fecha_Ingreso = "2024-03-17"
-        const Habilitado = 0
-
+        await Usuario.eliminate_user(IDUsuario);
+    
         const [rows] = await Usuario.fetchOne_user(IDUsuario);
-        console.log(rows);
-        expect(rows.length).toBe(0);
+    
+        expect(rows.length).toBe(1);
+        expect(rows[0].Habilitado).toBe(0);
     });
     
+    test('Usuario sigue habilitado después de intentar eliminarlo', async () => {
+        const IDUsuario = 12;
+    
+        await Usuario.reactive_user(IDUsuario);
+    
+        const [rows] = await Usuario.fetchOne_user(IDUsuario);
+    
+        expect(rows.length).toBe(1);
+        expect(rows[0].Habilitado).toBe(1);
+    })
 });
