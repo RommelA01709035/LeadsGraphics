@@ -35,20 +35,18 @@ app.use((request, response, next) => {
   next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
 
+// Importar rutas
 const rutaLogin = require('./routes/login.routes');
-app.use('/', rutaLogin);
-
 const rutaInicio = require('./routes/inicio.routes');
-app.use('/homepage', rutaInicio);
-
-
 const rutaGrafica = require('./routes/grafica.routes');
-app.use('/', rutaGrafica);
-
 const rutaLeads = require('./routes/leads.routes');
-app.use('/', rutaLeads);
-
 const rutaUsuarios = require('./routes/usuario.routes');
+
+// Usar las rutas
+app.use('/', rutaLogin);
+app.use('/homepage', rutaInicio);
+app.use('/', rutaGrafica);
+app.use('/', rutaLeads);
 app.use('/usuarios', rutaUsuarios);
 
 

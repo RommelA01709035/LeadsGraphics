@@ -1,3 +1,4 @@
+const { request, response } = require('express');
 const Leads = require('../models/leads.model');
 const pool = require('../util/database');
 
@@ -5,8 +6,15 @@ exports.getLeadsPage = async (request, response, next) => {
     try {
         const [leads, fieldData] = await Leads.fetchAll();
 
+        const message = '';
+
         console.log(leads);
-        response.render('consultar_lead', {leads: leads ,csrfToken: request.csrfToken(),});
+        response.render('consultar_lead', { 
+            leads: leads,
+            message: message,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+        });
 
         // No es necesario crear una instancia de Leads aquí
     } catch (error) {
@@ -15,18 +23,23 @@ exports.getLeadsPage = async (request, response, next) => {
     }
 };
 
-exports.renderAddLeadPage = async (req, res) => {
+exports.renderAddLeadPage = async (request, response, next) => {
     try {
+
         // Renderiza la vista de agregar lead
-        res.render('agregar_lead');
+        response.render('agregar_lead', {
+            csrfToken: request.csrfToken(),
+            username: request.session.username || ''
+        });
     } catch (error) {
         console.error('Error al renderizar la vista de agregar lead:', error);
-        res.status(500).send('Error al renderizar la vista de agregar lead');
+        response.status(500).send('Error al renderizar la vista de agregar lead');
     }
 };
 
 exports.agregarLead = async (req, res) => {
     try {
+        
         // Filtrar los valores undefined del cuerpo de la solicitud
         const formData = Object.fromEntries(Object.entries(req.body).filter(([_, v]) => v !== undefined));
 
@@ -69,69 +82,106 @@ exports.agregarLead = async (req, res) => {
         res.status(500).send('Error al agregar lead');
     }
 
-    };
+};
     
-    exports.buscarLeads = async (req, res) => {
-        try {
-            const nombre = req.params.nombre;
-            const leads = await Leads.buscarPorNombre(nombre);
+exports.buscarLeads = async (request, response, next) => {
+    try {
+        const nombre = request.params.nombre || '';
+        const leads = await Leads.buscarPorNombre(nombre);
 
-            console.log('Datos de leads encontrados:', leads); // Agrega este log para imprimir los datos encontrados
+        // Agrega este log para imprimir los datos encontrados
+        console.log('Datos de leads encontrados:', leads);
 
+    
+        response.status(200).json(leads);
+    } catch (error) {
+        console.error('Error al buscar leads:', error);
+        response.status(500).json({ error: 'Ocurrió un error al buscar leads' });
+    }
+};
+
+exports.renderModificarLeadPage = async (req, res) => {
+    try {
+
+        const leadId = req.params.lead_id;
+
+        const [lead, fieldData] = await Leads.fetchOne(leadId);
         
-            res.status(200).json(leads);
-        } catch (error) {
-            console.error('Error al buscar leads:', error);
-            res.status(500).json({ error: 'Ocurrió un error al buscar leads' });
+
+        // Verificar si se encontró el lead
+        if (lead.length == 0) {
+            // Si el lead no se encuentra, puedes manejar el error o redirigir a alguna página de error
+            return res.status(404).render('error404', { message: 'Lead no encontrado' });
         }
 
-    };
+        else{
 
-    exports.renderModificarLeadPage = async (req, res) => {
-        try {
+            console.log('Datos del lead en renderModificarLeadPage:', lead);
 
-            const leadId = req.params.lead_id;
+        // Renderiza la vista de modificar lead
+        res.render('modificar_lead', { lead: lead[0] });
 
-            const [lead, fieldData] = await Leads.fetchOne(leadId);
-            
-
-            // Verificar si se encontró el lead
-            if (lead.length == 0) {
-                // Si el lead no se encuentra, puedes manejar el error o redirigir a alguna página de error
-                return res.status(404).render('error404', { message: 'Lead no encontrado' });
-            }
-
-            else{
-
-                console.log('Datos del lead en renderModificarLeadPage:', lead);
-
-            // Renderiza la vista de modificar lead
-            res.render('modificar_lead', { lead: lead[0] });
-
-            }
-
-        } catch (error) {
-            console.error('Error al renderizar la vista de modificar lead:', error);
-            res.status(500).send('Error al renderizar la vista de modificar lead');
         }
-    };
 
-    exports.guardarLead = async (req, res) => {
-        const leadId = req.params.lead_id; // Obtener el ID del lead de los parámetros de la URL
-        const leadData = req.body; // Obtener los datos del lead del cuerpo de la solicitud
+    } catch (error) {
+        console.error('Error al renderizar la vista de modificar lead:', error);
+        res.status(500).send('Error al renderizar la vista de modificar lead');
+    }
+};
+
+exports.guardarLead = async (req, res) => {
+    const leadId = req.params.lead_id; // Obtener el ID del lead de los parámetros de la URL
+    const leadData = req.body; // Obtener los datos del lead del cuerpo de la solicitud
+
+    try {
+
+        console.log('Nuevos datos modificados:', leadData);
+
+        // Actualizar el lead en la base de datos utilizando el modelo
+        const lead = await Leads.actualizarLead(leadId, leadData);
+
+        // Enviar una respuesta al cliente
+        res.redirect('/leads');
+
+    } catch (error) {
+        console.error('Error al guardar lead:', error);
+        res.status(500).json({ error: 'Ocurrió un error al guardar el lead' });
+    }
+};
+
+/*
+exports.eliminarLead = (request, response, next) => {
+    Leads.deleteLead(request.body.IDLead)
+        .then(() => {
+            return Leads.fetch();
+        })
+        .then(([leads, fieldData]) => {
+            return response.status(200).json({leads: leads, message: message});
+        })
+        .catch((error) => {
+            console.log(error);
+            return response.status(500).json({error: 'Ocurrió un error al eliminar Lead.'})
+        });
+};
+*/
+
+exports.eliminarLead = async (request, response, next) => {
+    try {
+        const leadId = request.body.IDLead;
+        
+        // Eliminar el lead de la base de datos
+        await Leads.deleteLead(leadId);  
+
+        // Obtener los leads actualizados después de la eliminación
+        const [leads, fieldData] = await Leads.fetchAll(); 
+
+        const message = 'El Lead ha sido eliminado correctamente.';
+
+        // Devolver los leads actualizados en la respuesta
+        response.status(200).json({ leads: leads, message: message}); 
+    } catch (error) {
+        console.error('Error al eliminar lead:', error);
+        response.status(500).json({ error: 'Ocurrió un error al eliminar Lead.' });
+    }
+};
     
-        try {
-
-            console.log('Nuevos datos modificados:', leadData);
-
-            // Actualizar el lead en la base de datos utilizando el modelo
-            const lead = await Leads.actualizarLead(leadId, leadData);
-    
-            // Enviar una respuesta al cliente
-            res.redirect('/leads');
-
-        } catch (error) {
-            console.error('Error al guardar lead:', error);
-            res.status(500).json({ error: 'Ocurrió un error al guardar el lead' });
-        }
-    };
