@@ -119,7 +119,10 @@ exports.renderModificarLeadPage = async (req, res) => {
             console.log('Datos del lead en renderModificarLeadPage:', lead);
 
         // Renderiza la vista de modificar lead
-        res.render('modificar_lead', { lead: lead[0] });
+        res.render('modificar_lead', { 
+            lead: lead[0] , 
+            csrfToken: req.csrfToken()
+        });
 
         }
 
