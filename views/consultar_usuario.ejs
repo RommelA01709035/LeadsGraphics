@@ -93,7 +93,7 @@
                                         <td><%= user.Celular %></td>
                                         <td><%= user.IDUsuario %></td>
                                         <td class="is-narrow">
-                                            <form id="deleteForm_<%= user.IDUsuario %>" action="/delete-usuario" method="POST">
+                                            <form id="deleteForm_<%= user.IDUsuario %>" action="/usuarios/delete-usuario" method="POST">
                                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
                                                 <input type="hidden" name="id" value="<%= user.IDUsuario %>">
@@ -154,7 +154,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const form = document.getElementById("deleteForm_" + userId);
-                        form.action = "/reactivate-usuario"; 
+                        form.action = "/usuarios/reactivate-usuario"; 
                         form.submit();
                     }
                 });

@@ -49,7 +49,7 @@ const rutaLeads = require('./routes/leads.routes');
 app.use('/', rutaLeads);
 
 const rutaUsuarios = require('./routes/usuario.routes');
-app.use('/', rutaUsuarios);
+app.use('/usuarios', rutaUsuarios);
 
 
 app.listen(3000);
