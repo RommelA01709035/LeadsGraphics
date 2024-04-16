@@ -29,7 +29,7 @@
         <h1 class="title">Modificar Lead <%= lead.Nombre %></h1>
 
     <form action="/modificar-lead/<%= lead.IDLead %>" method="POST">
-
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
         <div class="field">
             <label class="label">Nombre</label>
