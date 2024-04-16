@@ -3,7 +3,6 @@ const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
 exports.get_login = (request, response, next) => {
-    console.log('Ruta /login');
     console.log(request.body);
     const error = request.session.error || ''; 
     request.session.error = '';
@@ -18,15 +17,18 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    Usuario.fetchUser(request.body.username)
+    console.log(request.body.email);
+    console.log(request.body.password);
+    Usuario.fetchUser(request.body.email)
         .then(([usuarios, fieldData]) => {
             if(usuarios.length == 1) {
                 const usuario = usuarios[0];
+                console.log(usuario);
                 bcrypt.compare(request.body.password, usuario.Contrasena)
                     .then(doMatch => {
                         if (doMatch) {
                             request.session.isLoggedIn = true;
-                            request.session.username = usuario.username;
+                            request.session.email = usuario.email;
                             return request.session.save(err => {
                                 response.redirect('/homepage');
                             });

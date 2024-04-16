@@ -58,9 +58,9 @@ module.exports = class Usuario {
         }
     }
 
-    static fetchUser(username, password){
-        return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
-        [username]);
+    static fetchUser(email, password){
+        return db.execute('SELECT * FROM usuario WHERE Correo=?', 
+        [email]);
     }
 
     static delete_logical_user(nombre_usuario, IDUsuario) {
@@ -95,6 +95,6 @@ module.exports = class Usuario {
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
-    
+
     
 }
