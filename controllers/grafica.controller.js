@@ -7,7 +7,14 @@ exports.get_crea_grafica = (request, response, next) => {
     const startDate = new Date().toISOString().split('T')[0]; 
     const minDate = "XXXX-XX-XX"; 
     const maxDate = "XXXX-XX-XX"; 
-    response.render('crea-grafica', { opcion: opcion, startDate: startDate, minDate: minDate, maxDate: maxDate, vista: vista, username: request.session.username || '',});
+    response.render('crea-grafica', 
+    { opcion: opcion, 
+    startDate: startDate, 
+    minDate: minDate, 
+    maxDate: maxDate, 
+    vista: vista, 
+    username: request.session.username || '',
+    csrfToken: request.csrfToken(),});
 };
 
 
