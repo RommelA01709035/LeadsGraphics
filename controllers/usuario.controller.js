@@ -6,23 +6,23 @@ exports.getUsuarioPage = async (request, response, next) => {
         console.log(usuario);
 
         response.render('consultar_usuario', { 
-            usuario: usuario, 
+            usuario: usuario,
             message: false, 
             username: request.session.username || '',
-            csrfToken: request.csrfToken(),
+            csrfToken: request.csrfToken()
         });
         
         const instanciaUsuario = new Usuario("nombre", "correo", "telefono", "id");
         console.log("Instancia del modelo creada:", instanciaUsuario);
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
-        res.status(500).send('Error al obtener usuarios');
+        response.status(500).send('Error al obtener usuarios');
     }
 };
 
 
 
-exports.post_delete_Usuario = (request, response, next) => {
+exports.post_delete_Usuario = (request, response, next) => { 
     console.log("Hiciste post delete");
     const { nombre, id } = request.body;
     console.log(nombre);
@@ -35,7 +35,7 @@ exports.post_delete_Usuario = (request, response, next) => {
             Correo: row.Correo,
             Celular: row.Celular,
             IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado,
+            Habilitado: row.Habilitado
         }));
 
         const usuarioEliminado = {
@@ -62,13 +62,9 @@ exports.post_delete_Usuario = (request, response, next) => {
             data.forEach(tupla => {
                 console.log(tupla);
             });
-            response.render('consultar_usuario', { 
-                data: data, 
-                usuario: usuario, 
-                message: message, 
-                username: request.session.username || '',
+            response.render('consultar_usuario', { data: data, usuario: usuario, message: message, 
                 csrfToken: request.csrfToken(),
-            });
+                username: request.session.username || '',});
         }).catch(error => {
             console.log(error);
             response.status(500).json({ message: "Error no se encontraron usuarios" });
@@ -82,7 +78,7 @@ exports.post_delete_Usuario = (request, response, next) => {
 };
 
 exports.post_reactivate_Usuario = (request, response, next) => {
-    console.log("Hiciste post reactivate");
+    console.log("Hiciste post reactive");
     const { nombre, id } = request.body;
     console.log(nombre);
     console.log(id);
@@ -122,22 +118,18 @@ exports.post_reactivate_Usuario = (request, response, next) => {
             data.forEach(tupla => {
                 console.log(tupla);
             });
-            response.render('consultar_usuario', { 
-                data: data, 
-                usuario: usuario, 
-                message: message,
-                username: request.session.username || '',
+            response.render('consultar_usuario', { data: data, usuario: usuario, message: message,
                 csrfToken: request.csrfToken(),
-            });
-        }).catch((error) => {
+                username: request.session.username || '', });
+        }).catch(error => {
             console.log(error);
             response.status(500).json({ message: "Error no se encontraron usuarios" });
         });
 
     })
-    .catch((error) => {
+    .catch(error => {
         console.log(error);
-        response.status(500).json({ message: "Error al habilitar" });
+        response.status(500).json({ message: "Error al deshabilitar" });
     });
 };
 
