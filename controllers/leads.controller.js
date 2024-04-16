@@ -88,7 +88,7 @@ exports.agregarLead = async (req, res) => {
         await nuevoLead.save();
 
         // Redirigir a la página de leads después de guardar
-        res.redirect('/leads');
+        res.redirect('/importar/leads');
     } catch (error) {
         console.error('Error al agregar lead:', error);
         res.status(500).send('Error al agregar lead');
@@ -156,7 +156,7 @@ exports.guardarLead = async (req, res) => {
         const lead = await Leads.actualizarLead(leadId, leadData);
 
         // Enviar una respuesta al cliente
-        res.redirect('/leads');
+        res.redirect('/importar/leads');
 
     } catch (error) {
         console.error('Error al guardar lead:', error);
