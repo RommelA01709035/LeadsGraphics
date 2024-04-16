@@ -22,8 +22,16 @@ exports.get_crea_grafica = (request, response, next) => {
 exports.post_grafica = (request, response, next) => {
     const { caso, opcion, startDate, endDate } = request.body;
     
-    const startMonth = new Date(startDate); 
-    const endMonth = new Date(endDate); 
+    const _startMonth = new Date(startDate); 
+    const _endMonth = new Date(endDate); 
+
+    _startMonth.setDate(_startMonth.getDate() )
+    console.log(_startMonth);
+    _endMonth.setDate(_endMonth.getDate() + 1);
+    console.log(_endMonth);
+
+    const startMonth = new Date(_startMonth); 
+    const endMonth = new Date(_endMonth); 
     console.log(caso)
     switch (caso) {
         case 'leadsPorMes':
@@ -32,6 +40,7 @@ exports.post_grafica = (request, response, next) => {
                     const data = rows.map(row => ({
                         mes: row.mes, 
                         cantidad_leads: row.cantidad_leads,
+                        estado_lead: row.estado_lead
                     }));
                     console.log("Tuplas obtenidas de la base de datos:");
                     data.forEach(tupla => {
@@ -86,7 +95,8 @@ exports.post_grafica = (request, response, next) => {
                                         minimo: minimo, 
                                         registers: registers, 
                                         csrfToken: request.csrfToken(),
-                                        username: request.session.username || '',});
+                                        username: request.session.username || '',
+                                    });
                                 }).catch(error => {
                                     console.log(error);
                                     response.status(500).json({ message: "Error en minimo" });

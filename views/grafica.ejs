@@ -34,6 +34,19 @@
         border-radius: 4px;
         cursor: pointer;
     }
+
+    .box {
+        max-width: 800px; /* Aumenta el ancho del contenedor */
+        margin: auto;
+    }
+
+    .box canvas {
+        width: 100%; /* Ajusta el ancho del canvas al 100% del contenedor */
+        height: auto; /* Permita que la altura se ajuste automáticamente */
+    }
+
+
+    
 </style>
 
 <div class="container mt-4 ml-8">
@@ -86,10 +99,10 @@
             <div class="box">
                 <div class="columns is-mobile">
                     <div class="column">
-                        <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
+                        <a href="/crea-grafica" class="button is-info is-fullwidth mt-2">Crear Gráfica</a>
                     </div>
                     <div class="column">
-                        <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                        <button onclick="downloadChart()" class="button is-success is-fullwidth mt-2">Descargar Gráfica</button>
                     </div>
                 </div>
             </div>
@@ -113,7 +126,7 @@
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
+            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads} - ${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
@@ -146,51 +159,61 @@
                 borderWidth: 1
             }]
         };
-                
-        const config = {
-            type: opcion,
-            data: chartData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            font: {
-                                size: 10 
-                            }
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 10 
-                            }
+        const chartOptions = {
+        bar: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        font: {
+                            size: 16 
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 10 
-                            }
+                x: {
+                    ticks: {
+                        font: {
+                            size: 16
                         }
-                    },
-                    zoom: {
-                        zoom: {
-                            enabled: true
-                        },
-                        pan: {
-                            enabled: true
-                        }
-                    },
-                    datalabels: {
-                        display: true
                     }
                 }
             },
-        };
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 16 
+                        }
+                    }
+                }
+            }
+        },
+        pie: {
+            plugins: {
+                legend: {
+                    labels: 
+                    {
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        }
+    };
 
+    const optionsForType = chartOptions[opcion];
+
+    const config = {
+        type: opcion,
+        data: chartData,
+        options: {
+            ...optionsForType, 
+            tooltips: {
+                enabled: false
+            }
+        },
+    };
         var myChart = new Chart(
             document.getElementById('myChart'),
             config
