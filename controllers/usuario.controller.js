@@ -30,46 +30,26 @@ exports.post_delete_Usuario = (request, response, next) => {
 
     Usuario.delete_logical_user(nombre, id)
     .then(([rows, fieldData]) => {
-        const data = rows.map(row => ({
-            nombre: row.nombre_usuario, 
+        // Realizar operaciones después de eliminar el usuario
+
+        return Usuario.fetchAll(); // Obtener los usuarios actualizados después de eliminar
+    })
+    .then(([rows, fieldData]) => {
+        // Renderizar la vista con los usuarios actualizados y el mensaje
+        const usuarios = rows.map(row => ({
+            nombre_usuario: row.nombre_usuario, 
             Correo: row.Correo,
             Celular: row.Celular,
             IDUsuario: row.IDUsuario,
             Habilitado: row.Habilitado
         }));
-
-        const usuarioEliminado = {
-            nombre: nombre,
-            IDUsuario: id
-        };
-
-        const message = `El usuario ${usuarioEliminado.nombre} con ID ${usuarioEliminado.IDUsuario} ha sido eliminado correctamente.`;
-
-        console.log("Tuplas obtenidas de la base de datos:");
-        data.forEach(tupla => {
-            console.log(tupla);
+        const message = `El usuario ${nombre} con ID ${id} ha sido eliminado correctamente.`;
+        response.render('consultar_usuario', { 
+            usuario: usuarios,
+            message: message,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || ''
         });
-
-        Usuario.fetchAll().then(([rows, fieldData]) => {
-            const usuario = rows.map(row => ({
-                nombre_usuario: row.nombre_usuario, 
-                Correo: row.Correo,
-                Celular: row.Celular,
-                IDUsuario: row.IDUsuario,
-                Habilitado: row.Habilitado
-            }));
-            console.log("Tuplas obtenidas de la base de datos:");
-            data.forEach(tupla => {
-                console.log(tupla);
-            });
-            response.render('consultar_usuario', { data: data, usuario: usuario, message: message, 
-                csrfToken: request.csrfToken(),
-                username: request.session.username || '',});
-        }).catch(error => {
-            console.log(error);
-            response.status(500).json({ message: "Error no se encontraron usuarios" });
-        });
-
     })
     .catch(error => {
         console.log(error);
@@ -85,54 +65,29 @@ exports.post_reactivate_Usuario = (request, response, next) => {
 
     Usuario.reactivate_user(nombre, id)
     .then(([rows, fieldData]) => {
-        const data = rows.map(row => ({
-            nombre: row.nombre_usuario, 
+        // Realizar operaciones después de reactivar el usuario
+        return Usuario.fetchAll(); // Obtener los usuarios actualizados después de reactivar
+    })
+    .then(([rows, fieldData]) => {
+        // Renderizar la vista con los usuarios actualizados y el mensaje
+        const usuarios = rows.map(row => ({
+            nombre_usuario: row.nombre_usuario, 
             Correo: row.Correo,
             Celular: row.Celular,
             IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado,
+            Habilitado: row.Habilitado
         }));
-
-        const usuarioReactivado = {
-            nombre: nombre,
-            IDUsuario: id
-        };
-
-        const message = `El usuario ${usuarioReactivado.nombre} con ID ${usuarioReactivado.IDUsuario} ha sido reactivado correctamente.`;
-
-        console.log("Tuplas obtenidas de la base de datos:");
-        data.forEach(tupla => {
-            console.log(tupla);
+        const message = `El usuario ${nombre} con ID ${id} ha sido reactivado correctamente.`;
+        
+        response.render('consultar_usuario', { 
+            usuario: usuarios,
+            message: message,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || ''
         });
-
-        Usuario.fetchAll()
-        .then(([rows, fieldData]) => {
-            const usuario = rows.map(row => ({
-                nombre_usuario: row.nombre_usuario, 
-                Correo: row.Correo,
-                Celular: row.Celular,
-                IDUsuario: row.IDUsuario,
-                Habilitado: row.Habilitado
-            }));
-            console.log("Tuplas obtenidas de la base de datos:");
-            data.forEach(tupla => {
-                console.log(tupla);
-            });
-            response.render('consultar_usuario', { data: data, usuario: usuario, message: message,
-                csrfToken: request.csrfToken(),
-                username: request.session.username || '', });
-        }).catch(error => {
-            console.log(error);
-            response.status(500).json({ message: "Error no se encontraron usuarios" });
-        });
-
     })
     .catch(error => {
         console.log(error);
-        response.status(500).json({ message: "Error al deshabilitar" });
+        response.status(500).json({ message: "Error al reactivar" });
     });
 };
-
-
-
-
