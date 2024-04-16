@@ -129,15 +129,15 @@ exports.post_reactivate_Usuario = (request, response, next) => {
                 username: request.session.username || '',
                 csrfToken: request.csrfToken(),
             });
-        }).catch(error => {
+        }).catch((error) => {
             console.log(error);
             response.status(500).json({ message: "Error no se encontraron usuarios" });
         });
 
     })
-    .catch(error => {
+    .catch((error) => {
         console.log(error);
-        response.status(500).json({ message: "Error al deshabilitar" });
+        response.status(500).json({ message: "Error al habilitar" });
     });
 };
 

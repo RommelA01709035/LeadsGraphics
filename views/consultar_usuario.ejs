@@ -101,16 +101,16 @@
                                                     <div class="control">
                                                         <button class="button is-info is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
                                                     </div>
-                                                    <% if(user.Habilitado == 0){%>
+                                                    <% if(user.Habilitado == 0){ %>
                                                         <div class="control">
                                                             <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
                                                         </div>
-                                                    <%}else{%>
+                                                    <% } else { %>
                                                         <div class="control">
                                                             <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Eliminar Usuario</button>
                                                         </div>
                                                     
-                                                    <%}%>
+                                                    <% } %>
                                                     
                                                 </div>
                                             </form>
