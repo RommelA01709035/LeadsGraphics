@@ -4,7 +4,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     database: 'leadgraphs',
-    password: 'JulianSQL'
+    password: ''
 });
 
 module.exports = pool.promise();

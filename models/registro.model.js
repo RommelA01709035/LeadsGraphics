@@ -1,7 +1,6 @@
 const db = require('../util/database');
 
 module.exports = class nuevoUsuario {
-
     constructor(nuevoNombre, nuevoCorreo, nuevoCelular, nuevaContrasenia) {       
         console.log("Nombre:", nuevoNombre);
         console.log("Celular:", nuevoCelular);
@@ -12,14 +11,20 @@ module.exports = class nuevoUsuario {
         this.celular = nuevoCelular;
         this.correo = nuevoCorreo;
         this.contrasenia = nuevaContrasenia;
-        this.rol = nuevoRol;
+        // this.rol = nuevoRol;
     }
 
     save() {
-        return db.execute('INSERT INTO usuarios (nombre, correo, celular, contrasenia) VALUES (?, ?, ?, ?)',
-            [this.nombre, this.celular, this.correo, this.contrasenia]);
+        // Verificar que los valores necesarios no sean undefined y ajustarlos a null si es necesario
+        const nombre = this.nombre || null;
+        const celular = this.celular || null;
+        const correo = this.correo || null;
+        const contrasenia = this.contrasenia || null;
+    
+        // Ejecutar la consulta SQL con los valores ajustados
+        return db.execute('INSERT INTO usuario (nombre_usuario, correo, celular, Contrasena) VALUES (?, ?, ?, ?)',
+            [nombre, correo, celular, contrasenia]);
     }
-}
 
 /*
 save() {
@@ -35,3 +40,4 @@ save() {
         }); 
 }
 */
+}
