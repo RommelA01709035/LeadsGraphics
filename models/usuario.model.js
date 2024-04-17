@@ -28,11 +28,8 @@ module.exports = class Usuario {
                 [nombre, correo, celular, contrasena_cifrada]
             ).then(() => {
                 return db.execute(
-                    `
-                    SELECT nombre_usuario, Correo
-                    FROM usuario 
-                    WHERE nombre_usuario = ?;
-                    `, [nombre]
+                    "CALL insertarRolUsuarioConID(?, ?, ?)",
+                    [nombre, correo, 3]
                 );
             });
         }).catch((error) => {

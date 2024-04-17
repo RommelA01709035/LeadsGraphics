@@ -71,6 +71,7 @@ exports.post_signup = (request, response, next) => {
     Usuario.create(nombre_usuario, correo, celular, contrasena)
     .then(([rows, fieldData]) => {
         if (rows.length > 0) {
+            console.log(rows);
             const new_user = rows[0]; 
             const message = `El usuario ${new_user.nombre_usuario} con \n el correo electrónico ${new_user.Correo} ha sido registrado correctamente.`;
             request.session.message = message; 

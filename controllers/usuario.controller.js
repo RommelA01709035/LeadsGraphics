@@ -30,9 +30,9 @@ exports.post_delete_Usuario = (request, response, next) => {
 
     Usuario.delete_logical_user(nombre, id)
     .then(([rows, fieldData]) => {
-        // Realizar operaciones después de eliminar el usuario
 
-        return Usuario.fetchAll(); // Obtener los usuarios actualizados después de eliminar
+
+        return Usuario.fetchAll(); 
     })
     .then(([rows, fieldData]) => {
         // Renderizar la vista con los usuarios actualizados y el mensaje
