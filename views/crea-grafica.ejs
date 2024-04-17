@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
+    <div class="hero is-link is-fullwidth has-text-centered"> 
+        <div class="hero-body"> 
+            <div class="container">
+                <p class="title">Mira tu gráfica.</p>
+                <p class="subtitle">Puedes descargar las gráficas que hagas.</p>
+            </div>
+        </div>
+    </div>
     <%- include('includes/naveside.ejs') %>
 
     <div class="main-content">
@@ -83,32 +91,7 @@
                         </div>
                     </div>
                     
-                <div class="column is-half">
-                    <div class="columns is-centered">
-                        <div class="column is-half ml-16"> <!-- Aplicar margen a la nueva columna -->
-                            <div class="dropdown is-hoverable">
-                                <div class="dropdown-trigger">
-                                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                                        <span>FAQS</span>
-                                        <span class="icon is-small">
-                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                                    <div class="dropdown-content">
-                                        <div class="dropdown-item">
-                                            <p class="subtitle">- Selecciona el tipo de gráfica que quieras.</p>
-                                            <p class="subtitle">- Selecciona un caso que quieras analizar.</p>
-                                            <p class="subtitle">- Selecciona en orden cronológico las fechas que desees.</p>
-                                            <p class="subtitle">- Da click para crear gráfica.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
     </section>

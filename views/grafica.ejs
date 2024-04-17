@@ -55,7 +55,7 @@
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Average</p>
-                    <p class="title"><%= _Average = average.map(entry => entry.promedio); %></p>
+                    <p class="title"><%= _Average = Math.trunc(average.map(entry => entry.promedio)); %></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
@@ -179,13 +179,7 @@
                 }
             },
             plugins: {
-                legend: {
-                    labels: {
-                        font: {
-                            size: 16 
-                        }
-                    }
-                }
+                legend: false
             }
         },
         pie: {

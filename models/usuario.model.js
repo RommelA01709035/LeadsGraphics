@@ -21,24 +21,26 @@ module.exports = class Usuario {
     }
     
     static create(nombre, correo, celular, contrasena) {
-        return bcrypt.hash(contrasena, 12).then((contrasena_cifrada) => {
-            return db.execute(
-                `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
-                VALUES (?, ?, ?, ?, 1);`,
-                [nombre, correo, celular, contrasena_cifrada]
-            ).then(() => {
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasena_cifrada) => {
                 return db.execute(
-                    `
-                    SELECT nombre_usuario, Correo
-                    FROM usuario 
-                    WHERE nombre_usuario = ?;
-                    `, [nombre]
+                    `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
+                    VALUES (?, ?, ?, ?, 1);`,
+                    [nombre, correo, celular, contrasena_cifrada]
                 );
+            })
+            .catch((error) => {
+                console.log(error);
+                throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
             });
-        }).catch((error) => {
-            console.log(error);
-            throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
-        }); 
+    }
+
+    static asignarUsuarioRol(nombre, correo) {
+        // Llamamos a la función almacenada para obtener el usuario y asignar el rol
+        return db.execute(
+            "CALL obtenerUsuarioYAsignarRol(?, ?, ?)",
+            [nombre, correo, 3]
+        );
     }
     
     static fetchAll() {
@@ -46,7 +48,7 @@ module.exports = class Usuario {
     }
 
     static fetchOne(id) {
-        return db.execute('SELECT * FROM usuario WHERE id=?', 
+        return db.execute('SELECT * FROM usuario WHERE IDUsuario=?', 
             [id]);
     }
     
@@ -61,6 +63,11 @@ module.exports = class Usuario {
     static fetchUser(username, password){
         return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
         [username]);
+    }
+
+    static fetchEmail(email, password){
+        return db.execute('SELECT * FROM usuario WHERE Correo=?', 
+        [email]);
     }
 
     static delete_logical_user(nombre_usuario, IDUsuario) {
@@ -95,6 +102,6 @@ module.exports = class Usuario {
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
-    
+
     
 }

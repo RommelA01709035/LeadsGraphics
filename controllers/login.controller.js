@@ -3,7 +3,6 @@ const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
 exports.get_login = (request, response, next) => {
-    console.log('Ruta /login');
     console.log(request.body);
     const error = request.session.error || ''; 
     request.session.error = '';
@@ -18,9 +17,9 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    console.log(request.body.username);
+    console.log(request.body.email);
     console.log(request.body.password);
-    Usuario.fetchUser(request.body.username)
+    Usuario.fetchEmail(request.body.email)
         .then(([usuarios, fieldData]) => {
             if(usuarios.length == 1) {
                 const usuario = usuarios[0];
@@ -29,7 +28,7 @@ exports.post_login = (request, response, next) => {
                     .then(doMatch => {
                         if (doMatch) {
                             request.session.isLoggedIn = true;
-                            request.session.username = usuario.username;
+                            request.session.email = usuario.email;
                             return request.session.save(err => {
                                 response.redirect('/homepage');
                             });
@@ -70,22 +69,31 @@ exports.get_signup = (request, response, next) => {
 exports.post_signup = (request, response, next) => {
     const { nombre_usuario, correo, celular, contrasena } = request.body;
     const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena);
-    console.log(request.body)
+    
     Usuario.create(nombre_usuario, correo, celular, contrasena)
-    .then(([rows, fieldData]) => {
-        if (rows.length > 0) {
-            const new_user = rows[0]; 
-            const message = `El usuario ${new_user.nombre_usuario} con \n el correo electrónico ${new_user.Correo} ha sido registrado correctamente.`;
+        .then(([rows, fieldData]) => {
+            // Obtener el ID del usuario recién registrado
+            const userId = rows.insertId;
+            // Asignar el rol al usuario
+            return Usuario.asignarUsuarioRol(nombre_usuario, correo)
+                .then(() => {
+                    // Devolver el ID del usuario para usarlo en la siguiente promesa
+                    return userId;
+                });
+        })
+        .then((userId) => {
+            // Obtener los detalles del usuario utilizando su ID
+            return Usuario.fetchOne(userId);
+        })
+        .then(([user, fieldData]) => {
+            const message = `El usuario ${user[0].nombre_usuario} con correo electrónico ${user[0].Correo} ha sido registrado correctamente.`;
             request.session.message = message; 
             console.log("Usuario registrado correctamente");
             response.redirect('/login');
-        } else {
-            throw new Error('La consulta no devolvió ningún resultado.');
-        }
-    })
-    .catch(error => {
-        console.log(error);
-        request.session.error = 'Nombre de usuario inválido.';
-        response.redirect('/login');
-    });
+        })
+        .catch(error => {
+            console.log(error);
+            request.session.error = 'Nombre de usuario inválido.';
+            response.redirect('/login');
+        });
 };

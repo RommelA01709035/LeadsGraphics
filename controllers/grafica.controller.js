@@ -49,7 +49,8 @@ exports.post_grafica = (request, response, next) => {
                     Grafica.getAverage(startMonth,endMonth)
                     .then(([rows2, fieldData]) => {
                         const average = rows2.map(row => ({
-                            promedio: row.promedio
+                            promedio: row.promedio,
+                            mes: row.mes
                         }));
                         console.log("Promedio:");
                         average.forEach(tupla => {
@@ -68,7 +69,8 @@ exports.post_grafica = (request, response, next) => {
                             Grafica.getMin(startMonth, endMonth)
                             .then(([rows4, fieldData]) => {
                                 const minimo = rows4.map(row => ({
-                                    minimo: row.minimo
+                                    minimo: row.minimo,
+                                    mes: row.mes
                                 }));
                                 console.log("Minimo:");
                                 minimo.forEach(tupla => {

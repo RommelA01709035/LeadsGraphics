@@ -2,6 +2,18 @@ const { request, response } = require('express');
 const Leads = require('../models/leads.model');
 const pool = require('../util/database');
 
+exports.getImportar = async (request, response, next) => {
+    try{
+        response.render('importar', {
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '', 
+        });
+    } catch (error) {
+        console.error('Error cargar:', error);
+        response.status(500).send('Error al cargar');
+    }
+}
+
 exports.getLeadsPage = async (request, response, next) => {
     try {
         const [leads, fieldData] = await Leads.fetchAll();
@@ -76,7 +88,7 @@ exports.agregarLead = async (req, res) => {
         await nuevoLead.save();
 
         // Redirigir a la página de leads después de guardar
-        res.redirect('/leads');
+        res.redirect('/importar/leads');
     } catch (error) {
         console.error('Error al agregar lead:', error);
         res.status(500).send('Error al agregar lead');
@@ -144,7 +156,7 @@ exports.guardarLead = async (req, res) => {
         const lead = await Leads.actualizarLead(leadId, leadData);
 
         // Enviar una respuesta al cliente
-        res.redirect('/leads');
+        res.redirect('/importar/leads');
 
     } catch (error) {
         console.error('Error al guardar lead:', error);

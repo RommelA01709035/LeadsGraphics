@@ -13,5 +13,6 @@ router.get('/modificar-lead/:lead_id', isAuth, leadsController.renderModificarLe
 router.post('/modificar-lead/:lead_id', isAuth, leadsController.guardarLead);
 router.post('/agregar-lead', isAuth, leadsController.agregarLead);
 router.post('/eliminar-lead', isAuth, leadsController.eliminarLead);
+router.get('/', isAuth, leadsController.getImportar);
 
 module.exports = router;

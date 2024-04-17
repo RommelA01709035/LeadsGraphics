@@ -89,7 +89,7 @@
                         
                             <!-- Botón para agregar leads -->
                             <div>
-                                <a href="/agregar-lead" class="button is-info">Agregar Lead</a>
+                                <a href="/importar/agregar-lead" class="button is-info">Agregar Lead</a>
                             </div>
                         </div>
                         <br><br>
@@ -134,7 +134,7 @@
                                                     <div class="buttons">
                                                         <% if (lead) { %>
                                                             <!-- Botón para modificar el lead -->
-                                                            <a href="/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
+                                                            <a href="/importar/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
                                                         <% } else { %>
                                                             <!-- Si no se encuentra el lead -->
                                                             <p>Lead no encontrado</p>
@@ -160,7 +160,7 @@
             const valor_busqueda = document.getElementById('buscar').value;
 
             // Realizar la solicitud AJAX
-            fetch(`/buscar/${encodeURIComponent(valor_busqueda)}`, {
+            fetch(`/importar/buscar/${encodeURIComponent(valor_busqueda)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -180,7 +180,7 @@
                         <td>${lead.Hora_Ultimo_Mensaje}</td>
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
+                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
                             <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
                         </td>
                     </tr>`).join('');
@@ -252,7 +252,7 @@
             const valor_busqueda = document.getElementById('buscar').value;
 
             // Realizar la solicitud de eliminacion de lead
-            fetch('/eliminar-lead', {
+            fetch('/importar/eliminar-lead', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -275,7 +275,7 @@
                         <td>${lead.Hora_Ultimo_Mensaje}</td>
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
+                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
                             <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
                         </td>
                     </tr>`).join('');

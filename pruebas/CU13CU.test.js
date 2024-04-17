@@ -9,7 +9,7 @@ describe('Pruebas de Consultar Usuario', () => {
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: '',
+            password: 'AguaUwu2',
             database: 'leadgraphs'
         });
     });
