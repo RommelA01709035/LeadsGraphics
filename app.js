@@ -46,8 +46,7 @@ const rutaUsuarios = require('./routes/usuario.routes');
 app.use('/', rutaLogin);
 app.use('/homepage', rutaInicio);
 app.use('/', rutaGrafica);
-app.use('/', rutaLeads);
+app.use('/importar', rutaLeads);
 app.use('/usuarios', rutaUsuarios);
-
 
 app.listen(3000);

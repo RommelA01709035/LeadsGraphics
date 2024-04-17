@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Leads</title>
+    <!-- Enlace a Bulma CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Estilo personalizado para la sombra de la tabla */
+        .table-shadow {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ajusta los valores según prefieras */
+            border: #6949f6;
+        }
+
+        .has-background-danger td {
+            color: white; /* Hace que el texto sea blanco */
+        }
+
+        
+        .has-background-danger {
+            border: 2px solid #000000; /* Cambia el color del borde según tu preferencia */
+        }
+
+        .table-shadow td,
+        .table-shadow th {
+            border-right: 2px solid #000000; /* Color del borde vertical */
+        }
+
+
+        /* Estilo personalizado para cambiar el color de los botones */
+        .custom-button {
+            background-color: #F649D0;
+            color: white;
+            transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+        }
+
+        /* Cambia el color de fondo cuando se pasa el cursor sobre el botón */
+        .custom-button:hover {
+            background-color: #F8C9EE; /* Cambia el color a un tono más claro */
+            color: white;
+        }
+
+            /* Establecer una altura fija para el cuerpo de la tabla */
+        .table-body {
+            max-height: 700px; /* Establece aquí la altura máxima deseada */
+            overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+        }
+
+        .notification-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; 
+        }
+
+        .control {
+            border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
+            border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('includes/naveside.ejs') %>
+        <div class="main-content">
+            <div class="column">
+                <section class="section">
+                    
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

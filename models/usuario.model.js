@@ -35,7 +35,7 @@ module.exports = class Usuario {
         }).catch((error) => {
             console.log(error);
             throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
-        }); 
+        });
     }
     
     static fetchAll() {
@@ -58,6 +58,11 @@ module.exports = class Usuario {
     static fetchUser(username, password){
         return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
         [username]);
+    }
+
+    static fetchEmail(email, password){
+        return db.execute('SELECT * FROM usuario WHERE Correo=?', 
+        [email]);
     }
 
     static delete_logical_user(nombre_usuario, IDUsuario) {
@@ -92,6 +97,6 @@ module.exports = class Usuario {
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
-    
+
     
 }
