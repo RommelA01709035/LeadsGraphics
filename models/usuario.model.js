@@ -38,7 +38,7 @@ module.exports = class Usuario {
         }).catch((error) => {
             console.log(error);
             throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
-        }); 
+        });
     }
     
     static fetchAll() {
