@@ -28,6 +28,10 @@
     color: white;
 }
 
+.colorFondo1-home{
+    color: rgb(0, 0, 0);
+}
+
 .colorHeader{
     background-color: #6669ef;
 }
