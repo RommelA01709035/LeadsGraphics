@@ -1,14 +1,39 @@
 const db = require('../util/database');
 
 module.exports = class Historial {
-    constructor(idhistorial, idusuario, descripcion, fecha) {
-        this.IDHistorial = idhistorial;
+    constructor(idregistro, idusuario, idhistorial, nombre_historial, accion, fecha_accion) {
+        this.IDRegistro = idregistro;
         this.IDUsuario = idusuario;
-        this.Descripcion = descripcion;
-        this.Fecha = fecha;
+        this.IDHistorial = idhistorial; // Aquí debería ser IDHistorial
+        this.nombre_historial = nombre_historial;
+        this.accion = accion;
+        this.fecha_accion = fecha_accion;
     }
 
     static fetchAll(){
-        return db.execute('SELECT * FROM historial')
+        return db.execute('SELECT * FROM historial');
+    }
+
+    static fetchOne(id){
+        return db.execute('SELECT * FROM historial WHERE IDRegistro=?', [id]);
+    }
+
+    static fetch(id){
+        if(id){
+            return this.fetchOne(id);
+        } else {
+            this.fetchAll();
+        }
+    }
+
+    static fetchHistorialUsernames(){
+        return db.execute(
+            `
+            SELECT * FROM historial h
+            JOIN usuario u ON h.IDUsuario = u.IDUsuario
+            JOIN rol_usuario ru ON u.IDUsuario = ru.IDUsuario
+            JOIN roles r ON ru.IDRol = r.IDRol
+            `
+        )
     }
 }
