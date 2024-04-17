@@ -98,6 +98,12 @@
     transform: translate(-50%, -50%);
 }
 
+.cancel-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 280px;
+}
+
 .is-aligned {
     display: inline-flex; 
     align-items: center; 
