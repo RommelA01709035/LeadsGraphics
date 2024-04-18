@@ -61,7 +61,7 @@ exports.agregarLead = async (req, res) => {
 
         // Crear un nuevo objeto Lead con los datos del formulario
         const nuevoLead = new Leads({
-            IDHistorial: formData.IDHistorial !== undefined ? convertToNull(formData.IDHistorial) : null,
+            // IDHistorial: formData.IDHistorial !== undefined ? convertToNull(formData.IDHistorial) : null,
             IDWorkspace: formData.IDWorkspace !== undefined ? convertToNull(formData.IDWorkspace) : null,
             Telefono: formData.Telefono !== undefined ? convertToNull(formData.Telefono) : null,
             Nombre: formData.Nombre !== undefined ? convertToNull(formData.Nombre) : null,
