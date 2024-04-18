@@ -164,21 +164,6 @@ exports.guardarLead = async (req, res) => {
     }
 };
 
-/*
-exports.eliminarLead = (request, response, next) => {
-    Leads.deleteLead(request.body.IDLead)
-        .then(() => {
-            return Leads.fetch();
-        })
-        .then(([leads, fieldData]) => {
-            return response.status(200).json({leads: leads, message: message});
-        })
-        .catch((error) => {
-            console.log(error);
-            return response.status(500).json({error: 'Ocurrió un error al eliminar Lead.'})
-        });
-};
-*/
 
 exports.eliminarLead = async (request, response, next) => {
     try {
