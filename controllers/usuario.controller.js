@@ -80,7 +80,6 @@ exports.post_reactivate_Usuario = (request, response, next) => {
     })
     .then(([rows, fieldData]) => {
 
-
         // Obtener los usuarios actualizados después de reactivar
         return Usuario.fetchAll(); 
     })

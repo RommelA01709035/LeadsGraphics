@@ -75,16 +75,20 @@ exports.post_signup = (request, response, next) => {
     
     Usuario.create(nombre_usuario, correo, celular, contrasena)
         .then(([rows, fieldData]) => {
+
             // Obtener el ID del usuario recién registrado
             const userId = rows.insertId;
+
             // Asignar el rol al usuario
             return Usuario.asignarUsuarioRol(nombre_usuario, correo)
                 .then(() => {
+
                     // Devolver el ID del usuario para usarlo en la siguiente promesa
                     return userId;
                 });
         })
         .then((userId) => {
+            
             // Obtener los detalles del usuario utilizando su ID
             return Usuario.fetchOne(userId);
         })

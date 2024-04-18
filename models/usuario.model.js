@@ -36,10 +36,11 @@ module.exports = class Usuario {
     }
 
     static asignarUsuarioRol(nombre, correo) {
+        
         // Llamamos a la función almacenada para obtener el usuario y asignar el rol
         return db.execute(
             "CALL obtenerUsuarioYAsignarRol(?, ?, ?)",
-            [nombre, correo, 3]
+            [nombre, correo, 1]
         );
     }
     
