@@ -73,10 +73,19 @@ exports.post_reactivate_Usuario = (request, response, next) => {
 
     Usuario.reactivate_user(nombre, id)
     .then(([rows, fieldData]) => {
-        // Realizar operaciones después de reactivar el usuario
-        return Usuario.fetchAll(); // Obtener los usuarios actualizados después de reactivar
+        const id_usuario = request.session.idUsuario;
+        console.log(id_usuario);
+
+        return Historial.insertRegistroHistorial(id_usuario, "Reactivo Usuario")
     })
     .then(([rows, fieldData]) => {
+
+
+        // Obtener los usuarios actualizados después de reactivar
+        return Usuario.fetchAll(); 
+    })
+    .then(([rows, fieldData]) => {
+        
         // Renderizar la vista con los usuarios actualizados y el mensaje
         const usuarios = rows.map(row => ({
             nombre_usuario: row.nombre_usuario, 
