@@ -28,7 +28,10 @@ exports.post_login = (request, response, next) => {
                     .then(doMatch => {
                         if (doMatch) {
                             request.session.isLoggedIn = true;
-                            request.session.email = usuario.email;
+                            request.session.email = usuario.Correo;
+                            request.session.idUsuario= usuario.IDUsuario;
+                            console.log(request.session.email)
+                            console.log(request.session.idUsuario)
                             return request.session.save(err => {
                                 response.redirect('/homepage');
                             });
