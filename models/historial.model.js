@@ -39,8 +39,8 @@ module.exports = class Historial {
     
     static insertRegistroHistorial(IDUsuario, accion) {
         return db.execute(
-            `INSERT INTO historial (IDUsuario, IDHistorial, nombre_historial, accion, fecha_accion)
-            VALUES (?, 1 ,"historial 1", ?, NOW())`,
+            `INSERT INTO historial (IDUsuario, nombre_historial, accion, fecha_accion)
+            VALUES (? ,"historial 1", ?, NOW())`,
             [IDUsuario, accion]
         );
     }
