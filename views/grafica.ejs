@@ -89,13 +89,13 @@
                         <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
                     </div>
                     <div class="column">
-                        <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                        <button onclick="downloadPDF()" class="button is-success">Descargar PDF</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    
 
     </div>
 </div>
@@ -106,6 +106,12 @@
     
     
     <script>
+
+
+    function downloadPDF() {
+        window.location.href = '/descargar-pdf';
+    }
+
         const data = JSON.parse('<%- JSON.stringify(data) %>');
         const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
         let labels;
