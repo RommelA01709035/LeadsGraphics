@@ -22,81 +22,83 @@
         </div>
     </div>
     <%- include('includes/naveside.ejs') %>
-
-    <div class="main-content">
-        <section class="section">
-            <div class="container">
-                <div class="columns is-centered">
-                    <div class="column is-half centered-form ">
-                        <div class="box">
-                            <form action="/grafica" method="POST" onsubmit="return validarFormulario()">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                <div class="field control has-text-centered">
-                                    <label class="label" for="opciones">Selecciona el tipo de gráfica:</label>
-                                    <div class="control has-text-centered">
-                                        <div class="select is-rounded is-medium">
-                                            <select id="opciones" name="opcion">
-                                                <option value="bar">Barras</option>
-                                                <option value="pie">Pastel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <div class="field">
-                                    <label class="label control has-text-centered " for="caso">Selecciona el caso:</label>
-                                    <div class="control has-text-centered">
-                                        <div class="select mt-2">
-                                            <select id="caso" name="caso">
-                                                <option value="leadsPorMes">Leads por mes.</option>
-                                                <option value="LastMessage">Último mensaje enviado</option>
-                                                <option value="PerCompany">Leads por Compañía</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <% if (opcion === 'LastMessage') { %>
-                                <div class="field control has-text-centered">
-                                    <label class="label" for="LastMessageWord">Último mensaje a buscar:</label>
-                                    <div class="">
-                                        <input class="input" id="LastMessageWord" type="text" name="palabra">
-                                    </div>
-                                </div>
-                                <% } %>
-    
-                                <div class="field">
-                                    <div class="columns">
-                                        <div class="column">
-                                            <label class="label" for="startDate">Fecha de inicio:</label>
-                                            <div class="control has-text-centered">
-                                                <input class="input" type="date" id="startDate" name="startDate">
-                                            </div>
-                                        </div>
-                                        <div class="column">
-                                            <label class="label" for="endDate">Fecha de fin:</label>
-                                            <div class="control has-text-centered">
-                                                <input class="input" type="date" id="endDate" name="endDate">
+    <div class="">
+        <div class="main-content">
+            <section class="section">
+                <div class="container">
+                    <div class="columns is-centered">
+                        <div class="column is-half centered-form ">
+                            <div class="box mt-10">
+                                <form action="/grafica" method="POST" onsubmit="return validarFormulario()">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <div class="field control has-text-centered">
+                                        <label class="label" for="opciones">Selecciona el tipo de gráfica:</label>
+                                        <div class="control has-text-centered">
+                                            <div class="select is-rounded is-medium">
+                                                <select id="opciones" name="opcion">
+                                                    <option value="bar">Barras</option>
+                                                    <option value="pie">Pastel</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-    
-                                <div class="field">
-                                    <div class="control mt-2"> 
-                                        <button class="button is-link custom-button is-fullwidth " type="submit" value="Create">Crear</button>
+        
+                                    <div class="field">
+                                        <label class="label control has-text-centered " for="caso">Selecciona el caso:</label>
+                                        <div class="control has-text-centered">
+                                            <div class="select mt-2">
+                                                <select id="caso" name="caso">
+                                                    <option value="leadsPorMes">Leads por mes.</option>
+                                                    <option value="LastMessage">Último mensaje enviado</option>
+                                                    <option value="PerCompany">Leads por Compañía</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+        
+                                    <% if (opcion === 'LastMessage') { %>
+                                    <div class="field control has-text-centered">
+                                        <label class="label" for="LastMessageWord">Último mensaje a buscar:</label>
+                                        <div class="">
+                                            <input class="input" id="LastMessageWord" type="text" name="palabra">
+                                        </div>
+                                    </div>
+                                    <% } %>
+        
+                                    <div class="field">
+                                        <div class="columns">
+                                            <div class="column">
+                                                <label class="label" for="startDate">Fecha de inicio:</label>
+                                                <div class="control has-text-centered">
+                                                    <input class="input" type="date" id="startDate" name="startDate">
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <label class="label" for="endDate">Fecha de fin:</label>
+                                                <div class="control has-text-centered">
+                                                    <input class="input" type="date" id="endDate" name="endDate">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="field">
+                                        <div class="control mt-2"> 
+                                            <button class="button is-link custom-button is-fullwidth " type="submit" value="Create">Crear</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    
-               
+                        
+                   
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+        
+    </div>
+    </div>
     
-</div>
 
 <div class="field ">
     <div class="control">

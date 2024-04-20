@@ -148,6 +148,8 @@ module.exports = class Leads {
             throw error;
         }
     }
-    
 
+    static deleteLead(id){
+        return db.execute('CALL deleteLead(?)',[id]);
+    };
 }

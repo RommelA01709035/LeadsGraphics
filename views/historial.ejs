@@ -61,25 +61,30 @@
 <body>
     <%- include('includes/naveside.ejs') %>
         <div class="main-content">
-            <div class="column">
-                <h1 class="title">Historial</h1>
-                <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Rol</th>
-                            <th>Accion</th>
-                            <th>Fecha</th> 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for (let fila of historial) { %>
+            <div class="columns">
+                <section class="section">
+                    <h1 class="title">Historial</h1>
+                    <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                        <thead>
                             <tr>
-                                <td></td>
+                                <th>Usuario</th>
+                                <th>Rol</th>
+                                <th>Accion</th>
+                                <th>Fecha</th> 
                             </tr>
-                        <% } %> 
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <% for (let fila of historial) { %>
+                                <tr>
+                                    <td><%= fila.nombre_usuario %></td>
+                                    <td><%= fila.Descripcion_Rol %></td>
+                                    <td><%= fila.accion %></td>
+                                    <td><%= fila.fecha_accion %></td>
+                                </tr>
+                            <% } %> 
+                        </tbody>
+                    </table>
+                </section>
             </div>
         </div>
     </div>

@@ -41,6 +41,7 @@ const rutaInicio = require('./routes/inicio.routes');
 const rutaGrafica = require('./routes/grafica.routes');
 const rutaLeads = require('./routes/leads.routes');
 const rutaUsuarios = require('./routes/usuario.routes');
+const rutaHistorial = require('./routes/historial.routes');
 
 // Usar las rutas
 app.use('/', rutaLogin);
@@ -48,5 +49,7 @@ app.use('/homepage', rutaInicio);
 app.use('/', rutaGrafica);
 app.use('/importar', rutaLeads);
 app.use('/usuarios', rutaUsuarios);
+app.use('/historial', rutaHistorial);
+
 
 app.listen(3000);
