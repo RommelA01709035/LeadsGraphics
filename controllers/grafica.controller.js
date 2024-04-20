@@ -27,7 +27,7 @@ exports.post_grafica = (request, response, next) => {
 
     _startMonth.setDate(_startMonth.getDate() )
     console.log(_startMonth);
-    _endMonth.setDate(_endMonth.getDate() + 1);
+    _endMonth.setDate(_endMonth.getDate());
     console.log(_endMonth);
 
     const startMonth = new Date(_startMonth); 
