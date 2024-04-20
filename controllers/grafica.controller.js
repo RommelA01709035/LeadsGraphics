@@ -1,6 +1,10 @@
 const Grafica = require('../models/grafica.model');
 const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
+// Importar los módulos necesarios
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+
 
 exports.get_crea_grafica = (request, response, next) => {
     const vista ='crea-grafica';
@@ -333,4 +337,36 @@ exports.post_grafica = (request, response, next) => {
         default:
             response.status(400).json({ message: "Invalid case" });
     }
+};
+// grafica.controller.js
+
+
+// Definir la función get_descarga_reporte
+exports.get_descarga_reporte = (req, res) => {
+  const reportName = req.query.reportName; // Obtener el nombre del reporte desde la solicitud
+
+  // Crear un nuevo documento PDF
+  const doc = new PDFDocument();
+
+  // Añadir contenido al PDF
+  doc.fontSize(24).text('¡Hola, este es el reporte: ' + reportName, 100, 100);
+
+  // Guardar el PDF con el nombre especificado por el usuario
+  const fileName = reportName + '.pdf';
+  doc.pipe(fs.createWriteStream(fileName));
+  doc.end();
+
+  // Enviar el PDF como respuesta
+  res.download(fileName, (err) => {
+    if (err) {
+      // Manejar errores si ocurren al descargar el archivo
+      console.error('Error al descargar el archivo:', err);
+      res.status(500).send('Error al descargar el archivo');
+    } else {
+      // Eliminar el archivo después de descargarlo
+      fs.unlink(fileName, (err) => {
+        if (err) console.error('Error al eliminar el archivo:', err);
+      });
+    }
+  });
 };

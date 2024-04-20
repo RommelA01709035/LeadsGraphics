@@ -104,6 +104,9 @@
                     <div class="column">
                         <button onclick="downloadChart()" class="button is-success is-fullwidth mt-2">Descargar Gráfica</button>
                     </div>
+                    <div class="column">
+                        <button onclick="downloadPDF()" class="button is-success is-fullwidth mt-2">Descargar PDF</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -221,8 +224,20 @@
             link.href = base64Image;
             link.download = filename;
             link.click();
+
+            
         }
+
+        function downloadPDF() {
+            const reportName = '<%= reportName %>'; // Obtener el nombre del reporte desde tu backend
+
+            // Realizar una solicitud GET al servidor para descargar el PDF
+            window.location.href = `/descargar-pdf?reportName=${reportName}`;
+        }
+
     </script>
+
+
     
 </body>
 </html>
