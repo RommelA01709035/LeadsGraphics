@@ -34,6 +34,19 @@
         border-radius: 4px;
         cursor: pointer;
     }
+
+    .box {
+        max-width: 1000px; /* Aumenta el ancho del contenedor */
+        margin: auto;
+    }
+
+    .box canvas {
+        width: 100%; /* Ajusta el ancho del canvas al 100% del contenedor */
+        height: auto; /* Permita que la altura se ajuste automáticamente */
+    }
+
+
+    
 </style>
 
 <div class="container mt-4 ml-8">
@@ -42,7 +55,7 @@
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Average</p>
-                    <p class="title"><%= _Average = average.map(entry => entry.promedio); %></p>
+                    <p class="title"><%= _Average = Math.trunc(average.map(entry => entry.promedio)); %></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
@@ -86,10 +99,7 @@
             <div class="box">
                 <div class="columns is-mobile">
                     <div class="column">
-                        <a href="/crea-grafica" class="button is-info">Crear Gráfica</a>
-                    </div>
-                    <div class="column">
-                        <button onclick="downloadChart()" class="button is-success">Descargar Gráfica</button>
+                        <a href="/crea-grafica" class="button is-info is-fullwidth mt-2">Crear Gráfica</a>
                     </div>
                 </div>
             </div>
@@ -110,16 +120,22 @@
         const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
         let labels;
         let values;
+
+        // Convertir el número del mes a su nombre correspondiente
+        function getMonthName(monthNumber) {
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
+        }
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads}`);
+            labels = data.map(entry => `${getMonthName(entry.mes)} - ${entry.cantidad_leads} Leads - ${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
-            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
+            labels = data.map(entry => `${entry.cantidad_mensajes} Leads - Mensaje: ${entry.palabra}          `);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
-            labels = data.map(entry => `${entry.cantidad_leads}-${entry.Compania}`);
+            labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}          `);
             values = data.map(entry => entry.cantidad_leads);
         <%}%>
         
@@ -146,51 +162,55 @@
                 borderWidth: 1
             }]
         };
-                
-        const config = {
-            type: opcion,
-            data: chartData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            font: {
-                                size: 10 
-                            }
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 10 
-                            }
+        const chartOptions = {
+        bar: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        font: {
+                            size: 16 
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 10 
-                            }
+                x: {
+                    ticks: {
+                        font: {
+                            size: 16
                         }
-                    },
-                    zoom: {
-                        zoom: {
-                            enabled: true
-                        },
-                        pan: {
-                            enabled: true
-                        }
-                    },
-                    datalabels: {
-                        display: true
                     }
                 }
             },
-        };
+            plugins: {
+                legend: false
+            }
+        },
+        pie: {
+            plugins: {
+                legend: {
+                    labels: 
+                    {
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        }
+    };
 
+    const optionsForType = chartOptions[opcion];
+
+    const config = {
+        type: opcion,
+        data: chartData,
+        options: {
+            ...optionsForType, 
+            tooltips: {
+                enabled: false
+            }
+        },
+    };
         var myChart = new Chart(
             document.getElementById('myChart'),
             config

@@ -23,6 +23,27 @@ module.exports = class Usuario {
             });
     }
 
+    static create(nombre, correo, celular, contrasena) {
+        return bcrypt.hash(contrasena, 12).then((contrasena_cifrada) => {
+            return db.execute(
+                `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
+                VALUES (?, ?, ?, ?, 1);`,
+                [nombre, correo, celular, contrasena_cifrada]
+            ).then(() => {
+                return db.execute(
+                    `
+                    SELECT nombre_usuario, Correo
+                    FROM usuario 
+                    WHERE nombre_usuario = ?;
+                    `, [nombre]
+                );
+            });
+        }).catch((error) => {
+            console.log(error);
+            throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
+        }); 
+    }
+
     static fetchOne_lead(IDLead) {
         return db.execute(
             'SELECT * FROM leads WHERE IDLead=?',
@@ -37,11 +58,28 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOne_user_name(Nombre, Contrasenia) {
+        return db.execute(
+            'SELECT * FROM usuario WHERE nombre_usuario=? AND Contrasena=?', 
+            [Nombre, Contrasenia]
+        );
+    }
+
     static fetchOne_user(IDUsuario) {
         return db.execute(
             'SELECT * FROM usuario WHERE IDUsuario=?',
             [IDUsuario]
         );
+    }
+
+    static fetchUser(username, password){
+        return db.execute('SELECT * FROM usuario WHERE nombre_usuario=?', 
+        [username]);
+    }
+
+    static fetchEmail(email, password){
+        return db.execute('SELECT * FROM usuario WHERE Correo=?', 
+        [email]);
     }
 
     static fetchOne_user_change(IDUsuario, Correo) {//Parametros de acuerdo a los campos
@@ -68,5 +106,8 @@ module.exports = class Usuario {
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
-    
+
+    static deleteLead(id){
+        return db.execute('CALL deleteLead(?)',[id])
+    };
 };

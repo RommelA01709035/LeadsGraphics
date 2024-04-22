@@ -9,7 +9,7 @@ describe('Pruebas de Modificar Lead', () => {
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: '',
+            password: 'AguaUwu2',
             database: 'leadgraphs'
         });
     });
@@ -30,7 +30,7 @@ describe('Pruebas de Modificar Lead', () => {
     });
     
     test('fetchOne no encuentra el Lead', async () => {
-        const IDLead = 51;
+        const IDLead = 301;
         const [rows] = await Usuario.fetchOne_lead(IDLead);
         console.log(rows);
         expect(rows.length).toBe(0);

@@ -1,23 +1,31 @@
 const Usuario = require('../models/usuario.model');
+const loginController = require('../controllers/login.controller');
+const Historial = require('../models/historial.model');
 
-exports.getUsuarioPage = async (req, res) => {
+
+exports.getUsuarioPage = async (request, response, next) => {
     try {
         const [usuario, fieldData] = await Usuario.fetchAll();
         console.log(usuario);
 
-        res.render('consultar_usuario', { usuario: usuario, message: false});
+        response.render('consultar_usuario', { 
+            usuario: usuario,
+            message: false, 
+            username: request.session.username || '',
+            csrfToken: request.csrfToken()
+        });
         
         const instanciaUsuario = new Usuario("nombre", "correo", "telefono", "id");
         console.log("Instancia del modelo creada:", instanciaUsuario);
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
-        res.status(500).send('Error al obtener usuarios');
+        response.status(500).send('Error al obtener usuarios');
     }
 };
 
 
 
-exports.post_delete_Usuario = (request, response, next) => {
+exports.post_delete_Usuario = (request, response, next) => { 
     console.log("Hiciste post delete");
     const { nombre, id } = request.body;
     console.log(nombre);
@@ -25,51 +33,77 @@ exports.post_delete_Usuario = (request, response, next) => {
 
     Usuario.delete_logical_user(nombre, id)
     .then(([rows, fieldData]) => {
-        const data = rows.map(row => ({
-            nombre: row.nombre_usuario, 
-            Correo: row.Correo,
-            Celular: row.Celular,
-            IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado
-        }));
+        const id_usuario = request.session.idUsuario;
+        console.log(id_usuario);
 
-        const usuarioEliminado = {
-            nombre: nombre,
-            IDUsuario: id
-        };
-
-        const message = `El usuario ${usuarioEliminado.nombre} con ID ${usuarioEliminado.IDUsuario} ha sido eliminado correctamente.`;
-
-        console.log("Tuplas obtenidas de la base de datos:");
-        data.forEach(tupla => {
-            console.log(tupla);
-        });
-
-        Usuario.fetchAll().then(([rows, fieldData]) => {
-            const usuario = rows.map(row => ({
+        return Historial.insertRegistroHistorial(id_usuario, "Elimino a un Usuario")
+    })
+    .then(() => {
+        console.log("Se agregó el registro al historial");
+        return Usuario.fetchAll().then(([rows, fieldData]) => {
+            const usuarios = rows.map(row => ({
                 nombre_usuario: row.nombre_usuario, 
                 Correo: row.Correo,
                 Celular: row.Celular,
                 IDUsuario: row.IDUsuario,
                 Habilitado: row.Habilitado
             }));
-            console.log("Tuplas obtenidas de la base de datos:");
-            data.forEach(tupla => {
-                console.log(tupla);
+            const message = `El usuario ${nombre} con ID ${id} ha sido eliminado correctamente.`;
+            response.render('consultar_usuario', { 
+                usuario: usuarios,
+                message: message,
+                csrfToken: request.csrfToken(),
+                username: request.session.username || '',
+                
             });
-            response.render('consultar_usuario', { data: data, usuario: usuario, message: message });
-        }).catch(error => {
-            console.log(error);
-            response.status(500).json({ message: "Error no se encontraron usuarios" });
-        });
-
+        })
     })
+    
     .catch(error => {
         console.log(error);
         response.status(500).json({ message: "Error al deshabilitar" });
     });
 };
 
+exports.post_reactivate_Usuario = (request, response, next) => {
+    console.log("Hiciste post reactive");
+    const { nombre, id } = request.body;
+    console.log(nombre);
+    console.log(id);
 
+    Usuario.reactivate_user(nombre, id)
+    .then(([rows, fieldData]) => {
+        const id_usuario = request.session.idUsuario;
+        console.log(id_usuario);
 
+        return Historial.insertRegistroHistorial(id_usuario, "Reactivo Usuario")
+    })
+    .then(([rows, fieldData]) => {
 
+        // Obtener los usuarios actualizados después de reactivar
+        return Usuario.fetchAll(); 
+    })
+    .then(([rows, fieldData]) => {
+        
+        // Renderizar la vista con los usuarios actualizados y el mensaje
+        const usuarios = rows.map(row => ({
+            nombre_usuario: row.nombre_usuario, 
+            Correo: row.Correo,
+            Celular: row.Celular,
+            IDUsuario: row.IDUsuario,
+            Habilitado: row.Habilitado
+        }));
+        const message = `El usuario ${nombre} con ID ${id} ha sido reactivado correctamente.`;
+        
+        response.render('consultar_usuario', { 
+            usuario: usuarios,
+            message: message,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || ''
+        });
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({ message: "Error al reactivar" });
+    });
+};

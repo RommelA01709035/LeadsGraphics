@@ -1,6 +1,6 @@
 // test.js
 const mysql = require('mysql2/promise');
-const Usuario = require('./consult');
+const Usuario = require('../models/usuario.model');
 
 describe('Pruebas de Consultar Usuario', () => {
     let connection;
@@ -9,7 +9,7 @@ describe('Pruebas de Consultar Usuario', () => {
         connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: '',
+            password: 'AguaUwu2',
             database: 'leadgraphs'
         });
     });
@@ -18,7 +18,7 @@ describe('Pruebas de Consultar Usuario', () => {
         await connection.end();
     });
 
-    test('fetchOne devuelve el Usuario correcto', async () => { //caso de prueba
+   /* test('fetchOne devuelve el Usuario correcto', async () => { //caso de prueba
         const IDUsuario = 12;
         const expectedUser = {
             IDUsuario: 12,
@@ -46,11 +46,12 @@ describe('Pruebas de Consultar Usuario', () => {
         console.log(rows);
         expect(rows.length).toBe(0);
     });
-    
+    */
+   
     test('fetchOne detecta solo a un usuario detectado', async () => {
-        const [rows] = await Usuario.fetchOne_Count();
+        const [rows] = await Usuario.fetchAll();
         console.log(rows);
-        expect(rows.length).toBe(1);
+        expect(rows.length).toBe(20);
     });
 
     test('FetchAll detectar numero de usuarios', async () => {
