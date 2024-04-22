@@ -120,10 +120,16 @@
         const opcion = JSON.parse('<%- JSON.stringify(opcion) %>');
         let labels;
         let values;
+
+        // Convertir el número del mes a su nombre correspondiente
+        function getMonthName(monthNumber) {
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
+        }
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${entry.mes}-${entry.cantidad_leads} - ${entry.estado_lead}`);
+            labels = data.map(entry => `${getMonthName(entry.mes)}-${entry.cantidad_leads} - ${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
