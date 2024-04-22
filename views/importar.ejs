@@ -72,9 +72,46 @@
                 <section class="section">
                     <h1 class="title">Sección de importación</h1>
                     <div class="buttons">
-                        <a href="/importar/leads" class="button is-info">Consultar Leads</a>
+                        <a href="/importar/leads">
+                            <span class="file-cta button is-info"> <!-- Clase modificada a "button is-success" -->
+                                <span class="icon">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </span>
+                                <span class="file-label">
+                                    Consultar Leads
+                                </span>
+                            </span>
+                        </a>
                     </div>
-                    
+
+                    <div class="columns is-centered">
+                        <div class="column is-narrow">
+                            <div class="box content-box">
+                                <div class="columns is-centered">
+                                    <div class="column is-narrow">
+                                        <figure class="image is-128x128">
+                                            <img src="/multimedia/CSVIcono.png" />
+                                        </figure>
+                                    </div>
+                                </div>
+
+                                <p>Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación</p><br>
+                                <div class="file is-centered">
+                                    <label class="file-label has-text-succes">
+                                        <input class="file-input" type="file" name="file" id="file">
+                                        <span class="file-cta button is-success"> <!-- Clase modificada a "button is-success" -->
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Seleccionar archivo…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
