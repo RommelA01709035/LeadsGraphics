@@ -101,9 +101,13 @@
                     <div class="column">
                         <a href="/crea-grafica" class="button is-info is-fullwidth mt-2">Crear Gráfica</a>
                     </div>
-                    <div class="column">
-                        <button onclick="downloadChart()" class="button is-success is-fullwidth mt-2">Descargar Gráfica</button>
-                    </div>
+                    <form action="/descarga-reporte" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <div class="column">
+                            <button  type="submit" class="button is-success is-fullwidth mt-2">Descargar Reporte.</button>
+                        </div>
+                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -213,15 +217,7 @@
             config
         );
 
-        function downloadChart() {
-            const base64Image = myChart.toBase64Image('image/jpeg', 1.0);
-            const timestamp = new Date().getTime();
-            const filename = 'grafica_' + timestamp + '.jpg';
-            const link = document.createElement('a');
-            link.href = base64Image;
-            link.download = filename;
-            link.click();
-        }
+       
     </script>
     
 </body>

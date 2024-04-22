@@ -22,15 +22,20 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "chartjs-node-canvas": "^4.1.6",
     "csf": "^0.1.0-alpha.3",
     "csrf": "^3.1.0",
     "csurf": "^1.11.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
+    "memorystream": "^0.3.1",
     "mysql2": "^3.9.2",
+    "pdfkit": "^0.15.0",
     "pg": "^8.11.5",
-    "sweetalert2": "^11.10.7"
+    "puppeteer": "^22.6.5",
+    "sweetalert2": "^11.6.13",
+    "tmp": "^0.2.3"
   },
   "devDependencies": {
     "jest": "^29.7.0"
