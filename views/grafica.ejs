@@ -129,13 +129,13 @@
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${getMonthName(entry.mes)}-${entry.cantidad_leads} - ${entry.estado_lead}`);
+            labels = data.map(entry => `${getMonthName(entry.mes)} - ${entry.cantidad_leads} Leads - ${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
-            labels = data.map(entry => `${entry.cantidad_mensajes}-${entry.palabra}`);
+            labels = data.map(entry => `${entry.cantidad_mensajes} Leads - Mensaje: ${entry.palabra}          `);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
-            labels = data.map(entry => `${entry.cantidad_leads}-${entry.Compania}`);
+            labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}          `);
             values = data.map(entry => entry.cantidad_leads);
         <%}%>
         
