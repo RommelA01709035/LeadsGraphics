@@ -217,7 +217,20 @@
             config
         );
 
-       
+        const html = ejs.render(fs.readFileSync(__dirname + '/../views/reporte.ejs', 'utf8'), {
+            data,
+            opcion,
+            caso,
+            titulo,
+            average,
+            maximo,
+            minimo,
+            registers
+        });
+
+
+
+
     </script>
     
 </body>

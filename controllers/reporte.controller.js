@@ -5,8 +5,12 @@ const ejs = require('ejs');
 exports.post_reporte = async (req, res) => {
   try {
     const { data, opcion, caso, titulo, average, maximo, minimo, registers } = req.body;
+    
+    // Lanzar una instancia de Puppeteer
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-    // Renderizar la plantilla EJS con los datos
+    // Establecer el contenido HTML en la página
     const html = ejs.render(fs.readFileSync(__dirname + '/../views/reporte.ejs', 'utf8'), {
       data,
       opcion,
@@ -18,13 +22,10 @@ exports.post_reporte = async (req, res) => {
       registers
     });
     
-
-    // Lanzar una instancia de Puppeteer
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    // Establecer el contenido HTML en la página
     await page.setContent(html);
+    
+    
+    
 
     // Generar el PDF
     const pdfBuffer = await page.pdf({ format: 'A4' });
