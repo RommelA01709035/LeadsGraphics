@@ -14,6 +14,16 @@ exports.getImportar = async (request, response, next) => {
     }
 }
 
+// Controlador para manejar la importacion de archivo CSV
+exports.postImportar = async (request, response, next) => {
+    try {
+        console.log(request.body); 
+        console.log(request.file);
+    } catch (error) {
+        console.error('Error al subir el archivo: ', error);
+    }
+}
+
 exports.getLeadsPage = async (request, response, next) => {
     try {
         const [leads, fieldData] = await Leads.fetchAll();
