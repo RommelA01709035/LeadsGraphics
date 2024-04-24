@@ -61,7 +61,7 @@ exports.agregarLead = async (req, res) => {
 
         // Crear un nuevo objeto Lead con los datos del formulario
         const nuevoLead = new Leads({
-            IDHistorial: formData.IDHistorial !== undefined ? convertToNull(formData.IDHistorial) : null,
+            // IDHistorial: formData.IDHistorial !== undefined ? convertToNull(formData.IDHistorial) : null,
             IDWorkspace: formData.IDWorkspace !== undefined ? convertToNull(formData.IDWorkspace) : null,
             Telefono: formData.Telefono !== undefined ? convertToNull(formData.Telefono) : null,
             Nombre: formData.Nombre !== undefined ? convertToNull(formData.Nombre) : null,
@@ -164,21 +164,6 @@ exports.guardarLead = async (req, res) => {
     }
 };
 
-/*
-exports.eliminarLead = (request, response, next) => {
-    Leads.deleteLead(request.body.IDLead)
-        .then(() => {
-            return Leads.fetch();
-        })
-        .then(([leads, fieldData]) => {
-            return response.status(200).json({leads: leads, message: message});
-        })
-        .catch((error) => {
-            console.log(error);
-            return response.status(500).json({error: 'Ocurrió un error al eliminar Lead.'})
-        });
-};
-*/
 
 exports.eliminarLead = async (request, response, next) => {
     try {

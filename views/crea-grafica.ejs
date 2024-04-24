@@ -56,14 +56,12 @@
                                         </div>
                                     </div>
         
-                                    <% if (opcion === 'LastMessage') { %>
-                                    <div class="field control has-text-centered">
+                                    <div class="field control has-text-centered" id="ultimoMensajeDiv" style="display: none;">
                                         <label class="label" for="LastMessageWord">Último mensaje a buscar:</label>
                                         <div class="">
                                             <input class="input" id="LastMessageWord" type="text" name="palabra">
                                         </div>
                                     </div>
-                                    <% } %>
         
                                     <div class="field">
                                         <div class="columns">
@@ -90,22 +88,17 @@
                                 </form>
                             </div>
                         </div>
-                        
-                   
+                    </div>
                 </div>
-            </div>
-        </section>
-        
-    </div>
+            </section>
+        </div>
     </div>
     
-
-<div class="field ">
-    <div class="control">
-        <a href="/homepage" class="button is-danger cancel-button-container">Cancelar</a>
+    <div class="field ">
+        <div class="control">
+            <a href="/homepage" class="button is-danger cancel-button-container">Cancelar</a>
+        </div>
     </div>
-</div>
-                   
 
     <script>
         function validarFormulario() {
@@ -124,6 +117,16 @@
             }
             return true;
         }
+
+        document.getElementById('caso').addEventListener('change', function() {
+            var opcionSeleccionada = this.value;
+            var ultimoMensajeDiv = document.getElementById('ultimoMensajeDiv');
+            if (opcionSeleccionada === 'LastMessage') {
+                ultimoMensajeDiv.style.display = 'block';
+            } else {
+                ultimoMensajeDiv.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>

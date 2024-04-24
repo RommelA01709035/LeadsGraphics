@@ -76,24 +76,18 @@ exports.post_signup = (request, response, next) => {
     
     Usuario.create(nombre_usuario, correo, celular, contrasena)
         .then(([rows, fieldData]) => {
-
+            console.log(rows[0]['id']);
             // Obtener el ID del usuario recién registrado
-            const userId = rows.insertId;
-
-            // Asignar el rol al usuario
-            return Usuario.asignarUsuarioRol(nombre_usuario, correo)
-                .then(() => {
-
-                    // Devolver el ID del usuario para usarlo en la siguiente promesa
-                    return userId;
-                });
+            const userId = rows[0]['id'];
+            console.log(userId)
+            return userId;
         })
         .then((userId) => {
-            
             // Obtener los detalles del usuario utilizando su ID
             return Usuario.fetchOne(userId);
         })
         .then(([user, fieldData]) => {
+            console.log(user);
             const message = `El usuario ${user[0].nombre_usuario} con correo electrónico ${user[0].Correo} ha sido registrado correctamente.`;
             request.session.message = message; 
             console.log("Usuario registrado correctamente");

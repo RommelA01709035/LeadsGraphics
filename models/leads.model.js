@@ -6,7 +6,7 @@ const pool = require('../util/database'); // Importa el módulo pool desde tu ar
 module.exports = class Leads {
 
     constructor(data) {
-        this.IDHistorial = data.IDHistorial;
+        // this.IDHistorial = data.IDHistorial;
         this.IDWorkspace = data.IDWorkspace;
         this.Telefono = data.Telefono;
         this.Nombre = data.Nombre;
@@ -75,10 +75,10 @@ module.exports = class Leads {
     
         const result = await db.execute(
             `INSERT INTO leads 
-            (IDHistorial, IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                this.IDHistorial, this.IDWorkspace, this.Telefono, this.Nombre, this.Valor, this.Ganado, this.Correo, 
+                this.IDWorkspace, this.Telefono, this.Nombre, this.Valor, this.Ganado, this.Correo, 
                 this.Etiqueta, this.Compania, this.Fecha_Primer_Mensaje, this.Hora_Primer_Mensaje, this.Primer_Mensaje, 
                 this.Fecha_Ultimo_Mensaje, this.Hora_Ultimo_Mensaje, this.Ultimo_Mensaje, this.Estado_Lead, 
                 this.Seller_Asignado, this.Embudo, this.Etapa, this.Archivado, this.Creado_Manualmente
@@ -110,7 +110,6 @@ module.exports = class Leads {
                     Etiqueta = ?,
                     Estado_Lead = ?,
                     Seller_Asignado = ?,
-                    IDHistorial = 1,
                     IDWorkspace = 1,
                     Embudo = ?,
                     Etapa = ?,
