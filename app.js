@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 const multer = require('multer');
 
 // Middleware para manejar subida de archivos
-const filestorage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: (request, file, callback) => {
 
     // Directorio donde se suben los archivos
@@ -43,6 +43,7 @@ const filestorage = multer.diskStorage({
   },
 });
 
+
 // Limitar el tipo de archivos que se pueden subir
 const csvFilter = (request, file, callback) => {
   if(file.mimetype == 'text/csv'){
@@ -51,16 +52,13 @@ const csvFilter = (request, file, callback) => {
     callback(null, true);
   } else {
 
-    // Rechazar archivo
-    callback(new Error('Sólo se permiten archivos .csv'));
+    // Rechazar archivo y almacenar el error
+    callback(null, false);
   }
 };
 
 // Middleware para manejar subida de archivos con filtro para archivos .csv
-const upload = multer({
-  storage: filestorage,
-  fileFilter: csvFilter,
-});
+app.use(multer({ storage: fileStorage, fileFilter: csvFilter }).single('csvFile')); 
 
 const Swal = require('sweetalert2');
 

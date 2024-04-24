@@ -4,9 +4,11 @@ const pool = require('../util/database');
 
 exports.getImportar = async (request, response, next) => {
     try{
+        console.log('Ruta importar')
         response.render('importar', {
-            csrfToken: request.csrfToken(),
+            message: '',
             username: request.session.username || '', 
+            csrfToken: request.csrfToken(),
         });
     } catch (error) {
         console.error('Error cargar:', error);
@@ -17,10 +19,30 @@ exports.getImportar = async (request, response, next) => {
 // Controlador para manejar la importacion de archivo CSV
 exports.postImportar = async (request, response, next) => {
     try {
+        console.log('hiciste postImportar')
+
         console.log(request.body); 
         console.log(request.file);
+
+        if(!request.file){
+            return response.status(400).json({
+                success: false, 
+                message: 'No se seleccionó ningún archivo',
+            });
+        } 
+
+        console.log('Archivo subido: ', request.file);
+
+        response.status(200).json({
+            success: true, 
+            message: 'Archivo subido correctamente',
+        });
     } catch (error) {
         console.error('Error al subir el archivo: ', error);
+        response.status(500).json({
+            success: false, 
+            message: 'Error al subir el archivo',
+        });
     }
 }
 
