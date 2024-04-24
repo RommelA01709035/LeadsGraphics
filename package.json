@@ -25,6 +25,7 @@
     "csf": "^0.1.0-alpha.3",
     "csrf": "^3.1.0",
     "csurf": "^1.11.0",
+    "csv-parser": "^3.0.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
