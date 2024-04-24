@@ -87,7 +87,12 @@ module.exports = class Leads {
         return result[0]; // Devuelve el resultado de la inserción
     }
 
+    static importar() {
 
+        this.IDWorkspace = 1;
+        this.Creado_Manualmente = 1;
+
+    }
 
     static async actualizarLead(leadId, leadData) {
         try {
