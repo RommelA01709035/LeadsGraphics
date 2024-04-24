@@ -27,7 +27,7 @@ exports.postImportar = async (request, response, next) => {
         if(!request.file){
             return response.status(400).json({
                 success: false, 
-                message: 'No se seleccionó ningún archivo',
+                message: 'Error al subir archivo',
             });
         } 
 
