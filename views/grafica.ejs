@@ -35,9 +35,9 @@
         cursor: pointer;
     }
 
-    .box {
-        max-width: 1000px; /* Aumenta el ancho del contenedor */
-        margin: auto;
+    .container {
+        margin: auto; /* Centra horizontalmente el contenido */
+        max-width: 960px; /* Ajusta este valor según sea necesario */
     }
 
     .box canvas {
@@ -48,79 +48,70 @@
 
     
 </style>
-
 <div class="container mt-4 ml-8">
-    <div class="box ">
+    <div class="box">
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Average</p>
-                    <p class="title"><%= _Average = Math.trunc(average.map(entry => entry.promedio)); %></p>
+                    <p class="title"><%= Math.trunc(average.map(entry => entry.promedio)); %></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
                     <p class="heading">Max</p>
-                    <p class="title"><%= _Max = maximo.map(entry => entry.maximo); %></p>
+                    <p class="title"><%= maximo.map(entry => entry.maximo); %></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Mininum</p>
-                    <p class="title"><%= _Min = minimo.map(entry => entry.minimo); %></p>
+                    <p class="heading">Minimum</p>
+                    <p class="title"><%= minimo.map(entry => entry.minimo); %></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Numero de leads en el estudio</p>
-                    <p class="title"><%= _Count = registers.map(entry => entry.total_tuplas); %></p>
+                    <p class="heading">Número de leads en el estudio</p>
+                    <p class="title"><%= registers.map(entry => entry.total_tuplas); %></p>
                 </div>
             </div>        
         </nav>
         
-<div class="container mt-5 ">
-    <h2 class="title is-2 has-text-centered"><%= titulo%></h2> 
-    <div class="columns is-centered">
-        <div class="column is-8">
-            <div class="box">
-                <canvas id="myChart"></canvas>
-            </div>
-            <% if (caso === "LastMessage") { %>
-                <div class="box mt-3">
-                    <p>Mensajes encontrados:</p>
-                    <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
-                </div>
-            <% } %>
-        </div>
-    </div>
-
-    <div class="columns is-centered mt-3">
-        <div class="column is-half">
-            <div class="box">
-                <div class="columns is-mobile">
-                    <div class="column">
-                        <a href="/crea-grafica" class="button is-info is-fullwidth mt-2">Crear Gráfica</a>
-                    </div>
-                    <form action="/descarga-reporte" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <div class="column">
-                            <button  type="submit" class="button is-success is-fullwidth mt-2">Descargar Reporte.</button>
+        <div class="container2 mt-5">
+            <h2 class="title is-2 has-text-centered"><%= titulo %></h2> 
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="box grafica">
+                        <div class="container2">
+                            <canvas class="is-centered" id="myChart"></canvas>
                         </div>
-                    </form>
-                    
+                    </div>
+                    <% if (caso === "LastMessage") { %>
+                        <div class="box mt-3">
+                            <p>Mensajes encontrados:</p>
+                            <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="columns is-centered is-fullwidth mt-3 no-imprimir">
+                    <div class="column is-half">
+                        <div class="box mt-3 no-imprimir">
+                            <div class="columns is-mobile">
+                                <div class="column">
+                                    <a href="/crea-grafica" class="button is-info is-fullwidth no-imprimir">Crear nueva gráfica</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-    </div>
-</div>
-
-
-
-
-    
     
     <script>
         const data = JSON.parse('<%- JSON.stringify(data) %>');
@@ -170,7 +161,7 @@
                     beginAtZero: true,
                     ticks: {
                         font: {
-                            size: 16 
+                            size: 16
                         }
                     }
                 },
@@ -217,20 +208,43 @@
             config
         );
 
-        const html = ejs.render(fs.readFileSync(__dirname + '/../views/reporte.ejs', 'utf8'), {
-            data,
-            opcion,
-            caso,
-            titulo,
-            average,
-            maximo,
-            minimo,
-            registers
-        });
+        function handlePostPrint(event) {
+            // Muestra los elementos ocultos para imprimir
+            var noImprimirElementos = document.querySelectorAll('.no-visible');
+            noImprimirElementos.forEach(function(elemento) {
+                elemento.style.display = 'block';
+            });
+            
+            // Inicia el proceso de impresión después de hacer los ajustes necesarios
+            window.print();
+        }
 
 
 
+        function handlePrePrint(event) {
+            // Oculta o modifica elementos que no deseas imprimir
+            var noImprimirElementos = document.querySelectorAll('.no-imprimir');
+            noImprimirElementos.forEach(function(elemento) {
+                elemento.style.display = 'none';
+            });
+            
+            // Agrega un listener para el evento de cancelación de la impresión
+            window.onafterprint = function() {
+                // Restaura los estilos o muestra nuevamente los elementos ocultos
+                noImprimirElementos.forEach(function(elemento) {
+                elemento.style.display = 'block'; // o el display original
+                });
+            };
+            
+            // Inicia el proceso de impresión después de hacer los ajustes necesarios
+            window.print();
+            }
 
+            // Agrega un listener para el evento de impresión
+            window.onbeforeprint = handlePrePrint;
+
+            // Agrega un listener para el evento de impresión
+            window.onafterprint = handlePostPrint;
     </script>
     
 </body>
