@@ -98,11 +98,19 @@
         
         <div class="container2 mt-5">
             <h2 class="title is-2 has-text-centered"><%= titulo_grafica %></h2> 
+            <div id="legendContainer"></div>
+
             <div class="columns is-centered">
                 <div class="column is-8">
                     <div class="box grafica">
                         <div class="container2">
                             <canvas class="is-centered" id="myChart"></canvas>
+                        </div>
+                    </div>
+                    <div class=" is-2 has-text-centered is-fullwidth mt-3 no-imprimir">
+                        <div class="box no-imprimir">
+                            <button class="button is-info" onclick="setChartMode('point')">Modo conjunto unitario</button>
+                            <button class="button is-info" onclick="setChartMode('dataset')">Modo listado de conjuntos</button>
                         </div>
                     </div>
                     <% if (caso === "LastMessage") { %>
@@ -113,10 +121,6 @@
                     <% } %>
                 </div>
             </div>
-            <div class="hide-before-print">
-                <p> owo</p>
-            </div>
-
             <div class="container">
                 <div class="columns is-centered is-fullwidth mt-3 no-imprimir">
                     <div class="column is-half">
@@ -141,11 +145,7 @@
         let labels;
         let values;
 
-        // Convertir el número del mes a su nombre correspondiente
-        function getMonthName(monthNumber) {
-            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
-        }
+        
     
         <% if(caso === "leadsPorMes") { %>
             
@@ -163,7 +163,6 @@
         const chartData = {
             labels: labels,
             datasets: [{
-                label: labels,
                 data: values,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -202,8 +201,9 @@
                 }
             },
             plugins: {
-                legend: false
+                legend: false 
             }
+            
         },
         pie: {
             plugins: {
@@ -221,20 +221,71 @@
 
     const optionsForType = chartOptions[opcion];
 
+
     const config = {
-        type: opcion,
-        data: chartData,
-        options: {
-            ...optionsForType, 
-            tooltips: {
-                enabled: false
-            }
+    type: opcion,
+    data: chartData,
+    options: {
+        interaction: {
+            intersect: false,
+            mode: 'index',
         },
-    };
+        plugins: {
+            legend: {
+                display: (opcion !== 'bar'), // Muestra la leyenda excepto para gráficas de barras
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    }
+};
+
         var myChart = new Chart(
             document.getElementById('myChart'),
             config
         );
+
+// Convertir el número del mes a su nombre correspondiente
+        function getMonthName(monthNumber) {
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
+        }
+
+        // Append '4d' to the colors (alpha channel), except for the hovered index
+        function handleHover(evt, item, legend) {
+            legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
+                colors[index] = index === item.index || color.length === 9 ? color : color + '4D';
+            });
+            legend.chart.update();
+        }
+        // Removes the alpha channel from background colors
+        function handleLeave(evt, item, legend) {
+            legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
+                colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+            });
+            legend.chart.update();
+        }
+
+        function setChartMode(mode) {
+            const modes = {
+                'point': 'point',
+                'dataset': 'dataset',
+            };
+
+            // Verifica si el modo seleccionado es válido
+            if (modes[mode]) {
+                // Actualiza el modo del gráfico
+                myChart.options.interaction.mode = modes[mode];
+                // Actualiza el gráfico
+                myChart.update();
+            } else {
+                console.error('Modo de gráfico no válido');
+            }
+        }
+
 
         function handlePostPrint(event) {
             // Muestra los elementos ocultos para imprimir

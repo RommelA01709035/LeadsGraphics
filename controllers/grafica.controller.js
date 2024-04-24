@@ -6,18 +6,14 @@ exports.get_crea_grafica = (request, response, next) => {
     const vista ='crea-grafica';
     const opcion = "";
     const startDate = new Date().toISOString().split('T')[0]; 
-    const minDate = "XXXX-XX-XX"; 
-    const maxDate = "XXXX-XX-XX";
     const caso = ''
     console.log(request.session.email)
     console.log(request.session.idUsuario)
     response.render('crea-grafica', 
     { 
     opcion: opcion, 
-    startDate: startDate, 
-    minDate: minDate, 
-    maxDate: maxDate,
-    title: getTitleForCase(caso), 
+    startDate: startDate,
+    title: getTitleForCase(caso, '', ''), 
     vista: vista, 
     username: request.session.username || '',
     csrfToken: request.csrfToken(),});
@@ -101,7 +97,7 @@ exports.post_grafica = (request, response, next) => {
                                         average:average, 
                                         maximo: maximo, 
                                         minimo: minimo, 
-                                        title: getTitleForCase(caso),
+                                        title: getTitleForCase(caso, startMonth, endMonth),
                                         registers: registers, 
                                         csrfToken: request.csrfToken(),
                                         username: request.session.username || '',
@@ -198,7 +194,7 @@ exports.post_grafica = (request, response, next) => {
                                         average:average, 
                                         maximo: maximo, 
                                         minimo: minimo,
-                                        title: getTitleForCase(caso), 
+                                        title: getTitleForCase(caso, startMonth, endMonth), 
                                         registers: registers,
                                         csrfToken: request.csrfToken(),
                                         username: request.session.username || '',});
@@ -307,7 +303,7 @@ exports.post_grafica = (request, response, next) => {
                                         average:average, 
                                         maximo: maximo, 
                                         minimo: minimo, 
-                                        title: getTitleForCase(caso),
+                                        title: getTitleForCase(caso, startMonth, endMonth),
                                         registers: registers,
                                         csrfToken: request.csrfToken(),
                                         username: request.session.username || '',});
@@ -344,15 +340,23 @@ exports.post_grafica = (request, response, next) => {
     }
 };
 
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 function getTitleForCase(caso, startMonth, endMonth) {
     switch (caso) {
         case 'leadsPorMes':
-            return 'Leads por mes de los meses ' + startMonth + ' - ' + endMonth;
+            return 'Leads por mes de los meses ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
         case 'LastMessage':
-            return 'Leads con esta palabra' + startMonth + ' - ' + endMonth;
+            return 'Leads con esta palabra ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
         case 'PerCompany':
-            return 'Leads por compañía' + startMonth + ' - ' + endMonth;
+            return 'Leads por compañía ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
         default:
-            return 'LeadGraphs' ; 
+            return 'LeadGraphs'; 
     }
 }
+
