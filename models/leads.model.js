@@ -1,5 +1,10 @@
 const db = require('../util/database');
 
+// Instalar el paquete csv-parser
+const csvParser = require('csv-parser');
+
+// Importar el modulo File System
+const fs = require('fs');
 const pool = require('../util/database'); // Importa el módulo pool desde tu archivo de configuración de base de datos
 
 
@@ -87,11 +92,82 @@ module.exports = class Leads {
         return result[0]; // Devuelve el resultado de la inserción
     }
 
-    static importar() {
+    static async importar(filePath) {
+        const results = [];
+        try {
 
-        this.IDWorkspace = 1;
-        this.Creado_Manualmente = 1;
+            // Mapeo de nombres de columnas entre el CSV y la base de datos
+            const columnMapping = {
 
+                // 'NombreEnCSV': 'NombreEnDB'
+                'Teléfono': 'Telefono',
+                'Valor $': 'Valor',
+                'Etiquetas': 'Etiqueta',
+                'Compañia': 'Compania',
+
+            }
+
+            // Leer archivo CSV y procesar cada fila
+            fs.createReadStream(filePath)
+                .pipe(csvParser())
+                .on('data', async(row) => {
+                    try{
+
+                        // Crear una instancia de Leads con los datos de la fila del CSV
+                        const lead = new Leads({
+                            IDWorkspace: 1,
+                            Telefono: row.Telefono,
+                            Nombre: row.Nombre,
+                            Valor: row.Valor,
+                            Ganado: row.Ganado,
+                            Correo: row.Correo,
+                            Etiqueta: row.Etiqueta,
+                            Compania: row.Compania,
+                            Creado: row.Creado,
+                            Hora_Creacion: row.Hora_Creacion,
+                            Fecha_Primer_Mensaje: row.Fecha_Primer_Mensaje,
+                            Hora_Primer_Mensaje: row.Hora_Primer_Mensaje,
+                            Primer_Mensaje: row.Primer_Mensaje,
+                            Fecha_Ultimo_Mensaje: row.Fecha_Ultimo_Mensaje,
+                            Hora_Ultimo_Mensaje: row.Hora_Ultimo_Mensaje,
+                            Ultimo_Mensaje: row.Ultimo_Mensaje,
+                            Estado_Lead: row.Estado_Lead,
+                            Seller_Asignado: row.Seller_Asignado,
+                            Embudo: row.Embudo,
+                            Etapa: row.Etapa,
+                            Archivado: row.Archivado,
+                            Creado_Manualmente: row.Creado_Manualmente,
+
+                        });
+
+                        // Guardar lead en la base de datos
+                        await db.execute(
+                            `INSERT INTO leads 
+                            (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                            [
+                                this.IDWorkspace, this.Telefono, this.Nombre, this.Valor, this.Ganado, this.Correo, 
+                                this.Etiqueta, this.Compania, this.Fecha_Primer_Mensaje, this.Hora_Primer_Mensaje, this.Primer_Mensaje, 
+                                this.Fecha_Ultimo_Mensaje, this.Hora_Ultimo_Mensaje, this.Ultimo_Mensaje, this.Estado_Lead, 
+                                this.Seller_Asignado, this.Embudo, this.Etapa, this.Archivado, this.Creado_Manualmente
+                            ]
+                        )
+                        console.log('lead guardado correctamente: ', lead);
+
+                        // Agregar el Lead importado a los resultados
+                        results.push(lead);
+
+                    } catch (error) {
+                        console.log('Error al insertar lead', error);
+                    }
+            }).on('end', () => {
+                console.log('Todos los datos del CSV se han insertado en la base de datos.');
+            });
+        } catch (error) {
+            console.error('Error al importar datos desde el archivo CSV: ', error);
+            throw error;
+        }
+        return results;
     }
 
     static async actualizarLead(leadId, leadData) {

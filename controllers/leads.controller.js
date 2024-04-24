@@ -31,12 +31,33 @@ exports.postImportar = async (request, response, next) => {
             });
         } 
 
-        console.log('Archivo subido: ', request.file);
+        // Obtener la ruta del archivo subido
+        const filePath = request.csvFile.path;
+        console.log('Archivo subido: ', request.csvFile);
 
-        response.status(200).json({
-            success: true, 
-            message: 'Archivo subido correctamente',
+        // Importar los datos del archivo csv
+        const importarLeads = await Leads.importar(filePath)
+
+        // Eliminar el archivo subido después de la importación
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error al eliminar el archivo: ', err);
+            } else {
+                console.log('Archivo eliminado con éxito: ', filePath);
+            }
         });
+
+        if(importarLeads.length > 0){
+            return response.status(200).json({
+                success: true, 
+                message: 'Archivo subido correctamente',
+            });
+        } else {
+            return response.status(400).json({
+                success: false, 
+                message: 'Error al importar los datos del archivo CSV',
+            });
+        }
     } catch (error) {
         console.error('Error al subir el archivo: ', error);
         response.status(500).json({
