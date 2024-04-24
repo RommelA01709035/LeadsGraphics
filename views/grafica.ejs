@@ -45,9 +45,28 @@
         height: auto; /* Permita que la altura se ajuste automáticamente */
     }
 
+    /* Estilos para ocultar elementos antes de imprimir */
+    .hide-before-print {
+        display: none;
+    }
 
-    
+    /* Estilos para mostrar elementos durante la impresión */
+    .show-during-print {
+        display: block !important; /* Usamos !important para asegurarnos de que los estilos se apliquen durante la impresión */
+    }
+        
+    /* Oculta los elementos que no quieres imprimir */
+    @media print {
+        .hide-before-print {
+        display: none !important;
+        }
+        .show-during-print {
+            display: block !important; /* Usamos !important para asegurarnos de que los estilos se apliquen durante la impresión */
+        }
+    }
+        
 </style>
+
 <div class="container mt-4 ml-8">
     <div class="box">
         <nav class="level is-mobile">
@@ -78,7 +97,7 @@
         </nav>
         
         <div class="container2 mt-5">
-            <h2 class="title is-2 has-text-centered"><%= titulo %></h2> 
+            <h2 class="title is-2 has-text-centered"><%= titulo_grafica %></h2> 
             <div class="columns is-centered">
                 <div class="column is-8">
                     <div class="box grafica">
@@ -94,6 +113,9 @@
                     <% } %>
                 </div>
             </div>
+            <div class="hide-before-print">
+                <p> owo</p>
+            </div>
 
             <div class="container">
                 <div class="columns is-centered is-fullwidth mt-3 no-imprimir">
@@ -102,7 +124,7 @@
                             <div class="columns is-mobile">
                                 <div class="column">
                                     <a href="/crea-grafica" class="button is-info is-fullwidth no-imprimir">Crear nueva gráfica</a>
-                                </div>
+                                </div>                            
                             </div>
                         </div>
                     </div>

@@ -113,27 +113,5 @@
     align-items: center; 
 }
 
-.no-visible{
-    display: none;
-}
 
-/* Oculta los elementos que no quieres imprimir */
-@media print {
-    .no-imprimir {
-    display: none !important;
-    }
-}
 
-/* Oculta los elementos que no quieres imprimir */
-@media print {
-    .imprimir {
-    display: block !important;
-    }
-}
-
-@media print {
-    .container2 {
-      width: 100%; /* Reducir el ancho de la gráfica para que se ajuste mejor a la página impresa */
-      margin: 0 auto; /* Centrar la gráfica en la página impresa */
-    }
-}
