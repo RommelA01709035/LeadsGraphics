@@ -135,6 +135,21 @@ module.exports = class Leads {
             const [dia, mes, año] = fechaCSV.split('/');
             return `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
         }
+
+        // Función para convertir hora de CSV al formato de MySQL
+        function convertirHora(horaCSV) {
+            if (!horaCSV) {
+
+                // Si la hora es nula o no está definida, devolver null
+                return null;
+            }
+
+            // Dividir la hora en partes (horas, minutos y segundos)
+            const [hora, minuto, segundo] = horaCSV.split(':');
+
+            // Formatear la hora a HH:MM:SS
+            return `${hora.padStart(2, '0')}:${minuto.padStart(2, '0')}:${segundo.padStart(2, '0')}`;
+        }
         
         try {
             
@@ -143,12 +158,9 @@ module.exports = class Leads {
                 headers: true,
             }))
             .on('headers', (headers) => {
-                /*
-                console.log('Nombres de columna del CSV:', headers);
-                console.log('Mapeo de columnas:', columnMapping);
-                */
 
-                const firstRow = headers[0]; // Obtener la primera fila de encabezados
+                // Obtener la primera fila de encabezados
+                const firstRow = headers[0];
                 
                 // Arreglo de los encabezados CSV esperados
                 const expectedHeaders = Object.keys(columnMapping);
@@ -165,24 +177,27 @@ module.exports = class Leads {
             .on('data', async(row) => {
                 try{
                     console.log('Fila del CSV:', row);
-                    //console.log('Mapeo de columnas:', columnMapping);
                 
                     // Convertir valores "Si" y "No" a 1 y 0 respectivamente
                     for (const key in row) {
-                        //console.log(`Valor de ${key} después de la conversión:`, row[key]);
-                        if (row[key] === 'No' || row[key] === 'false') {
-                            row[key] = 0;
-                            
+                        if (row[key] === 'No' || 
+                            row[key] === 'NO' || 
+                            row[key] === 'false' || 
+                            row[key] === 'FALSE') {
+
+                            row[key] = '0';
                         } 
-                        else if (row[key] === 'Si' || row[key] === 'true') {
-                            row[key] = 1;
+                        else if (row[key] === 'Si' ||
+                                row[key] === 'SI' || 
+                                row[key] === 'true' ||
+                                row[key] === 'TRUE') {
+                            row[key] = '1';
                         }                       
                         else if (row[key] === '') {
+                            
                             // Manejar campos vacíos asignando un valor predeterminado para la db
                             row[key] = null;
                         }
-                        
-
                         console.log(`Valor de ${key} después de la conversión:`, row[key]);
                     }
 
@@ -190,18 +205,22 @@ module.exports = class Leads {
                     console.log('Fila del CSV después de la conversión:', row);
 
 
-                    // Convertir las fechas al formato MySQL
+                    // Convertir las fechas al formato MySQL DATE
                     const fechaCreado = convertirFecha(row[columnMapping['Creado']]);
-                    //console.log('Fecha de creado después de la conversión:', fechaCreado);
 
                     const fechaPrimerMensaje = convertirFecha(row[columnMapping['Fecha de primer mensaje']]);
-                    //console.log('Fecha de primer mensaje después de la conversión:', fechaPrimerMensaje);
 
                     const fechaUltimoMensaje = convertirFecha(row[columnMapping['Fecha de último mensaje']]);
-                    //console.log('Fecha de último mensaje después de la conversión:', fechaUltimoMensaje);
 
-                    //console.log('Mapeo de columnas:', columnMapping);
-                    //console.log('Encabezados del CSV:', Object.keys(row));
+                     // Convertir las horas al formato MySQL TIME
+                    const HoraCreado = convertirHora(row[columnMapping['Hora de creación']]);
+
+                    const HoraPrimerMensaje = convertirHora(row[columnMapping['Hora del primer mensaje']]);
+
+                    const HoraUltimoMensaje = convertirHora(row[columnMapping['Hora de último mensaje']]);
+
+                    console.log('Mapeo de columnas:', columnMapping);
+                    console.log('Encabezados del CSV:', Object.keys(row));
                     
                     // Crear una instancia de Leads con los datos de la fila del CSV
                     const lead = {
@@ -231,7 +250,6 @@ module.exports = class Leads {
 
                     };
 
-                    
                     // Guardar lead en la base de datos con consulta de sql
                     const query = `
                     INSERT INTO leads 
@@ -249,12 +267,12 @@ module.exports = class Leads {
                         lead.Etiqueta, 
                         lead.Compania, 
                         fechaCreado, 
-                        lead.Hora_Creacion, 
+                        HoraCreado, 
                         fechaPrimerMensaje, 
-                        lead.Hora_Primer_Mensaje, 
+                        HoraPrimerMensaje, 
                         lead.Primer_Mensaje, 
                         fechaUltimoMensaje, 
-                        lead.Hora_Ultimo_Mensaje, 
+                        HoraUltimoMensaje, 
                         lead.Ultimo_Mensaje, 
                         lead.Estatus, 
                         lead.Estado_Lead, 
@@ -269,7 +287,6 @@ module.exports = class Leads {
                     
                     //console.log('Query:', query);
                     console.log('Values:', values);
-
 
                     console.log('lead guardado correctamente: ', lead);
 
