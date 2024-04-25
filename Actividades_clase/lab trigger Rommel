@@ -1,0 +1,20 @@
+
+-- Creo una tabla nueva no recuerdo como estaba cuando la hicimos
+CREATE TABLE bitacora (
+    fecha DATE ,
+    descripcion VARCHAR(255)
+);
+
+-- Hago mi trigger registrar un 
+-- nuevo proveedor
+
+DELIMITER //
+
+CREATE TRIGGER registro_nuevo_proveedor AFTER INSERT ON proveedores
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora (fecha, descripcion) VALUES (CURDATE(), 'Se añadió un proveedor');
+END;
+//
+
+DELIMITER ;
