@@ -27,8 +27,9 @@ exports.getUsuarioPage = async (request, response, next) => {
 exports.buscarUsuario = async (request, response, next) => {
     try {
         const nombre = request.params.nombre || '';
-        const usuarios = await Usuario.buscarPorNombre(nombre);
+        const usuarios = await Usuario.buscarPorNombreDeUsuario(nombre);
 
+        
         // Agrega este log para imprimir los datos encontrados
         console.log('Datos de usuarios encontrados:', usuarios);
 

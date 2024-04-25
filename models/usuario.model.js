@@ -1,5 +1,6 @@
 const db = require('../util/database');
 const bcrypt = require('bcryptjs');
+const pool = require('../util/database'); // Importa el módulo pool desde tu archivo de configuración de base de datos
 
 module.exports = class Usuario {
 
@@ -51,7 +52,7 @@ module.exports = class Usuario {
         }
     }
 
-    static async buscarPorNombre(nombre) {
+    static async buscarPorNombreDeUsuario(nombre) {
         try {
             const query = `
             SELECT *

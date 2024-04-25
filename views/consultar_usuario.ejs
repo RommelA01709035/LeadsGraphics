@@ -124,14 +124,14 @@
                                                     <!-- Botones de acción -->
                                                     <div class="buttons">
                                                         <% if (usuario) { %>
-                                                            <!-- Botón para modificar el usuario 
-                                                            <a href="/importar/modificar-usuario/<%= usuario._IDUsuario %>" class="button is-info">Modificar usuario</a>-->
-                                                            <a href=""> funciona aqui modificar usuario</a>
+                                                            <a href="/usuario/modificar-usuario/<%= usuario._IDUsuario %>" class="button is-info">Modificar usuario</a>
+                                                            
                                                         <% } else { %>
                                                             <!-- Si no se encuentra el usuario -->
                                                             <p>usuario no encontrado</p>
                                                         <% } %>
-                                                        <button class="button is-danger" onclick="confirmDelete(<%= usuario.IDUsuario %>)">Eliminar usuario</button>
+                                                            
+                                                        <a class="button is-danger" href="/usuario/modificar-usuario/<%= usuario._IDUsuario %>" onclick="confirmDelete(<%= usuario.IDUsuario %>)">Eliminar usuario</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -152,7 +152,7 @@
             const valor_busqueda = document.getElementById('buscar').value;
 
             // Realizar la solicitud AJAX
-            fetch(`/importar/buscar/${encodeURIComponent(valor_busqueda)}`, {
+            fetch(`/usuarios/buscar/${encodeURIComponent(valor_busqueda)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -170,8 +170,8 @@
                               
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/importar/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
-                            <button class="button is-danger" onclick="confirmDelete('${usuario.IDUsuario}')">Eliminar usuario</button>
+                            <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                            <button class="button is-danger mt-2" onclick="confirmDelete('${usuario.IDUsuario}')">Eliminar usuario</button>
                         </td>
                     </tr>`).join('');
                 document.getElementById('respuesta_ajax').innerHTML = `
@@ -198,7 +198,7 @@
     </script>
     
     <script>
-        function confirmDelete(_IDUsuario) {
+        function confirmDelete(IDUsuario) {
             Swal.fire({
                 title: "¿Estás seguro?",
                 text: "¡No podrás revertir esto!",
@@ -211,7 +211,8 @@
                 if (result.isConfirmed) {
                     //document.getElementById("deleteForm_" + _IDUsuario).submit();
                     console.log('Eliminar usuario ha sido seleccionado');
-                    eliminar(_IDUsuario);
+                    console.log('usuario a eliminar', IDUsuario);
+                    eliminar(IDUsuario);
                 }
             });
         }
@@ -232,14 +233,14 @@
             });
         });
 
-        const eliminar = (_IDUsuario) => {
-            console.log('usuario a eliminar', _IDUsuario);
+        const eliminar = (IDUsuario) => {
+            console.log('usuario a eliminar', IDUsuario);
 
             const csrf = document.getElementById('_csrf').value;
             const valor_busqueda = document.getElementById('buscar').value;
 
             // Realizar la solicitud de eliminacion de usuario
-            fetch('/importar/eliminar-usuario', {
+            fetch('/usuarios/delete-usuario', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -247,8 +248,10 @@
                 },
                 body: JSON.stringify({_IDUsuario: _IDUsuario}) // Para enviar JSON al body
             }).then(result => {
+
                 return result.json();
             }).then(data => {
+                console.log("Desactivar usuario" + _IDUsuario)
                 console.log(data);
                 // Procesar la respuesta y actualizar el DOM
                 const respuestaHtml = data.usuarios.map(usuario => `
@@ -260,7 +263,7 @@
                               
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/importar/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                            <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
                             <button class="button is-danger" onclick="confirmDelete('${usuario.IDUsuario}')">Eliminar usuario</button>
                         </td>
                     </tr>`).join('');
