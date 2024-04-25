@@ -28,6 +28,7 @@ module.exports = class Leads {
         this.Fecha_Ultimo_Mensaje = data.Fecha_Ultimo_Mensaje;
         this.Hora_Ultimo_Mensaje = data.Hora_Ultimo_Mensaje;
         this.Ultimo_Mensaje = data.Ultimo_Mensaje;
+        this.Estatus = data.Estatus;
         this.Estado_Lead = data.Estado_Lead;
         this.Seller_Asignado = data.Seller_Asignado;
         this.Embudo = data.Embudo;
@@ -94,72 +95,190 @@ module.exports = class Leads {
 
     static async importar(filePath) {
         const results = [];
-        try {
 
-            // Mapeo de nombres de columnas entre el CSV y la base de datos
-            const columnMapping = {
+        // Definir un mapa para mapear nombres de columna del CSV a nombres de columna de la base de datos
+        const columnMapping = {
 
-                // 'NombreEnCSV': 'NombreEnDB'
-                'Teléfono': 'Telefono',
-                'Valor $': 'Valor',
-                'Etiquetas': 'Etiqueta',
-                'Compañia': 'Compania',
+            // Encabezado en CSV: Encabezado en MySQL
+            'Telefono': '_0',
+            'Nombre': '_1',
+            'Valor $': '_2',
+            'Ganado': '_3',
+            'Correo': '_4',
+            'Etiqueta': '_5',
+            'Compania': '_6',
+            'Creado': '_7',
+            'Hora de creación': '_8',
+            'Fecha de primer mensaje': '_9',
+            'Hora del primer mensaje': '_10',
+            'Primer mensaje': '_11',
+            'Fecha de último mensaje': '_12',
+            'Hora de último mensaje': '_13',
+            'Último mensaje': '_14',
+            'Status': '_15',
+            'Estado de Lead': '_16',
+            'Asignado a': '_17',
+            'Embudo': '_18',
+            'Etapa': '_19',
+            'Archivado': '_20',
+            'Creado manualmente': '_21',
 
+        }
+
+        // Función para convertir fecha de CSV al formato de MySQL
+        function convertirFecha(fechaCSV) {
+            if (!fechaCSV) {
+
+                // Si la fecha es undefined o null, devolver null
+                return null;
             }
-
-            // Leer archivo CSV y procesar cada fila
+            const [dia, mes, año] = fechaCSV.split('/');
+            return `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+        }
+        
+        try {
+            
             fs.createReadStream(filePath)
-                .pipe(csvParser())
-                .on('data', async(row) => {
-                    try{
+            .pipe(csvParser({
+                headers: true,
+            }))
+            .on('headers', (headers) => {
+                /*
+                console.log('Nombres de columna del CSV:', headers);
+                console.log('Mapeo de columnas:', columnMapping);
+                */
 
-                        // Crear una instancia de Leads con los datos de la fila del CSV
-                        const lead = new Leads({
-                            IDWorkspace: 1,
-                            Telefono: row.Telefono,
-                            Nombre: row.Nombre,
-                            Valor: row.Valor,
-                            Ganado: row.Ganado,
-                            Correo: row.Correo,
-                            Etiqueta: row.Etiqueta,
-                            Compania: row.Compania,
-                            Creado: row.Creado,
-                            Hora_Creacion: row.Hora_Creacion,
-                            Fecha_Primer_Mensaje: row.Fecha_Primer_Mensaje,
-                            Hora_Primer_Mensaje: row.Hora_Primer_Mensaje,
-                            Primer_Mensaje: row.Primer_Mensaje,
-                            Fecha_Ultimo_Mensaje: row.Fecha_Ultimo_Mensaje,
-                            Hora_Ultimo_Mensaje: row.Hora_Ultimo_Mensaje,
-                            Ultimo_Mensaje: row.Ultimo_Mensaje,
-                            Estado_Lead: row.Estado_Lead,
-                            Seller_Asignado: row.Seller_Asignado,
-                            Embudo: row.Embudo,
-                            Etapa: row.Etapa,
-                            Archivado: row.Archivado,
-                            Creado_Manualmente: row.Creado_Manualmente,
+                const firstRow = headers[0]; // Obtener la primera fila de encabezados
+                
+                // Arreglo de los encabezados CSV esperados
+                const expectedHeaders = Object.keys(columnMapping);
 
-                        });
+                // Comprobar si los encabezados de la primera fila coinciden con los esperados
+                const areHeadersMatching = expectedHeaders.every(header => firstRow.includes(header));
 
-                        // Guardar lead en la base de datos
-                        await db.execute(
-                            `INSERT INTO leads 
-                            (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                            [
-                                this.IDWorkspace, this.Telefono, this.Nombre, this.Valor, this.Ganado, this.Correo, 
-                                this.Etiqueta, this.Compania, this.Fecha_Primer_Mensaje, this.Hora_Primer_Mensaje, this.Primer_Mensaje, 
-                                this.Fecha_Ultimo_Mensaje, this.Hora_Ultimo_Mensaje, this.Ultimo_Mensaje, this.Estado_Lead, 
-                                this.Seller_Asignado, this.Embudo, this.Etapa, this.Archivado, this.Creado_Manualmente
-                            ]
-                        )
-                        console.log('lead guardado correctamente: ', lead);
+                // Determinar si se debe omitir la primera línea
+                const skipLines = areHeadersMatching ? 1 : 0;
 
-                        // Agregar el Lead importado a los resultados
-                        results.push(lead);
+                // Imprimirá 1 si los encabezados coinciden, de lo contrario, imprimirá 0
+                console.log('skipLines:', skipLines);
+            })
+            .on('data', async(row) => {
+                try{
+                    console.log('Fila del CSV:', row);
+                    //console.log('Mapeo de columnas:', columnMapping);
+                
+                    // Convertir valores "Si" y "No" a 1 y 0 respectivamente
+                    for (const key in row) {
+                        //console.log(`Valor de ${key} después de la conversión:`, row[key]);
+                        if (row[key] === 'No' || row[key] === 'false') {
+                            row[key] = 0;
+                            
+                        } 
+                        else if (row[key] === 'Si' || row[key] === 'true') {
+                            row[key] = 1;
+                        }                       
+                        else if (row[key] === '') {
+                            // Manejar campos vacíos asignando un valor predeterminado para la db
+                            row[key] = null;
+                        }
+                        
 
-                    } catch (error) {
-                        console.log('Error al insertar lead', error);
+                        console.log(`Valor de ${key} después de la conversión:`, row[key]);
                     }
+
+                    
+                    console.log('Fila del CSV después de la conversión:', row);
+
+
+                    // Convertir las fechas al formato MySQL
+                    const fechaCreado = convertirFecha(row[columnMapping['Creado']]);
+                    //console.log('Fecha de creado después de la conversión:', fechaCreado);
+
+                    const fechaPrimerMensaje = convertirFecha(row[columnMapping['Fecha de primer mensaje']]);
+                    //console.log('Fecha de primer mensaje después de la conversión:', fechaPrimerMensaje);
+
+                    const fechaUltimoMensaje = convertirFecha(row[columnMapping['Fecha de último mensaje']]);
+                    //console.log('Fecha de último mensaje después de la conversión:', fechaUltimoMensaje);
+
+                    //console.log('Mapeo de columnas:', columnMapping);
+                    //console.log('Encabezados del CSV:', Object.keys(row));
+                    
+                    // Crear una instancia de Leads con los datos de la fila del CSV
+                    const lead = {
+                        IDWorkspace: 1,
+                        Telefono: row[columnMapping['Telefono']] || null,
+                        Nombre: row[columnMapping['Nombre']] || null,
+                        Valor: row[columnMapping['Valor $']] || null,
+                        Ganado: row[columnMapping['Ganado']] || null,
+                        Correo: row[columnMapping['Correo']] || null,
+                        Etiqueta: row[columnMapping['Etiquetas']] || null,
+                        Compania: row[columnMapping['Compañia']] || null,
+                        Creado: row[columnMapping['Creado']] || null,
+                        Hora_Creacion: row[columnMapping['Hora de creacion']] || null,
+                        Fecha_Primer_Mensaje: row[columnMapping['Fecha de primer mensaje']] || null,
+                        Hora_Primer_Mensaje: row[columnMapping['Hora de primer mensaje']] || null,
+                        Primer_Mensaje: row[columnMapping['Primer mensaje']] || null,
+                        Fecha_Ultimo_Mensaje: row[columnMapping['Fecha de último mensaje']] || null,
+                        Hora_Ultimo_Mensaje: row[columnMapping['Hora de último mensaje']] || null,
+                        Ultimo_Mensaje: row[columnMapping['Último mensaje']] || null,
+                        Estatus: row[columnMapping['Status']] || null,
+                        Estado_Lead: row[columnMapping['Estado de Lead']] || null,
+                        Seller_Asignado: row[columnMapping['Asignado a']] || null,
+                        Embudo: row[columnMapping['Embudo']] || null,
+                        Etapa: row[columnMapping['Etapa']] || null,
+                        Archivado: row[columnMapping['Archivado']] || null,
+                        Creado_Manualmente: row[columnMapping['Creado manualmente']] || null,
+
+                    };
+
+                    
+                    // Guardar lead en la base de datos con consulta de sql
+                    const query = `
+                    INSERT INTO leads 
+                    (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Creado, Hora_Creacion, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estatus, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `;
+                    
+                    const values = [
+                        lead.IDWorkspace, 
+                        lead.Telefono, 
+                        lead.Nombre, 
+                        lead.Valor, 
+                        lead.Ganado, 
+                        lead.Correo, 
+                        lead.Etiqueta, 
+                        lead.Compania, 
+                        fechaCreado, 
+                        lead.Hora_Creacion, 
+                        fechaPrimerMensaje, 
+                        lead.Hora_Primer_Mensaje, 
+                        lead.Primer_Mensaje, 
+                        fechaUltimoMensaje, 
+                        lead.Hora_Ultimo_Mensaje, 
+                        lead.Ultimo_Mensaje, 
+                        lead.Estatus, 
+                        lead.Estado_Lead, 
+                        lead.Seller_Asignado, 
+                        lead.Embudo, 
+                        lead.Etapa, 
+                        lead.Archivado, 
+                        lead.Creado_Manualmente
+                    ];
+                    
+                    await db.execute(query, values);
+                    
+                    //console.log('Query:', query);
+                    console.log('Values:', values);
+
+
+                    console.log('lead guardado correctamente: ', lead);
+
+                    // Agregar el Lead importado a los resultados
+                    results.push(lead);
+                    
+                } catch (error) {
+                    console.log('Error al insertar lead', error);
+                }
             }).on('end', () => {
                 console.log('Todos los datos del CSV se han insertado en la base de datos.');
             });

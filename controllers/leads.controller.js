@@ -14,10 +14,11 @@ exports.getImportar = async (request, response, next) => {
         console.error('Error cargar:', error);
         response.status(500).send('Error al cargar');
     }
-}
+};
 
 // Controlador para manejar la importacion de archivo CSV
 exports.postImportar = async (request, response, next) => {
+    let filePath;
     try {
         console.log('hiciste postImportar')
 
@@ -32,20 +33,12 @@ exports.postImportar = async (request, response, next) => {
         } 
 
         // Obtener la ruta del archivo subido
-        const filePath = request.csvFile.path;
-        console.log('Archivo subido: ', request.csvFile);
+        const filePath = request.file.path;
+        console.log(filePath);
+        console.log('Archivo subido: ', request.file);
 
         // Importar los datos del archivo csv
         const importarLeads = await Leads.importar(filePath)
-
-        // Eliminar el archivo subido después de la importación
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('Error al eliminar el archivo: ', err);
-            } else {
-                console.log('Archivo eliminado con éxito: ', filePath);
-            }
-        });
 
         if(importarLeads.length > 0){
             return response.status(200).json({
@@ -64,8 +57,20 @@ exports.postImportar = async (request, response, next) => {
             success: false, 
             message: 'Error al subir el archivo',
         });
+    } finally {
+        
+        // Eliminar el archivo importado del directorio uploads
+        if(filePath){
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error al eliminar el archivo: ', err);
+                } else {
+                    console.log('Archivo eliminado con éxito: ', filePath);
+                }
+            });
+        }
     }
-}
+};
 
 exports.getLeadsPage = async (request, response, next) => {
     try {
