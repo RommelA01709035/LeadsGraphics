@@ -106,7 +106,7 @@ module.exports = class Leads {
             'Ganado': '_3',
             'Correo': '_4',
             'Etiquetas': '_5',
-            'Compania': '_6',
+            'Compañia': '_6',
             'Creado': '_7',
             'Hora de creación': '_8',
             'Fecha de primer mensaje': '_9',
@@ -162,6 +162,8 @@ module.exports = class Leads {
         }
 
         try {
+
+            let isFirstRow = true; // Variable para controlar si es la primera fila
             
             fs.createReadStream(filePath)
             .pipe(csvParser({
@@ -178,31 +180,33 @@ module.exports = class Leads {
                 // Comprobar si los encabezados de la primera fila coinciden con los esperados
                 const areHeadersMatching = expectedHeaders.every(header => firstRow.includes(header));
 
-                // Determinar si se debe omitir la primera línea
-                const skipLines = areHeadersMatching ? 1 : 0;
+                // Si los encabezados coinciden, omitir la primera fila durante la inserción
+                if (areHeadersMatching) {
+                    isFirstRow = false;
+                } else {
+                    isFirstRow = true;
+                }
 
-                // Imprimirá 1 si los encabezados coinciden, de lo contrario, imprimirá 0
-                //console.log('skipLines:', skipLines);
             })
             .on('data', async(row) => {
+                // Verificamos si es la primera fila y la omitimos
+                if (isFirstRow) {
+                    isFirstRow = false;
+                    return;
+                }
                 try{
                     //console.log('Fila del CSV:', row);
                 
                     // Convertir valores "Si" y "No" a 1 y 0 respectivamente
                     for (const key in row) {
-                        if (row[key] === 'No' || 
-                            row[key] === 'NO' || 
-                            row[key] === 'false' || 
+                        if (row[key] === 'false' || 
                             row[key] === 'FALSE') {
-
                             row[key] = '0';
                         } 
-                        else if (row[key] === 'Si' ||
-                                row[key] === 'SI' || 
-                                row[key] === 'true' ||
+                        else if (row[key] === 'true' ||
                                 row[key] === 'TRUE') {
                             row[key] = '1';
-                        }                       
+                        }
                         else if (row[key] === '') {
                             
                             // Manejar campos vacíos asignando un valor predeterminado para la db
@@ -228,6 +232,13 @@ module.exports = class Leads {
                     const HoraPrimerMensaje = convertirHora(row[columnMapping['Hora del primer mensaje']]);
 
                     const HoraUltimoMensaje = convertirHora(row[columnMapping['Hora de último mensaje']]);
+
+                    // Convertir cadenas al formato numerico en SQL
+                    const valorRaw = row[columnMapping['Valor $']];
+                    const valor = valorRaw === '0' ? 0 : parseFloat(valorRaw) || null;
+
+                    const ganadoRaw = row[columnMapping['Ganado']];
+                    const ganado = ganadoRaw === '0' ? 0 : parseInt(ganadoRaw) || null;
 
                     //console.log('Mapeo de columnas:', columnMapping);
                     //console.log('Encabezados del CSV:', Object.keys(row));
@@ -271,8 +282,8 @@ module.exports = class Leads {
                         lead.IDWorkspace, 
                         lead.Telefono, 
                         lead.Nombre, 
-                        lead.Valor, 
-                        lead.Ganado, 
+                        valor, 
+                        ganado, 
                         lead.Correo, 
                         lead.Etiqueta, 
                         lead.Compania, 

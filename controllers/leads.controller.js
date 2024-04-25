@@ -41,37 +41,20 @@ exports.postImportar = async (request, response, next) => {
         // Importar los datos del archivo csv
         const importarLeads = await Leads.importar(filePath)
 
-        if(importarLeads.length > 0){
+        
+        // Eliminar el archivo importado del directorio uploads
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error al eliminar el archivo: ', err);
+            } else {
+                console.log('Archivo eliminado con éxito: ', filePath);
+            }
+        });
 
-            // Eliminar el archivo importado del directorio uploads
-            fs.unlink(filePath, (err) => {
-                if (err) {
-                    console.error('Error al eliminar el archivo: ', err);
-                } else {
-                    console.log('Archivo eliminado con éxito: ', filePath);
-                }
-            });
-
-            return response.status(200).json({
-                success: true, 
-                message: 'Archivo subido correctamente',
-            });
-        } else {
-
-            // Eliminar el archivo importado del directorio uploads
-            fs.unlink(filePath, (err) => {
-                if (err) {
-                    console.error('Error al eliminar el archivo: ', err);
-                } else {
-                    console.log('Archivo eliminado con éxito: ', filePath);
-                }
-            });
-
-            return response.status(400).json({
-                success: false, 
-                message: 'Error al importar los datos del archivo CSV',
-            });
-        }
+        return response.status(200).json({
+            success: true, 
+            message: 'Archivo subido correctamente',
+        });
     } catch (error) {
         console.error('Error al subir el archivo: ', error);
         response.status(500).json({
