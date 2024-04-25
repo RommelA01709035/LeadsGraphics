@@ -273,9 +273,7 @@ module.exports = class Leads {
 
                     // Guardar lead en la base de datos con consulta de sql
                     const query = `
-                    INSERT INTO leads 
-                    (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Creado, Hora_Creacion, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estatus, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+                    CALL InsertarDeCSV (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
                     `;
                     
                     const values = [
