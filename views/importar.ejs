@@ -52,9 +52,10 @@
 
         .notification-container {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
             z-index: 1000; 
         }
 
@@ -85,7 +86,7 @@
                     </div>
 
                     <div class="columns is-centered">
-                        <div class="column is-half centered-form ">
+                        <div class="column is-three-quarters centered-form ">
                             <div class="box content-box has-text-centered">
                                 <div class="columns is-centered">
                                     <div class="column is-narrow">
@@ -124,9 +125,9 @@
                 </section>
             </div>
         </div>
-        <div class="notification-container mb-4">
-            <div id="message-container"></div>
-        </div>
+    </div>
+    <div class="notification-container mb-4 is-fixed-bottom is-right">
+        <div id="message-container"></div>
     </div>
 
     <script>
@@ -183,18 +184,34 @@
                 if(data.success){
                     messageContainer.innerHTML = `
                         <div class="notification is-success">
-                            <button class="delete"></button>
                             ${data.message}
+                            <button class="delete" aria-label="delete"></button>
                         </div>
                     `;
                 } else {
                     messageContainer.innerHTML = `
                         <div class="notification is-danger">
-                            <button class="delete"></button>
                             ${data.message}
+                            <button class="delete" aria-label="delete"></button>
                         </div>
                     `;
                 }
+
+                // Obtener las notificaciones actualizadas después de la inserción de los botones de cerrar
+                const notifications = document.querySelectorAll('.notification');
+
+                // Agregar el evento de clic para eliminar manualmente las notificaciones
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
+                });
             })
             .catch(error => {
                 console.error('Error al enviar la solicitud:', error);
