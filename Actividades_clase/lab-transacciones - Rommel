@@ -1,0 +1,19 @@
+START TRANSACTION;
+-- Esta transacción es para cuando se haga un proyecto
+-- de cierto tipo ya se hayan apartado los materiales 
+-- NOTA: := es para asignación el = para comparar
+
+SET @numero_proyecto := (SELECT MAX(numero) FROM proyectos) + 1;
+
+INSERT INTO proyectos (numero, denominacion) VALUES (@numero_proyecto, 'Proyecto Casa');
+
+INSERT INTO entregan (clave, rfc, numero, fecha, cantidad) 
+VALUES 
+    (1070, 'AAAA800101', @numero_proyecto, NOW(), 50),
+    (1080, 'BBBB800101', @numero_proyecto, NOW(), 100),
+    (1230, 'CCCC800101', @numero_proyecto, NOW(), 75);
+
+SET @numero_proyecto := @numero_proyecto + 1;
+
+COMMIT;
+
