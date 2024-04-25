@@ -1,3 +1,4 @@
+
 const Usuario = require('../models/usuario.model');
 const loginController = require('../controllers/login.controller');
 const Historial = require('../models/historial.model');
@@ -5,11 +6,11 @@ const Historial = require('../models/historial.model');
 
 exports.getUsuarioPage = async (request, response, next) => {
     try {
-        const [usuario, fieldData] = await Usuario.fetchAll();
-        console.log(usuario);
+        const [usuarios, fieldData] = await Usuario.fetchAll();
+        console.log(usuarios);
 
         response.render('consultar_usuario', { 
-            usuario: usuario,
+            usuarios: usuarios,
             message: false, 
             username: request.session.username || '',
             csrfToken: request.csrfToken()
@@ -20,6 +21,21 @@ exports.getUsuarioPage = async (request, response, next) => {
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
         response.status(500).send('Error al obtener usuarios');
+    }
+};
+
+exports.buscarUsuario = async (request, response, next) => {
+    try {
+        const nombre = request.params.nombre || '';
+        const usuarios = await Usuario.buscarPorNombre(nombre);
+
+        // Agrega este log para imprimir los datos encontrados
+        console.log('Datos de usuarios encontrados:', usuarios);
+
+        response.status(200).json(usuarios);
+    } catch (error) {
+        console.error('Error al buscar usuarios:', error);
+        response.status(500).json({ error: 'Ocurrió un error al buscar usuarios' });
     }
 };
 
