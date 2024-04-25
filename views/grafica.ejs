@@ -98,6 +98,8 @@
         
         <div class="container2 mt-5">
             <h2 class="title is-2 has-text-centered"><%= titulo_grafica %></h2> 
+          
+            
             <div id="legendContainer"></div>
 
             <div class="columns is-centered">
@@ -128,7 +130,10 @@
                             <div class="columns is-mobile">
                                 <div class="column">
                                     <a href="/crea-grafica" class="button is-info is-fullwidth no-imprimir">Crear nueva gráfica</a>
-                                </div>                            
+                                </div>   
+                                <div>
+                                    <button onclick="window.print()"> imprimir</button>
+                                </div>                         
                             </div>
                         </div>
                     </div>
