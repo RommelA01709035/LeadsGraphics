@@ -86,7 +86,7 @@
 
                     <div class="columns is-centered">
                         <div class="column is-half centered-form ">
-                            <div class="box content-box">
+                            <div class="box content-box has-text-centered">
                                 <div class="columns is-centered">
                                     <div class="column is-narrow">
                                         <figure class="image is-128x128">
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
 
-                                <p>Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación</p><br>
+                                <p>Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación. Es importante que el archivo cuente on encabezados</p><br>
                                 <p>Una vez que hayas importado el archivo, puedes consultar por medio del apartado de consulta.</p>
                                 <form action="/importar" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
