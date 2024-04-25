@@ -166,8 +166,12 @@
                     'Content-Type': 'application/json',
                 }
             }).then((result) => {
-                return result.json(); // Convertir la respuesta a JSON
+
+                // Convertir la respuesta a JSON
+                return result.json(); 
+                
             }).then((data) => {
+
                 // Procesar la respuesta y actualizar el DOM
                 const respuestaHtml = data.map(lead => `
                     <tr>
