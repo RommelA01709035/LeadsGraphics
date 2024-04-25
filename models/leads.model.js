@@ -105,7 +105,7 @@ module.exports = class Leads {
             'Valor $': '_2',
             'Ganado': '_3',
             'Correo': '_4',
-            'Etiqueta': '_5',
+            'Etiquetas': '_5',
             'Compania': '_6',
             'Creado': '_7',
             'Hora de creación': '_8',
@@ -132,8 +132,13 @@ module.exports = class Leads {
                 // Si la fecha es undefined o null, devolver null
                 return null;
             }
-            const [dia, mes, año] = fechaCSV.split('/');
-            return `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+            const [dia, mes, anio] = fechaCSV.split('/');
+            if(!dia || !mes || !anio) {
+
+                // Si falta algun componente de la fecha, devolver null
+                return null;
+            }
+            return `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
         }
 
         // Función para convertir hora de CSV al formato de MySQL
@@ -146,11 +151,16 @@ module.exports = class Leads {
 
             // Dividir la hora en partes (horas, minutos y segundos)
             const [hora, minuto, segundo] = horaCSV.split(':');
+            if(!hora || !minuto || !segundo) {
+
+                // Si falta algun componente de la hora, devolver null
+                return null;
+            }
 
             // Formatear la hora a HH:MM:SS
             return `${hora.padStart(2, '0')}:${minuto.padStart(2, '0')}:${segundo.padStart(2, '0')}`;
         }
-        
+
         try {
             
             fs.createReadStream(filePath)
@@ -172,11 +182,11 @@ module.exports = class Leads {
                 const skipLines = areHeadersMatching ? 1 : 0;
 
                 // Imprimirá 1 si los encabezados coinciden, de lo contrario, imprimirá 0
-                console.log('skipLines:', skipLines);
+                //console.log('skipLines:', skipLines);
             })
             .on('data', async(row) => {
                 try{
-                    console.log('Fila del CSV:', row);
+                    //console.log('Fila del CSV:', row);
                 
                     // Convertir valores "Si" y "No" a 1 y 0 respectivamente
                     for (const key in row) {
@@ -198,11 +208,11 @@ module.exports = class Leads {
                             // Manejar campos vacíos asignando un valor predeterminado para la db
                             row[key] = null;
                         }
-                        console.log(`Valor de ${key} después de la conversión:`, row[key]);
+                        //console.log(`Valor de ${key} después de la conversión:`, row[key]);
                     }
 
                     
-                    console.log('Fila del CSV después de la conversión:', row);
+                    //console.log('Fila del CSV después de la conversión:', row);
 
 
                     // Convertir las fechas al formato MySQL DATE
@@ -219,8 +229,8 @@ module.exports = class Leads {
 
                     const HoraUltimoMensaje = convertirHora(row[columnMapping['Hora de último mensaje']]);
 
-                    console.log('Mapeo de columnas:', columnMapping);
-                    console.log('Encabezados del CSV:', Object.keys(row));
+                    //console.log('Mapeo de columnas:', columnMapping);
+                    //console.log('Encabezados del CSV:', Object.keys(row));
                     
                     // Crear una instancia de Leads con los datos de la fila del CSV
                     const lead = {
@@ -254,7 +264,7 @@ module.exports = class Leads {
                     const query = `
                     INSERT INTO leads 
                     (IDWorkspace, Telefono, Nombre, Valor, Ganado, Correo, Etiqueta, Compania, Creado, Hora_Creacion, Fecha_Primer_Mensaje, Hora_Primer_Mensaje, Primer_Mensaje, Fecha_Ultimo_Mensaje, Hora_Ultimo_Mensaje, Ultimo_Mensaje, Estatus, Estado_Lead, Seller_Asignado, Embudo, Etapa, Archivado, Creado_Manualmente) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
                     `;
                     
                     const values = [
@@ -286,9 +296,9 @@ module.exports = class Leads {
                     await db.execute(query, values);
                     
                     //console.log('Query:', query);
-                    console.log('Values:', values);
+                    //console.log('Values:', values);
 
-                    console.log('lead guardado correctamente: ', lead);
+                    //console.log('lead guardado correctamente: ', lead);
 
                     // Agregar el Lead importado a los resultados
                     results.push(lead);

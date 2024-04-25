@@ -1,5 +1,6 @@
 const { request, response } = require('express');
 const Leads = require('../models/leads.model');
+const fs = require('fs');
 const pool = require('../util/database');
 
 exports.getImportar = async (request, response, next) => {
@@ -41,11 +42,31 @@ exports.postImportar = async (request, response, next) => {
         const importarLeads = await Leads.importar(filePath)
 
         if(importarLeads.length > 0){
+
+            // Eliminar el archivo importado del directorio uploads
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error al eliminar el archivo: ', err);
+                } else {
+                    console.log('Archivo eliminado con éxito: ', filePath);
+                }
+            });
+
             return response.status(200).json({
                 success: true, 
                 message: 'Archivo subido correctamente',
             });
         } else {
+
+            // Eliminar el archivo importado del directorio uploads
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error al eliminar el archivo: ', err);
+                } else {
+                    console.log('Archivo eliminado con éxito: ', filePath);
+                }
+            });
+
             return response.status(400).json({
                 success: false, 
                 message: 'Error al importar los datos del archivo CSV',
@@ -57,19 +78,7 @@ exports.postImportar = async (request, response, next) => {
             success: false, 
             message: 'Error al subir el archivo',
         });
-    } finally {
-        
-        // Eliminar el archivo importado del directorio uploads
-        if(filePath){
-            fs.unlink(filePath, (err) => {
-                if (err) {
-                    console.error('Error al eliminar el archivo: ', err);
-                } else {
-                    console.log('Archivo eliminado con éxito: ', filePath);
-                }
-            });
-        }
-    }
+    } 
 };
 
 exports.getLeadsPage = async (request, response, next) => {
