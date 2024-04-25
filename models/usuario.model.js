@@ -24,8 +24,7 @@ module.exports = class Usuario {
         return bcrypt.hash(contrasena, 12)
             .then((contrasena_cifrada) => {
                 return db.execute(
-                    `INSERT INTO usuario (nombre_usuario, Correo, Celular, Contrasena, Habilitado) 
-                    VALUES (?, ?, ?, ?, 1);`,
+                    `SELECT RegistrarUsuarioYRol (?, ?, ?, ?) AS id`,
                     [nombre, correo, celular, contrasena_cifrada]
                 );
             })
@@ -33,15 +32,6 @@ module.exports = class Usuario {
                 console.log(error);
                 throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
             });
-    }
-
-    static asignarUsuarioRol(nombre, correo) {
-        
-        // Llamamos a la función almacenada para obtener el usuario y asignar el rol
-        return db.execute(
-            "CALL obtenerUsuarioYAsignarRol(?, ?, ?)",
-            [nombre, correo, 1]
-        );
     }
     
     static fetchAll() {
