@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const loginController = require('../controllers/login.controller');
 const Historial = require('../models/historial.model');
+const { request, response } = require('express');
 
 
 exports.getUsuarioPage = async (request, response, next) => {
@@ -107,3 +108,19 @@ exports.post_reactivate_Usuario = (request, response, next) => {
         response.status(500).json({ message: "Error al reactivar" });
     });
 };
+
+
+exports.get_preferencias = (request, response, next) => {
+    console.log('Ruta preferencias');
+    console.log(request.body);
+    //id = request.session.idUsuario;
+    //username = request.session.username;
+    //correo = request.session.email
+    //console.log(id);
+    //console.log(username);
+    //console.log(email);
+    response.render('preferencias', { 
+        username: request.session.username || '',
+        csrfToken: request.csrfToken()
+    });
+}

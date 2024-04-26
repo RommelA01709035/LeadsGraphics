@@ -56,6 +56,10 @@ module.exports = class Usuario {
         [username]);
     }
 
+    static fetchOneUser(id, username, correo){
+        return db.execute('SELECT * FROM usuario WHERE IDUsuario=? AND nombre_usuario=? AND Correo=?');
+    }
+
     static fetchEmail(email, password){
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
@@ -94,5 +98,5 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
 
-    
+
 }
