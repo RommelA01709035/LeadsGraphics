@@ -42,85 +42,26 @@ exports.buscarUsuario = async (request, response, next) => {
 
 
 
-exports.post_delete_Usuario = (request, response, next) => { 
-    console.log("Hiciste post delete");
-    const { nombre, id } = request.body;
-    console.log(nombre);
-    console.log(id);
+exports.desactivarUsuario = async (req, res) => {
+    const { usuarioId } = req.params;
 
-    Usuario.delete_logical_user(nombre, id)
-    .then(([rows, fieldData]) => {
-        const id_usuario = request.session.idUsuario;
-        console.log(id_usuario);
-
-        return Historial.insertRegistroHistorial(id_usuario, "Elimino a un Usuario")
-    })
-    .then(() => {
-        console.log("Se agregó el registro al historial");
-        return Usuario.fetchAll().then(([rows, fieldData]) => {
-            const usuarios = rows.map(row => ({
-                nombre_usuario: row.nombre_usuario, 
-                Correo: row.Correo,
-                Celular: row.Celular,
-                IDUsuario: row.IDUsuario,
-                Habilitado: row.Habilitado
-            }));
-            const message = `El usuario ${nombre} con ID ${id} ha sido eliminado correctamente.`;
-            response.render('consultar_usuario', { 
-                usuario: usuarios,
-                message: message,
-                csrfToken: request.csrfToken(),
-                username: request.session.username || '',
-                
-            });
-        })
-    })
-    
-    .catch(error => {
-        console.log(error);
-        response.status(500).json({ message: "Error al deshabilitar" });
-    });
+    try {
+        await Usuario.desactivar(usuarioId);
+        res.status(200).json({ message: 'Usuario desactivado exitosamente' });
+    } catch (error) {
+        console.error('Error al desactivar usuario:', error);
+        res.status(500).json({ error: 'Ocurrió un error al desactivar usuario' });
+    }
 };
 
-exports.post_reactivate_Usuario = (request, response, next) => {
-    console.log("Hiciste post reactive");
-    const { nombre, id } = request.body;
-    console.log(nombre);
-    console.log(id);
+exports.reactivarUsuario = async (req, res) => {
+    const { usuarioId } = req.params;
 
-    Usuario.reactivate_user(nombre, id)
-    .then(([rows, fieldData]) => {
-        const id_usuario = request.session.idUsuario;
-        console.log(id_usuario);
-
-        return Historial.insertRegistroHistorial(id_usuario, "Reactivo Usuario")
-    })
-    .then(([rows, fieldData]) => {
-
-        // Obtener los usuarios actualizados después de reactivar
-        return Usuario.fetchAll(); 
-    })
-    .then(([rows, fieldData]) => {
-        
-        // Renderizar la vista con los usuarios actualizados y el mensaje
-        const usuarios = rows.map(row => ({
-            nombre_usuario: row.nombre_usuario, 
-            Correo: row.Correo,
-            Celular: row.Celular,
-            IDUsuario: row.IDUsuario,
-            Habilitado: row.Habilitado
-        }));
-        const message = `El usuario ${nombre} con ID ${id} ha sido reactivado correctamente.`;
-        
-        response.render('consultar_usuario', { 
-            usuario: usuarios,
-            message: message,
-            csrfToken: request.csrfToken(),
-            username: request.session.username || ''
-        });
-    })
-    .catch(error => {
-        console.log(error);
-        response.status(500).json({ message: "Error al reactivar" });
-    });
+    try {
+        await Usuario.reactivar(usuarioId);
+        res.status(200).json({ message: 'Usuario reactivado exitosamente' });
+    } catch (error) {
+        console.error('Error al reactivar usuario:', error);
+        res.status(500).json({ error: 'Ocurrió un error al reactivar usuario' });
+    }
 };

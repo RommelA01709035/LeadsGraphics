@@ -124,14 +124,20 @@
                                                     <!-- Botones de acción -->
                                                     <div class="buttons">
                                                         <% if (usuario) { %>
-                                                            <a href="/usuario/modificar-usuario/<%= usuario._IDUsuario %>" class="button is-info">Modificar usuario</a>
+                                                            <a href="/usuario/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar usuario</a>
                                                             
                                                         <% } else { %>
-                                                            <!-- Si no se encuentra el usuario -->
                                                             <p>usuario no encontrado</p>
                                                         <% } %>
+                                                        
+                                                        <% if (usuario) { %>
+                                                            <a href="/usuario/desactivar/<%= usuario.IDUsuario %>" class="button is-info">Desactivar usuario</a>
                                                             
-                                                        <a class="button is-danger" href="/usuario/modificar-usuario/<%= usuario._IDUsuario %>" onclick="confirmDelete(<%= usuario.IDUsuario %>)">Eliminar usuario</a>
+                                                        <% } else { %>
+
+                                                            <a href="/usuario/reactivar/<%= usuario.IDUsuario %>" class="button is-info">Reactivar usuario</a>
+                                                        <% } %>
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -264,7 +270,7 @@
                         <td>
                             <!-- Botones de acción -->
                             <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
-                            <button class="button is-danger" onclick="confirmDelete('${usuario.IDUsuario}')">Eliminar usuario</button>
+                            <a href="/reactivate-usuario/${usuario.IDUsuario}" class="button is-success">Reactivar usuario</a>
                         </td>
                     </tr>`).join('');
                 document.getElementById('respuesta_ajax').innerHTML = `
@@ -320,6 +326,140 @@
                 console.log(err);
             });
         }
+
+      // Función para desactivar un usuario
+const desactivarUsuario = (usuarioId) => {
+    fetch(`/usuarios/desactivar/${usuarioId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((response) => {
+        if (response.ok) {
+            console.log('Usuario desactivado exitosamente');
+            // Actualizar la interfaz de usuario si es necesario
+        } else {
+            console.error('Error al desactivar usuario');
+            // Manejar errores si es necesario
+        }
+    }).catch((error) => {
+        console.error('Error de red:', error);
+        // Manejar errores de red si es necesario
+    });
+};
+
+// Función para reactivar un usuario
+const reactivarUsuario = (usuarioId) => {
+    fetch(`/usuarios/reactivar/${usuarioId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((response) => {
+        if (response.ok) {
+            console.log('Usuario reactivado exitosamente');
+            // Actualizar la interfaz de usuario si es necesario
+        } else {
+            console.error('Error al reactivar usuario');
+            // Manejar errores si es necesario
+        }
+    }).catch((error) => {
+        console.error('Error de red:', error);
+        // Manejar errores de red si es necesario
+    });
+};
+
+// Función para actualizar la tabla de usuarios con los datos proporcionados
+const actualizarTablaUsuarios = (data) => {
+    const usuarios = data.usuarios;
+    const message = data.message;
+
+    const tableBody = document.getElementById('respuesta_ajax');
+
+    // Construir el HTML de la tabla de usuarios
+    const html = usuarios.map(usuario => `
+        <tr>
+            <td>${usuario.nombre_usuario}</td>
+            <td>${usuario.Correo}</td>
+            <td>${usuario.Celular}</td>
+            <td>${usuario.IDUsuario}</td>
+            <td>
+                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                <button class="button is-danger" onclick="confirmDelete(${usuario.IDUsuario})">Eliminar usuario</button>
+            </td>
+        </tr>`
+    ).join('');
+
+    // Actualizar el contenido de la tabla de usuarios
+    tableBody.innerHTML = html;
+
+    // Mostrar mensaje si está presente
+    if (message) {
+        mostrarMensaje(message, 'success');
+    }
+};
+
+// Función para mostrar mensajes
+const mostrarMensaje = (message, type) => {
+    const notificationContainer = document.querySelector('.notification-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+
+    if (type === 'success') {
+        notification.classList.add('is-success');
+    } else if (type === 'error') {
+        notification.classList.add('is-danger');
+    }
+
+    notification.innerHTML = `
+        ${message}
+        <button class="delete"></button>`;
+
+    notificationContainer.appendChild(notification);
+
+    // Eliminar la notificación después de un tiempo
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+};
+
+// Función para confirmar la eliminación de un usuario
+const confirmDelete = (IDUsuario) => {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Eliminar el usuario
+            eliminarUsuario(IDUsuario);
+        }
+    });
+};
+
+// Asignar eventos a los botones de eliminar y reactivar usuarios
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.delete-user');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const IDUsuario = button.dataset.userid;
+            confirmDelete(IDUsuario);
+        });
+    });
+
+    const reactivateButtons = document.querySelectorAll('.reactivate-user');
+    reactivateButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const IDUsuario = button.dataset.userid;
+            reactivarUsuario(IDUsuario);
+        });
+    });
+});
+
     </script>
 </body>
 </html>
