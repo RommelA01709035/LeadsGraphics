@@ -1,9 +1,10 @@
+const { title } = require('process');
 const Grafica = require('../models/grafica.model');
 const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
 
 exports.get_crea_grafica = (request, response, next) => {
-    const vista ='crea-grafica';
+    
     const opcion = "";
     const startDate = new Date().toISOString().split('T')[0]; 
     const caso = ''
@@ -11,10 +12,10 @@ exports.get_crea_grafica = (request, response, next) => {
     console.log(request.session.idUsuario)
     response.render('crea-grafica', 
     { 
-    opcion: opcion, 
+    opcion: opcion,
+    caso: caso, 
     startDate: startDate,
-    title: getTitleForCase(caso, '', ''), 
-    vista: vista, 
+    title: '',
     username: request.session.username || '',
     csrfToken: request.csrfToken(),});
 };
@@ -99,13 +100,14 @@ exports.post_grafica = (request, response, next) => {
                             console.log("Username: " + request.session.username);
                             response.render('grafica', {
                                 data: data, opcion: opcion,
-                                caso: caso, startMonth: startMonth,
-                                endMonth: endMonth,
+                                caso: caso, 
+                                startMonth: formatDate(startMonth),
+                                endMonth: formatDate(endMonth),
                                 titulo_grafica: "Leads por mes",
                                 average: average,
                                 maximo: maximo,
                                 minimo: minimo,
-                                title: getTitleForCase(caso, startMonth, endMonth),
+                                title: getTitleForCase(caso),
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
@@ -138,13 +140,13 @@ exports.post_grafica = (request, response, next) => {
                                     data: data,
                                     opcion: opcion,
                                     caso: caso,
-                                    startMonth: startMonth,
-                                    endMonth: endMonth,
+                                    startMonth: formatDate(startMonth),
+                                    endMonth: formatDate(endMonth),
                                     titulo_grafica: "Leads con esta palabra",
                                     average: average,
                                     maximo: maximo,
                                     minimo: minimo,
-                                    title: getTitleForCase(caso, startMonth, endMonth),
+                                    title: getTitleForCase(caso),
                                     registers: registers,
                                     csrfToken: request.csrfToken(),
                                     username: request.session.username || '',
@@ -159,8 +161,8 @@ exports.post_grafica = (request, response, next) => {
                         console.log(opcion);
                         response.render('crea-grafica', {
                             opcion: "LastMessage",
-                            startMonth: startMonth,
-                            endMonth: endMonth,
+                            startMonth: formatDate(startMonth),
+                            endMonth: formatDate(endMonth),
                             caso: caso,
                             titulo_grafica: "",
                             csrfToken: request.csrfToken(),
@@ -186,13 +188,13 @@ exports.post_grafica = (request, response, next) => {
                                 data: data,
                                 opcion: opcion,
                                 caso: caso,
-                                startMonth: startMonth,
-                                endMonth: endMonth,
+                                startMonth: formatDate(startMonth),
+                                endMonth: formatDate(endMonth),
                                 titulo_grafica: "Leads por compañia",
                                 average: average,
                                 maximo: maximo,
                                 minimo: minimo,
-                                title: getTitleForCase(caso, startMonth, endMonth),
+                                title: getTitleForCase(caso),
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
@@ -223,14 +225,14 @@ function formatDate(date) {
     return `${day}/${month}/${year}`;
 }
 
-function getTitleForCase(caso, startMonth, endMonth) {
+function getTitleForCase(caso) {
     switch (caso) {
         case 'leadsPorMes':
-            return 'Leads por mes de los meses ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
+            return 'Leads por mes ' ;
         case 'LastMessage':
-            return 'Leads con esta palabra ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
+            return 'Leads con esta palabra ' ;
         case 'PerCompany':
-            return 'Leads por compañía ' + formatDate(startMonth) + ' - ' + formatDate(endMonth);
+            return 'Leads por compañía ' ;
         default:
             return 'LeadGraphs'; 
     }

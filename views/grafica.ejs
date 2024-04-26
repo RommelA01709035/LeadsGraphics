@@ -3,12 +3,10 @@
 
 <style>
     #grafica-container {
-        max-width: 400px; 
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+        max-width: 100%; /* Ajusta el ancho máximo según sea necesario */
+        margin: auto; /* Centra el contenedor horizontalmente */
     }
+
 
     .canvas-container {
         position: relative;
@@ -45,15 +43,7 @@
         height: auto; /* Permita que la altura se ajuste automáticamente */
     }
 
-    /* Estilos para ocultar elementos antes de imprimir */
-    .hide-before-print {
-        display: none;
-    }
-
-    /* Estilos para mostrar elementos durante la impresión */
-    .show-during-print {
-        display: block !important; /* Usamos !important para asegurarnos de que los estilos se apliquen durante la impresión */
-    }
+    
         
     /* Oculta los elementos que no quieres imprimir */
     @media print {
@@ -65,6 +55,14 @@
         }
     }
         
+    @media print {
+    #myChart {
+        margin: 0;
+        padding: 0;
+        transform: translateX(-10%);
+    }
+}
+
 </style>
 
 <div class="container mt-4 ml-8">
@@ -109,31 +107,25 @@
                             <canvas class="is-centered" id="myChart"></canvas>
                         </div>
                     </div>
-                    <div class=" is-2 has-text-centered is-fullwidth mt-3 no-imprimir">
-                        <div class="box no-imprimir">
-                            <button class="button is-info" onclick="setChartMode('point')">Modo conjunto unitario</button>
-                            <button class="button is-info" onclick="setChartMode('dataset')">Modo listado de conjuntos</button>
-                        </div>
-                    </div>
                     <% if (caso === "LastMessage") { %>
                         <div class="box mt-3">
                             <p>Mensajes encontrados:</p>
                             <div><%= values = data.map(entry => entry.cantidad_mensajes); %></div>
                         </div>
                     <% } %>
-                </div>
-            </div>
-            <div class="container">
-                <div class="columns is-centered is-fullwidth mt-3 no-imprimir">
-                    <div class="column is-half">
-                        <div class="box mt-3 no-imprimir">
-                            <div class="columns is-mobile">
-                                <div class="column">
-                                    <a href="/crea-grafica" class="button is-info is-fullwidth no-imprimir">Crear nueva gráfica</a>
-                                </div>   
-                                <div>
-                                    <button onclick="window.print()"> imprimir</button>
-                                </div>                         
+                    <div class=" is-2 has-text-centered is-fullwidth mt-3 no-imprimir">
+                        <div class="box no-imprimir">
+                            <div class="buttons is-centered"> 
+                                <button class="button is-info is-medium is-fullwidth" onclick="setChartMode('point')">Ver valor de cada serie de datos en la gráfica</button> 
+                                <button class="button is-info is-medium is-fullwidth" onclick="setChartMode('dataset')">Ver todas las series de datos en la gráfica</button> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" is-2 has-text-centered  mt-3 no-imprimir">
+                        <div class="box no-imprimir">
+                            <div class="buttons is-centered"> 
+                                <a href="/crea-grafica" class="button is-info is-medium mt-2 is-fullwidth">Crear nueva gráfica</a> 
+                                <button onclick="window.print()" class="button is-info is-medium mt-2 is-fullwidth">Imprimir</button> 
                             </div>
                         </div>
                     </div>
@@ -237,7 +229,7 @@
         },
         plugins: {
             legend: {
-                display: (opcion !== 'bar'), // Muestra la leyenda excepto para gráficas de barras
+                display: (opcion !== 'bar'), 
                 labels: {
                     font: {
                         size: 16
@@ -253,7 +245,7 @@
             config
         );
 
-// Convertir el número del mes a su nombre correspondiente
+        // Convertir el número del mes a su nombre correspondiente
         function getMonthName(monthNumber) {
             const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
@@ -266,6 +258,7 @@
             });
             legend.chart.update();
         }
+
         // Removes the alpha channel from background colors
         function handleLeave(evt, item, legend) {
             legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
@@ -282,8 +275,10 @@
 
             // Verifica si el modo seleccionado es válido
             if (modes[mode]) {
+
                 // Actualiza el modo del gráfico
                 myChart.options.interaction.mode = modes[mode];
+
                 // Actualiza el gráfico
                 myChart.update();
             } else {
@@ -293,6 +288,7 @@
 
 
         function handlePostPrint(event) {
+
             // Muestra los elementos ocultos para imprimir
             var noImprimirElementos = document.querySelectorAll('.no-visible');
             noImprimirElementos.forEach(function(elemento) {
@@ -306,6 +302,7 @@
 
 
         function handlePrePrint(event) {
+
             // Oculta o modifica elementos que no deseas imprimir
             var noImprimirElementos = document.querySelectorAll('.no-imprimir');
             noImprimirElementos.forEach(function(elemento) {
