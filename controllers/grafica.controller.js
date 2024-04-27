@@ -2,6 +2,7 @@ const { title } = require('process');
 const Grafica = require('../models/grafica.model');
 const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
+const Historial = require('../models/historial.model');
 
 exports.get_crea_grafica = (request, response, next) => {
     
@@ -36,9 +37,6 @@ exports.post_grafica = (request, response, next) => {
     console.log(_startMonth);
     _endMonth.setDate(_endMonth.getDate() + 1);
     console.log(_endMonth);
-
-
-    console.log(caso);
 
     // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas
     Grafica.getAverage(startMonth, endMonth)
@@ -117,6 +115,33 @@ exports.post_grafica = (request, response, next) => {
                             console.log(error);
                             response.status(500).json({ message: "Error creating chart" });
                         });
+                    break;
+                case 'Historial':
+                    Historial.accionesContadas()
+                    .then(([rows, fieldData]) => {
+                        const data = rows.map(row => ({
+                            accion: row.accion,
+                            cantidad: row.cantidad,
+                        }));
+                        console.log("Tuplas obtenidas de la base de datos:");
+                        data.forEach(tupla => {
+                            console.log(tupla);
+                        });
+
+                        response.render('grafica', {
+                            data: data,
+                            opcion: opcion,
+                            caso: caso,
+                            titulo_grafica: "Historial de la app",
+                            title: getTitleForCase(caso),
+                            csrfToken: request.csrfToken(),
+                            username: request.session.username || '',
+                        });
+                    }).catch(error =>{
+                        console.log(error);
+                        response.status(500).json({ message: "Error creating chart Historial" });
+                    });
+                        
                     break;
 
                 case 'LastMessage':
@@ -233,6 +258,8 @@ function getTitleForCase(caso) {
             return 'Leads con esta palabra ' ;
         case 'PerCompany':
             return 'Leads por compañía ' ;
+        case 'Historial':
+            return 'Histórico de acciones por usuarios ';
         default:
             return 'LeadGraphs'; 
     }

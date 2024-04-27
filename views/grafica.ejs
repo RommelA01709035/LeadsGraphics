@@ -65,8 +65,12 @@
 
 </style>
 
+    
+
 <div class="container mt-4 ml-8">
     <div class="box">
+        <% if (caso !== "Historial") { %>
+
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">
                 <div>
@@ -93,7 +97,8 @@
                 </div>
             </div>        
         </nav>
-        
+        <% } %>
+
         <div class="container2 mt-5">
             <h2 class="title is-2 has-text-centered"><%= titulo_grafica %></h2> 
           
@@ -154,6 +159,9 @@
         <% } else if(caso == "PerCompany"){%>
             labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}          `);
             values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "Historial"){%>
+            labels = data.map(entry => `${entry.accion} Leads - ${entry.cantidad}          `);
+            values = data.map(entry => entry.cantidad);
         <%}%>
         
     

@@ -44,5 +44,15 @@ module.exports = class Historial {
             [IDUsuario, accion]
         );
     }
+
+    static accionesContadas(){
+        return db.execute(
+            `
+            SELECT accion, COUNT(*) AS cantidad
+            FROM historial
+            GROUP BY accion;
+            `
+        );
+    }
     
 }
