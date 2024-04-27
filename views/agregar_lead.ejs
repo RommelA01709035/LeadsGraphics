@@ -11,23 +11,28 @@
     <style>
         /* Estilos para el formulario */
         .main-content {
-            padding: 2rem; /* Ajusta el espacio interior del contenedor principal */
+            padding: 8rem; /* Ajusta el espacio interior del contenedor principal */
         }
 
         .field {
-            margin-bottom: 1.5rem; /* Ajusta el espacio entre los campos */
+            margin-bottom: 1rem; /* Ajusta el espacio entre los campos */
         }
 
         .title {
-            margin-bottom: 2rem; /* Ajusta el espacio entre el título y el formulario */
+            margin-bottom: 0.5rem; /* Ajusta el espacio entre el título y el formulario */
         }
+
+        .margen-columna {   
+            margin-right: 6rem; /* Ajusta el valor del margen según tu preferencia */
+        }
+ 
     </style>
 </head>
 <body>
 <%- include('includes/naveside.ejs') %>
 
-  <div class="main-content">
-    <div class="columns is-vcentered">
+<div class="main-content">
+    <div class="columns is-multiline">
         <div class="column">
             <h1 class="title">Agregar Nuevo Lead</h1>
         </div>
@@ -42,140 +47,137 @@
 
     <form action="/importar/agregar-lead" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="columns">
+            <div class="column is-4 margen-columna">
+                <!-- Primera columna -->
+                <div class="field">
+                    <label class="label">Nombre</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Nombre" placeholder="Ej. Pedro" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Correo</label>
+                    <div class="control">
+                        <input class="input" type="email" name="Correo" placeholder="Ej. Pedro@gmail.com" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Compañía</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Compania" placeholder="Ej. Movistar" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Fecha del Primer Mensaje</label>
+                    <div class="control">
+                        <input class="input" type="date" name="Fecha_Primer_Mensaje" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Hora del Primer Mensaje</label>
+                    <div class="control">
+                        <input class="input" type="time" name="Hora_Primer_Mensaje" required step="1">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Primer Mensaje</label>
+                    <div class="control">
+                        <textarea class="textarea" name="Primer_Mensaje" placeholder="Primer Mensaje"></textarea>
+                    </div>
+                </div>
+            </div>
 
+            <div class="column is-4 margen-columna">
+                <!-- Segunda columna -->
+                <div class="field">
+                    <label class="label">Fecha del Último Mensaje</label>
+                    <div class="control">
+                        <input class="input" type="date" name="Fecha_Ultimo_Mensaje" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Hora del Último Mensaje</label>
+                    <div class="control">
+                        <input class="input" type="time" name="Hora_Ultimo_Mensaje" required step="1">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Último Mensaje</label>
+                    <div class="control">
+                        <textarea class="textarea" name="Ultimo_Mensaje" placeholder="Último Mensaje"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Teléfono</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Telefono" placeholder="Ej. 442 555 5555" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Valor</label>
+                    <div class="control">
+                        <input class="input" type="number" name="Valor" placeholder="Ej. 1000">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Ganado</label>
+                    <div class="control">
+                        <input class="input" type="number" name="Ganado" placeholder="Ej. 200">
+                    </div>
+                </div>
+            </div>
 
- <div class="columns is-multiline">
-        <div class="column is-one-third">
-            <!-- Primera columna -->
-            <div class="field">
-                <label class="label">Nombre</label>
-                <div class="control">
-                    <input class="input" type="text" name="Nombre" placeholder="Nombre" required>
+            <div class="column is-4 margen-columna">
+                <!-- Tercera columna -->
+                <div class="field">
+                    <label class="label">Etiqueta</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Etiqueta" placeholder="Ej. Importante">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Correo</label>
-                <div class="control">
-                    <input class="input" type="email" name="Correo" placeholder="Correo" required>
+                <div class="field">
+                    <label class="label">Estado Lead</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Estado_Lead" placeholder="Ej. Cold">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Compañía</label>
-                <div class="control">
-                    <input class="input" type="text" name="Compania" placeholder="Compañía" required>
+                
+                <div class="field">
+                    <label class="label">Seller Asignado</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Seller_Asignado" placeholder="Seller Asignado">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Fecha del Primer Mensaje</label>
-                <div class="control">
-                    <input class="input" type="date" name="Fecha_Primer_Mensaje" required>
+
+                <div class="field">
+                    <label class="label">Embudo</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Embudo" placeholder="Ej. Marketing">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Hora del Primer Mensaje</label>
-                <div class="control">
-                    <!-- Ajusta el step para incluir segundos -->
-                    <input class="input" type="time" name="Hora_Primer_Mensaje" required step="1">
+                <div class="field">
+                    <label class="label">Etapa</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Etapa" placeholder="Ej. Qualified">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Primer Mensaje</label>
-                <div class="control">
-                    <textarea class="textarea" name="Primer_Mensaje" placeholder="Primer Mensaje"></textarea>
+                <div class="field">
+                    <label class="label">Archivado</label>
+                    <div class="control">
+                        <input class="input" type="text" name="Archivado" placeholder="Ej. True">
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="column is-one-third">
-            <!-- Segunda columna -->
-            <div class="field">
-                <label class="label">Fecha del Último Mensaje</label>
-                <div class="control">
-                    <input class="input" type="date" name="Fecha_Ultimo_Mensaje" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Hora del Último Mensaje</label>
-                <div class="control">
-                    <!-- Ajusta el step para incluir segundos -->
-                    <input class="input" type="time" name="Hora_Ultimo_Mensaje" required step="1">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Último Mensaje</label>
-                <div class="control">
-                    <textarea class="textarea" name="Ultimo_Mensaje" placeholder="Último Mensaje"></textarea>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Teléfono</label>
-                <div class="control">
-                    <input class="input" type="text" name="Telefono" placeholder="Teléfono" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Valor</label>
-                <div class="control">
-                    <input class="input" type="number" name="Valor" placeholder="Valor">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Ganado</label>
-                <div class="control">
-                    <input class="input" type="number" name="Ganado" placeholder="Ganado">
-                </div>
+
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary" type="submit">Guardar</button>
             </div>
         </div>
-
-        <div class="column is-one-third">
-            <!-- Tercera columna -->
-            <div class="field">
-                <label class="label">Etiqueta</label>
-                <div class="control">
-                    <input class="input" type="text" name="Etiqueta" placeholder="Etiqueta">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Estado Lead</label>
-                <div class="control">
-                    <input class="input" type="text" name="Estado_Lead" placeholder="Estado Lead">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Seller Asignado</label>
-                <div class="control">
-                    <input class="input" type="text" name="Seller_Asignado" placeholder="Seller Asignado">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Embudo</label>
-                <div class="control">
-                    <input class="input" type="text" name="Embudo" placeholder="Embudo">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Etapa</label>
-                <div class="control">
-                    <input class="input" type="text" name="Etapa" placeholder="Etapa">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Archivado</label>
-                <div class="control">
-                    <input class="input" type="text" name="Archivado" placeholder="Archivado">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="field">
-        <div class="control">
-            <button class="button is-primary" type="submit">Guardar</button>
-        </div>
-    </div>
-
-
-  </div>
+    </form>
 </div>
+
 </body>
 </html>
