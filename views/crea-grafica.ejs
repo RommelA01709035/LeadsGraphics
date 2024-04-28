@@ -29,7 +29,7 @@
                     <div class="columns is-centered">
                         <div class="column is-half centered-form ">
                             <div class="box mt-10">
-                                <form action="/grafica" method="POST" onsubmit="return validarFormulario()">
+                                <form action="/grafica/crea-grafica" method="POST" onsubmit="return validarFormulario()">
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <div class="field control has-text-centered">
                                         <label class="label" for="opciones">Selecciona el tipo de gráfica:</label>
@@ -53,6 +53,8 @@
                                                     <option value="LastMessage">Último mensaje enviado</option>
                                                     <option value="PerCompany">Leads por Compañía</option>
                                                     <option value="Historial">Acciones de usuarios</option>
+                                                    <option value="Archivados">Archivados</option>
+                                                    <option value="LeadsSeller">Leads por seller</option>
                                                 </select>
                                             </div>
                                         </div>

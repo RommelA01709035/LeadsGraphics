@@ -95,7 +95,93 @@
                     <p class="heading">Número de leads en el estudio</p>
                     <p class="title"><%= registers.map(entry => entry.total_tuplas); %></p>
                 </div>
-            </div>        
+            </div>
+           
+            
+            <% if (caso === "LeadsSeller" || caso === "caso") { %>
+                <div class="box no-imprimir">
+                    <div class="columns">
+                        <div class="column is-narrow">
+                        </div>
+                        <div class="column is-one-quarter">
+                            <div class="field">
+                                <form action="/grafica/analisis-usuario" method="POST">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" name="caso" value="LeadsSeller">
+                                    <input type="hidden" name="consulta" value="embudo">
+                                    <input type="hidden" name="opcion" value="bar">
+                                    <input type="hidden" name="startDate" value="<%= startMonth %>">
+                                    <input type="hidden" name="endDate" value="<%= endMonth %>">
+                                    <label class="label">Selecciona el embudo:</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select name="valor">
+                                                <% embudos.forEach(embudo => { %>
+                                                    <option value="<%= embudo.embudos %>"><%= embudo.embudos %></option>
+                                                <% }); %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control mt-2">
+                                        <button class="button is-info is-fullwidth" type="submit">Subir dropdown</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="column is-one-quarter">
+                            <div class="field">
+                                <form action="/grafica/analisis-usuario" method="POST">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" name="caso" value="LeadsSeller">
+                                    <input type="hidden" name="consulta" value="etapa">
+                                    <input type="hidden" name="opcion" value="bar">
+                                    <input type="hidden" name="startDate" value="<%= startMonth %>">
+                                    <input type="hidden" name="endDate" value="<%= endMonth %>">
+                                    <label class="label">Selecciona la etapa:</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select name="valor">
+                                                <% etapas.forEach(etapa => { %>
+                                                    <option value="<%= etapa.etapas %>"><%= etapa.etapas %></option>
+                                                <% }); %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control mt-2">
+                                        <button class="button is-info is-fullwidth" type="submit">Subir dropdown</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="column is-one-quarter">
+                            <div class="field">
+                                <form action="/grafica/analisis-usuario" method="POST">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" name="caso" value="LeadsSeller">
+                                    <input type="hidden" name="consulta" value="estado">
+                                    <input type="hidden" name="opcion" value="bar">
+                                    <input type="hidden" name="startDate" value="<%= startMonth %>">
+                                    <input type="hidden" name="endDate" value="<%= endMonth %>">
+                                    <label class="label">Selecciona el estado:</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select name="valor">
+                                                <% estados.forEach(estado => { %>
+                                                    <option value="<%= estado.estados %>"><%= estado.estados %></option>
+                                                <% }); %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control mt-2">
+                                        <button class="button is-info is-fullwidth" type="submit">Subir dropdown</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+            
         </nav>
         <% } %>
 
@@ -129,7 +215,7 @@
                     <div class=" is-2 has-text-centered  mt-3 no-imprimir">
                         <div class="box no-imprimir">
                             <div class="buttons is-centered"> 
-                                <a href="/crea-grafica" class="button is-info is-medium mt-2 is-fullwidth">Crear nueva gráfica</a> 
+                                <a href="/grafica/crea-grafica" class="button is-info is-medium mt-2 is-fullwidth">Crear nueva gráfica</a> 
                                 <button onclick="window.print()" class="button is-info is-medium mt-2 is-fullwidth">Imprimir</button> 
                             </div>
                         </div>
@@ -151,18 +237,34 @@
     
         <% if(caso === "leadsPorMes") { %>
             
-            labels = data.map(entry => `${getMonthName(entry.mes)} - ${entry.cantidad_leads} Leads - ${entry.estado_lead}`);
+            labels = data.map(entry => `${getMonthName(entry.mes)}: ${entry.cantidad_leads} Leads - ${entry.estado_lead}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
-            labels = data.map(entry => `${entry.cantidad_mensajes} Leads - Mensaje: ${entry.palabra}          `);
+            labels = data.map(entry => `${entry.cantidad_mensajes} Leads - Mensaje: ${entry.palabra}`);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
-            labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}          `);
+            labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "Historial"){%>
-            labels = data.map(entry => `${entry.accion} Leads - ${entry.cantidad}          `);
+            labels = data.map(entry => `${entry.accion} Leads - ${entry.cantidad}`);
             values = data.map(entry => entry.cantidad);
+        <% } else if(caso == "LeadsSeller"){%>
+            labels = data.map(entry => `${entry.Seller} Leads - ${getBoolName(entry.archivado)} : ${entry.cantidad_leads} `);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(caso == "Archivados"){%>
+            labels = data.map(entry => `${getBoolName(entry.archivado)} Leads - ${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(consulta == "embudo"){%>
+            labels = data.map(entry => `${entry.Seller_asignado} Leads - ${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(consulta == "etapa"){%>
+            labels = data.map(entry => `${entry.Seller_asignado} Leads - ${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
+        <% } else if(consulta == "estado"){%>
+            labels = data.map(entry => `${entry.Seller_asignado} Leads - ${entry.cantidad_leads}`);
+            values = data.map(entry => entry.cantidad_leads);
         <%}%>
+        
         
     
         const chartData = {
@@ -257,6 +359,16 @@
         function getMonthName(monthNumber) {
             const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             return months[monthNumber - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
+        }
+
+        
+        // Convertir false o true en palabras
+        function getBoolName(boolString) {
+            const boolNames = {
+                'true': 'Si estan archivados ',
+                'false': 'No estan archivados '
+            };
+            return boolNames[boolString.toLowerCase()] || boolString;
         }
 
         // Append '4d' to the colors (alpha channel), except for the hovered index
