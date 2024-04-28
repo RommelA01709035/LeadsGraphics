@@ -41,7 +41,7 @@ exports.buscarUsuario = async (request, response, next) => {
 };
 
 exports.desactivarUsuario = async (request, response) => {
-    const { IDUsuario } = request.params; // Captura el IDUsuario de los parámetros de la URL
+    const { nombre_usuario, IDUsuario } = request.params; // Captura el IDUsuario de los parámetros de la URL
     try {
         await Usuario.desactivar(IDUsuario);
 

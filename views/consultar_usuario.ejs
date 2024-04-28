@@ -129,7 +129,7 @@
                                                         <% } else { %>
                                                             <p>usuario no encontrado</p>
                                                         <% } %>
-                                                        <button class="button is-danger" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>')">Desactivar usuario</button>
+                                                        <button class="button is-danger" onclick="desactivarUsuario('<%= usuario.IDUsuario %>','<%= csrfToken %>' ,'<%= usuario.nombre_usuario %>')">Desactivar usuario</button>
 
                                                     </div>
                                                 </td>
@@ -320,7 +320,7 @@
                 console.log(err);
             });
         }
-        const desactivarUsuario = (usuarioId, csrfToken) => {
+        const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
     console.log('Intentando desactivar usuario con ID:', usuarioId);
 
     fetch(`/usuarios/desactivar/${usuarioId}`, {
