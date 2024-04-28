@@ -12,4 +12,6 @@ router.post('/desactivar/:IDUsuario', usuarioController.desactivarUsuario);
 router.post('/reactivar/:IDUsuario', usuarioController.reactivarUsuario);
 
 
+
+
 module.exports = router;

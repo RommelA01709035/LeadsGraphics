@@ -40,19 +40,26 @@ exports.buscarUsuario = async (request, response, next) => {
     }
 };
 
-
-
-exports.desactivarUsuario = async (req, res) => {
-    const { usuarioId } = req.params;
-
+exports.desactivarUsuario = async (request, response) => {
+    const { IDUsuario } = request.params; // Captura el IDUsuario de los parámetros de la URL
     try {
-        await Usuario.desactivar(usuarioId);
-        res.status(200).json({ message: 'Usuario desactivado exitosamente' });
+        await Usuario.desactivar(IDUsuario);
+
+        // Obtener los usuarios actualizados después de la desactivación
+        const [usuarios, fieldData] = await Usuario.fetchAll(); 
+
+        response.status(200).json({ 
+            message: 'Usuario desactivado exitosamente',
+            usuarios: usuarios    
+        });
     } catch (error) {
         console.error('Error al desactivar usuario:', error);
-        res.status(500).json({ error: 'Ocurrió un error al desactivar usuario' });
+        response.status(500).json({ error: 'Ocurrió un error al desactivar usuario' });
     }
 };
+
+
+
 
 exports.reactivarUsuario = async (req, res) => {
     const { usuarioId } = req.params;

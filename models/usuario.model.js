@@ -74,36 +74,40 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
     }
-
-    static delete_logical_user(nombre_usuario, IDUsuario) {
-        db.execute(
+    static desactivar( IDUsuario) {
+        return db.execute(
             `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
             [nombre_usuario, IDUsuario]
-        );
-
-        return db.execute(`
-        SELECT nombre_usuario, Habilitado, IDUsuario
-        FROM usuario 
-        WHERE IDUsuario = ? AND nombre_usuario = ?;
-        
-        `,[IDUsuario, nombre_usuario])
-    }
-
-    static reactivate_user(nombre_usuario, IDUsuario){
-        db.execute(
-            `UPDATE usuario SET Habilitado = 1 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
-            [nombre_usuario, IDUsuario]
-        );
-
-        return db.execute(`
-        SELECT nombre_usuario, Habilitado, IDUsuario
-        FROM usuario 
-        WHERE IDUsuario = ? AND nombre_usuario = ?;
-        
-        `,[IDUsuario, nombre_usuario])
+        ).then(() => {
+            // Después de desactivar al usuario, puedes devolver los detalles actualizados del usuario
+            return db.execute(`
+                SELECT nombre_usuario, Habilitado, IDUsuario
+                FROM usuario 
+                WHERE IDUsuario = ? AND nombre_usuario = ?;
+            `, [IDUsuario, nombre_usuario]);
+        }).catch(error => {
+            console.error('Error al desactivar usuario:', error);
+            throw error;
+        });
     }
     
-
+    static reactivar(nombre_usuario, IDUsuario) {
+        return db.execute(
+            `UPDATE usuario SET Habilitado = 1 WHERE nombre_usuario = ? AND IDUsuario = ?;`,
+            [nombre_usuario, IDUsuario]
+        ).then(() => {
+            // Después de reactivar al usuario, puedes devolver los detalles actualizados del usuario
+            return db.execute(`
+                SELECT nombre_usuario, Habilitado, IDUsuario
+                FROM usuario 
+                WHERE IDUsuario = ? AND nombre_usuario = ?;
+            `, [IDUsuario, nombre_usuario]);
+        }).catch(error => {
+            console.error('Error al reactivar usuario:', error);
+            throw error;
+        });
+    }
+    
     static fetchOne_Count() {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
