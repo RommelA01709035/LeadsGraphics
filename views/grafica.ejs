@@ -237,12 +237,17 @@
     
         <% if(caso === "leadsPorMes") { %>
             
+<<<<<<< HEAD
             labels = data.map(entry => `${getMonthName(entry.mes)}: ${entry.cantidad_leads} Leads - ${entry.estado_lead}`);
+=======
+            labels = data.map(entry => `${getMonthName(entry.mes)} - ${entry.cantidad_leads} - ${entry.estado_lead}`);
+>>>>>>> 2328b13f96da4a2c77f9f7ca3d1907d2c2fc474a
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "LastMessage"){%>
             labels = data.map(entry => `${entry.cantidad_mensajes} Leads - Mensaje: ${entry.palabra}`);
             values = data.map(entry => entry.cantidad_mensajes);
         <% } else if(caso == "PerCompany"){%>
+<<<<<<< HEAD
             labels = data.map(entry => `${entry.cantidad_leads} Leads - ${entry.Compania}`);
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(caso == "Historial"){%>
@@ -262,6 +267,9 @@
             values = data.map(entry => entry.cantidad_leads);
         <% } else if(consulta == "estado"){%>
             labels = data.map(entry => `${entry.Seller_asignado} Leads - ${entry.cantidad_leads}`);
+=======
+            labels = data.map(entry => `${entry.cantidad_leads} - ${entry.Compania}          `);
+>>>>>>> 2328b13f96da4a2c77f9f7ca3d1907d2c2fc474a
             values = data.map(entry => entry.cantidad_leads);
         <%}%>
         
