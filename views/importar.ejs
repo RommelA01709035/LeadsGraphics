@@ -69,65 +69,67 @@
 <body>
     <%- include('includes/naveside.ejs') %>
         <div class="main-content">
-            <div class="column">
-                <section class="section">
-                    <h1 class="title">Sección de importación</h1>
-                    <div class="buttons">
-                        <a href="/importar/leads">
-                            <span class="file-cta button is-info"> <!-- Clase modificada a "button is-success" -->
-                                <span class="icon">
-                                    <i class="fa-solid fa-book-open"></i>
-                                </span>
-                                <span class="file-label">
-                                    Consultar Leads
-                                </span>
-                            </span>
-                        </a>
-                    </div>
-
-                    <div class="columns is-centered">
-                        <div class="column is-three-quarters centered-form ">
-                            <div class="box content-box has-text-centered">
-                                <div class="columns is-centered">
-                                    <div class="column is-narrow">
-                                        <figure class="image is-128x128">
-                                            <img src="/multimedia/CSVIcono.png" />
-                                        </figure>
-                                    </div>
-                                </div>
-
-                                <p class="is-size-3">Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación. Es importante que el archivo cuente on encabezados</p><br>
-                                <p class="is-size-5 mb-2">Una vez que hayas importado el archivo, puedes consultar por medio del apartado de consulta.</p>
-                                <form action="/importar" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
-                                    <div class="file is-centered">
-                                        <label class="file-label has-text-succes">
-                                            <input class="file-input" type="file" name="csvFile" id="fileInput">
-                                            <span class="file-cta button is-success" id="fileCta">
-                                                <span class="file-icon">
-                                                    <i class="fas fa-upload"></i>
-                                                </span>
-                                                <span class="file-label" id="fileLabel">
-                                                    Seleccionar archivo…
-                                                </span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div class="columns is-centered mt-auto">
-                                        <div class="column is-narrow">
-                                            <input class="button is-success" type="submit" value="Subir archivo">
-                                        </div>
-                                    </div>
-                                </form>
+            <div class="columns is-centered">
+                <div class="column is-vcentered">
+                    <section class="section">
+                        <div class="container">
+                            <h1 class="title">Sección de importación</h1>
+                            <div class="buttons">
+                                <a href="/importar/leads">
+                                    <span class="file-cta button is-info"> <!-- Clase modificada a "button is-success" -->
+                                        <span class="icon">
+                                            <i class="fa-solid fa-book-open"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Consultar Leads
+                                        </span>
+                                    </span>
+                                </a>
                             </div>
                         </div>
-                    </div>
-                </section>
+                        
+                        <div class="box content-box has-text-centered">
+                            <div class="columns is-centered">
+                                <div class="column is-narrow">
+                                    <figure class="image is-128x128">
+                                        <img src="/multimedia/CSVIcono.png" />
+                                    </figure>
+                                </div>
+                            </div>
+
+                            <p class="is-size-3">Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación. Es importante que el archivo cuente con encabezados</p><br>
+                            <p class="is-size-5 mb-2">Una vez que hayas importado el archivo, puedes consultar por medio del apartado de consulta.</p>
+                            <form action="/importar" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                                <div class="file is-centered">
+                                    <label class="file-label has-text-succes">
+                                        <input class="file-input" type="file" name="csvFile" id="fileInput">
+                                        <span class="file-cta button is-success" id="fileCta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label" id="fileLabel">
+                                                Seleccionar archivo…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="columns is-centered mt-auto">
+                                    <div class="column is-narrow">
+                                        <input class="button is-success" type="submit" value="Subir archivo">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="notification-container mb-4 is-fixed-bottom is-right">
-        <div id="message-container"></div>
+        <div class="notification-container mb-4 is-fixed-bottom is-right">
+            <div id="message-container"></div>
+        </div>
     </div>
 
     <script>
