@@ -40,9 +40,9 @@ exports.post_grafica = (request, response, next) => {
     let etapas;
 
 
-    _startMonth.setDate(_startMonth.getDate())
+    startMonth.setDate(_startMonth.getDate())
     console.log(_startMonth);
-    _endMonth.setDate(_endMonth.getDate() + 1);
+    endMonth.setDate(_endMonth.getDate() + 1);
     console.log(_endMonth);
 
     // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas

@@ -257,21 +257,29 @@ const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
 
         // Procesar la respuesta y actualizar el DOM
         const respuestaHtml = data.usuarios.map(usuario => {
+            
             // Comprobar si el usuario está desactivado
-            const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
+    const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
 
-            return `
-                <tr class="${filaClass}">
-                    <td>${usuario.nombre_usuario}</td>
-                    <td>${usuario.Correo}</td>
-                    <td>${usuario.Celular}</td>
-                    <td>${usuario.IDUsuario}</td>
-                    <td>
-                        <!-- Botones de acción -->
-                        
-                        <button class="button is-success mt-2" onclick="reactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Reactivar usuario</button>
-                    </td>
-                </tr>`;
+    let button; 
+
+    if (usuario.Habilitado === 0) {
+        button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
+    } else {
+        button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
+    }
+
+    return `
+        <tr class="${filaClass}">
+            <td>${usuario.nombre_usuario}</td>
+            <td>${usuario.Correo}</td>
+            <td>${usuario.Celular}</td>
+            <td>${usuario.IDUsuario}</td>
+            <td>
+                
+                ${button}
+            </td>
+        </tr>`;
         }).join('');
         //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
         // Actualizar el contenido de la tabla de usuarios
@@ -355,7 +363,7 @@ const reactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
     // Comprobar si el usuario está desactivado
     const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
 
-    let button; // Definir la variable button fuera del bloque if
+    let button; 
 
     if (usuario.Habilitado === 0) {
         button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';

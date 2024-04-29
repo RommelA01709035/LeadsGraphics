@@ -113,5 +113,23 @@
     align-items: center; 
 }
 
+.arrow-container {
+    position: absolute;
+    top: 50%;
+     /* Posiciona el contenedor en la parte derecha */
+    transform: translateY(-50%);
+    background-color: #000; /* Color del cuadrado negro */
+    padding: 5px; /* Espacio alrededor de la flecha */
+}
+
+.arrow-icon {
+    color: #fff; /* Color de la flecha */
+    right: 0;
+}
+
+
+.arrow-icon:hover {
+    transform: rotate(180deg); /* Gira la flecha al hacer hover */
+}
 
 
