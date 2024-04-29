@@ -74,6 +74,7 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
     }
+    
     static desactivar(nombre_usuario, IDUsuario) {
         return db.execute(
             `UPDATE usuario SET Habilitado = 0 WHERE nombre_usuario = ? AND IDUsuario = ?;`,

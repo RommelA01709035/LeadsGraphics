@@ -41,9 +41,11 @@ exports.buscarUsuario = async (request, response, next) => {
 };
 
 exports.desactivarUsuario = async (request, response) => {
-    const { nombre_usuario, IDUsuario } = request.params; // Captura el IDUsuario de los parámetros de la URL
+    const { IDUsuario } = request.params; // Obtener IDUsuario de los parámetros de la URL
+    const { nombreUsuario } = request.body; // Obtener nombreUsuario del cuerpo de la solicitud
+
     try {
-        await Usuario.desactivar(IDUsuario);
+        await Usuario.desactivar(nombreUsuario, IDUsuario); // Llamar a la función desactivar del modelo con nombreUsuario y IDUsuario
 
         // Obtener los usuarios actualizados después de la desactivación
         const [usuarios, fieldData] = await Usuario.fetchAll(); 
@@ -58,17 +60,24 @@ exports.desactivarUsuario = async (request, response) => {
     }
 };
 
-
-
-
 exports.reactivarUsuario = async (req, res) => {
-    const { usuarioId } = req.params;
+    const { usuarioId } = req.body;
+    const { nombreUsuario } = req.body; // Obtener nombreUsuario del cuerpo de la solicitud
+    console.log(usuarioId, nombreUsuario )
 
     try {
-        await Usuario.reactivar(usuarioId);
-        res.status(200).json({ message: 'Usuario reactivado exitosamente' });
+        await Usuario.reactivar(nombreUsuario, usuarioId);
+
+        // Obtener los usuarios actualizados después de la desactivación
+        const [usuarios, fieldData] = await Usuario.fetchAll(); 
+
+        res.status(200).json({ 
+            message: 'Usuario reactivado exitosamente',
+            usuarios: usuarios    
+        });
     } catch (error) {
         console.error('Error al reactivar usuario:', error);
         res.status(500).json({ error: 'Ocurrió un error al reactivar usuario' });
     }
 };
+
