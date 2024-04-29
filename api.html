@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary App</title>
+</head>
+<body>
+    <h1>Dictionary App</h1>
+    <input type="text" id="wordInput" placeholder="Enter a word">
+    <button onclick="searchWord()">Search</button>
+    <div id="definition"></div>
+    <div id="example"></div>
+
+    <script>
+        function searchWord() {
+    var word = document.getElementById('wordInput').value;
+    var url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+
+    // Realizar solicitud HTTP
+    fetch(url)
+    // Parsear a JSON
+    .then(response => response.json())
+    
+    // Extraer definiciones y ejemplos
+    .then(data => {
+        var definitionsHTML = '';
+        data.forEach(entry => {
+            entry.meanings.forEach(meaning => {
+                meaning.definitions.forEach(definition => {
+                    var definitionText = definition.definition;
+                    var exampleText = definition.example ? `Example: ${definition.example}` : '';
+                    definitionsHTML += `<p><strong>Definition:</strong> ${definitionText}</p>`;
+                    if (exampleText) {
+                        definitionsHTML += `<p>${exampleText}</p>`;
+                    }
+                });
+            });
+        });
+        document.getElementById('definition').innerHTML = definitionsHTML;
+    })
+
+    // Manejar errores
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('definition').innerText = 'No definition found.';
+    });
+}
+
+    </script>
+</body>
+</html>
