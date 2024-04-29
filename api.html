@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary App</title>
+    <title>lab 26 servicios web</title>
 </head>
 <body>
-    <h1>Dictionary App</h1>
+    <h1>Dictionary App : Lab 26 Servicios web</h1>
     <input type="text" id="wordInput" placeholder="Enter a word">
     <button onclick="searchWord()">Search</button>
     <div id="definition"></div>
@@ -21,13 +21,15 @@
     fetch(url)
     // Parsear a JSON
     .then(response => response.json())
-    
+
     // Extraer definiciones y ejemplos
     .then(data => {
         var definitionsHTML = '';
         data.forEach(entry => {
             entry.meanings.forEach(meaning => {
                 meaning.definitions.forEach(definition => {
+
+                    //se hace un objeto y le sacamos la definicion
                     var definitionText = definition.definition;
                     var exampleText = definition.example ? `Example: ${definition.example}` : '';
                     definitionsHTML += `<p><strong>Definition:</strong> ${definitionText}</p>`;
