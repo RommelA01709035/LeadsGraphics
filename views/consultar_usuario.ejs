@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Usuarios</title>
+    <title>Consultar usuarios</title>
     <!-- Enlace a Bulma CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
@@ -45,6 +45,12 @@
             color: white;
         }
 
+            /* Establecer una altura fija para el cuerpo de la tabla */
+        .table-body {
+            max-height: 700px; /* Establece aquí la altura máxima deseada */
+            overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+        }
+
         .notification-container {
             position: fixed;
             top: 50%;
@@ -59,6 +65,7 @@
         }
     </style>
 </head>
+
 <body>
     <%- include('includes/naveside.ejs') %>
         <div class="main-content">
@@ -69,112 +76,416 @@
                             <% if (message) { %>
                                 <div class="notification is-success">
                                     <%= message %>
-                                    <button class="delete" aria-label="delete"></button>
                                 </div>
                             <% } %>
                         </div>
                         <h1 class="title">Consultar Usuarios</h1>
-                        <table class="table is-bordered is-striped is-fullwidth table-shadow">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Teléfono</th>
-                                    <th>ID</th>
-                                    <th class="is-narrow">Acciones</th> 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% usuario.forEach(user => { %>
-                                    <% const rowClass = user.Habilitado === 0 ? 'has-background-danger' : ''; %>                         
-                                    <tr class="<%= rowClass %>">
-                                        <td><%= user.nombre_usuario %></td>
-                                        <td><%= user.Correo %></td>
-                                        <td><%= user.Celular %></td>
-                                        <td><%= user.IDUsuario %></td>
-                                        <td class="is-narrow">
-                                            <form id="deleteForm_<%= user.IDUsuario %>" action="/usuarios/delete-usuario" method="POST">
-                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                <input type="hidden" name="nombre" value="<%= user.nombre_usuario %>">
-                                                <input type="hidden" name="id" value="<%= user.IDUsuario %>">
-                                                <div class="field is-grouped">
-                                                    <div class="control">
-                                                        <button class="button is-info is-focused" type="submit" onclick="return confirm('¿Estás seguro de que deseas modificar este usuario?')">Modificar Usuario</button>
+
+                        <div class="is-flex" style="justify-content: space-between;">
+                            <!-- Barra de búsqueda -->
+                            <div class="control">
+                                <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
+                            </div>
+
+                        </div>
+                        <br><br>
+                        
+                        <!-- Contenedor para mostrar los resultados de la búsqueda -->
+                        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
+                        <div id="respuesta_ajax" class="table-body">
+                            <% if (usuarios.length < 1) { %>
+                                <!-- Mensaje si no se encuentran usuarios -->
+                                <div class="notification is-info">
+                                    <button class="delete"></button>
+                                    No se encontraron usuarios.            
+                                </div>
+                            <% } else { %>
+                                <!-- Contenedor para los usuarios encontrados -->
+                            
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Teléfono</th>
+                                            <th>ID</th>
+                                            <th class="is-narrow">Acciones</th> 
+        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let usuario of usuarios) { %>
+                                            <tr class="<%= usuario.Habilitado === 0 ? 'disabled-user has-background-danger' : '' %>">
+                                                <td><%= usuario.nombre_usuario %></td>
+                                                <td><%= usuario.Correo %></td>
+                                                <td><%= usuario.Celular %></td>
+                                                <td><%= usuario.IDUsuario %></td>     
+                                                <td>
+                                                    <div class="buttons">
+                                                        <!--<a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar usuario</a> -->
+                                                        <% if (usuario.Habilitado === 0) { %>
+                                                            <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar usuario</button>
+
+                                                        <% } else { %>
+                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar usuario</button>
+                                                        <% } %>
                                                     </div>
-                                                    <% if(user.Habilitado == 0){ %>
-                                                        <div class="control">
-                                                            <button class="button is-primary is-dark" type="button" onclick="confirmReactivate('<%= user.IDUsuario %>')">Reactiva usuario</button>
-                                                        </div>
-                                                    <% } else { %>
-                                                        <div class="control">
-                                                            <button class="button is-danger is-dark" type="button" onclick="confirmDelete('<%= user.IDUsuario %>')">Desactivar Usuario</button>
-                                                        </div>
-                                                    
-                                                    <% } %>
-                                                    
-                                                </div>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                        
+                                    </tbody>
+                                </table>
+                            <% } %>
+                        </div>
                     </div>
                 </section>
             </div>
         </div>
     </div>
 
-        <script>
-            function confirmDelete(userId) {
-                Swal.fire({
-                    title: "¿Estás seguro?",
-                    text: "Puedes revertir la decisión después",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Sí, eliminarlo"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById("deleteForm_" + userId).submit();
-                    }
-                });
-            }
+    <!-- Script para la solicitud AJAX -->
+    <script>
+        const buscarUsuarios = () => {
+            const valor_busqueda = document.getElementById('buscar').value;
 
-            function confirmReactivate(userId) {
-                Swal.fire({
-                    title: "¿Estás seguro?",
-                    text: "Puedes revertir la decisión después",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Sí, reactivalo"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const form = document.getElementById("deleteForm_" + userId);
-                        form.action = "/usuarios/reactivate-usuario"; 
-                        form.submit();
-                    }
-                });
-            }
+            // Realizar la solicitud AJAX
+            fetch(`/usuarios/buscar/${encodeURIComponent(valor_busqueda)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((result) => {
+                return result.json(); // Convertir la respuesta a JSON
+            }).then((data) => {
+                // Procesar la respuesta y actualizar el DOM
+                const respuestaHtml = data.map(usuario => `
+                    <tr>
+                        <td> ${usuario.nombre_usuario}</td>
+                        <td> ${usuario.Correo}</td>
+                        <td> ${usuario.Celular}</td>
+                        <td> ${usuario.IDUsuario} </td>
+                              
+                        <td>
+                            <!-- Botones de acción -->
+                            
 
-            document.addEventListener('DOMContentLoaded', function () {
-                const notifications = document.querySelectorAll('.notification');
-
-                notifications.forEach(notification => {
-                    const closeButton = notification.querySelector('.delete');
-
-                    closeButton.addEventListener('click', function () {
-                        notification.remove(); 
-                    });
-
-                    setTimeout(function () {
-                        notification.remove(); 
-                    }, 5000);
-                });
+                            <button class="button is-danger mt-2" onclick="desactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Desactivar usuario</button>
+                        </td>
+                    </tr>`).join('');
+                    //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                document.getElementById('respuesta_ajax').innerHTML = `
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>                                    
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <th>ID</th>
+                                <th class="is-narrow">Acciones</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${respuestaHtml}
+                        </tbody>
+                    </table>`;
+            }).catch(err => {
+                console.log(err);
             });
-        </script>
+        };
+
+    document.getElementById('buscar').addEventListener('input', buscarUsuarios);
+    </script>
+    
+    <script>
+        function confirmDelete(IDUsuario) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "¡No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminarlo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //document.getElementById("deleteForm_" + IDUsuario).submit();
+                    console.log('Eliminar usuario ha sido seleccionado');
+                    console.log('usuario a eliminar', IDUsuario);
+                    eliminar(IDUsuario);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const notifications = document.querySelectorAll('.notification');
+
+            notifications.forEach(notification => {
+                const closeButton = notification.querySelector('.delete');
+
+                closeButton.addEventListener('click', function () {
+                    notification.remove(); 
+                });
+
+                setTimeout(function () {
+                    notification.remove(); 
+                }, 5000);
+            });
+        });
+
+        
+const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
+    // Realizar la solicitud de desactivación de usuario
+    fetch(`/usuarios/desactivar/${usuarioId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrfToken
+        },
+        body: JSON.stringify({ nombreUsuario: nombreUsuario }) // incluir el nombre de usuario en el cuerpo de la solicitud
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Solicitud de desactivación enviada correctamente.');
+            return response.json(); // Devolver la respuesta como JSON
+        } else {
+            throw new Error('Error al desactivar usuario.');
+        }
+    })
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+
+        // Procesar la respuesta y actualizar el DOM
+        const respuestaHtml = data.usuarios.map(usuario => {
+            // Comprobar si el usuario está desactivado
+            const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
+
+            return `
+                <tr class="${filaClass}">
+                    <td>${usuario.nombre_usuario}</td>
+                    <td>${usuario.Correo}</td>
+                    <td>${usuario.Celular}</td>
+                    <td>${usuario.IDUsuario}</td>
+                    <td>
+                        <!-- Botones de acción -->
+                        
+                        <button class="button is-success mt-2" onclick="reactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Reactivar usuario</button>
+                    </td>
+                </tr>`;
+        }).join('');
+        //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+        // Actualizar el contenido de la tabla de usuarios
+        document.getElementById('respuesta_ajax').innerHTML = `
+            <table class="table is-fullwidth is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>ID</th>
+                        <th class="is-narrow">Acciones</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    ${respuestaHtml}
+                </tbody>
+            </table>`;
+
+        // Mostrar el mensaje si está presente
+        if (data.message) {
+            mostrarMensaje(data.message, 'success');
+        }
+
+        if (data.error) {
+            mostrarMensaje(data.error, 'error');
+        }
+
+        // Volver a realizar la búsqueda con el término almacenado
+        buscarUsuarios();
+    })
+    .catch(error => {
+        console.error('Error al procesar la solicitud:', error);
+        mostrarMensaje('Ocurrió un error al procesar la solicitud.', 'error');
+    });
+};
+
+
+// Función para actualizar la interfaz de usuario después de desactivar un usuario
+const actualizarInterfazUsuarioDesactivado = (usuarioId) => {
+    // Obtener la fila correspondiente al usuario desactivado
+    const filaUsuario = document.querySelector(`tr[data-id="${usuarioId}"]`);
+
+    if (filaUsuario) {
+        // Cambiar el color de fondo de la fila
+        filaUsuario.classList.add('has-background-danger');
+        
+        // Deshabilitar el botón de desactivar
+        const botonDesactivar = filaUsuario.querySelector('.desactivar-button');
+        if (botonDesactivar) {
+            botonDesactivar.disabled = true;
+        }
+        
+        // Opcionalmente, podrías cambiar el texto del botón o realizar otras actualizaciones según tus necesidades
+    }
+};
+
+// Función para reactivar un usuario
+const reactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
+    console.log('Data enviada a reactivar ' + usuarioId + ' ' + nombreUsuario);
+    fetch(`/usuarios/reactivar/${usuarioId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrfToken
+        },
+
+        body: JSON.stringify({ nombreUsuario: nombreUsuario, usuarioId: usuarioId }) // incluir el nombre de usuario en el cuerpo de la solicitud
+    }).then((response) => {
+        if (response.ok) {
+            console.log('Solicitud de reactivación enviada correctamente.');
+            return response.json(); // Devolver la respuesta como JSON
+        } else {
+            throw new Error('Error al reactivar usuario.');
+        }
+    })
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+
+        const respuestaHtml = data.usuarios.map(usuario => {
+    // Comprobar si el usuario está desactivado
+    const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
+
+    let button; // Definir la variable button fuera del bloque if
+
+    if (usuario.Habilitado === 0) {
+        button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
+    } else {
+        button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
+    }
+
+    return `
+        <tr class="${filaClass}">
+            <td>${usuario.nombre_usuario}</td>
+            <td>${usuario.Correo}</td>
+            <td>${usuario.Celular}</td>
+            <td>${usuario.IDUsuario}</td>
+            <td>
+                
+                ${button}
+            </td>
+        </tr>`;
+        }).join('');
+        //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+        // Actualizar el contenido de la tabla de usuarios
+        document.getElementById('respuesta_ajax').innerHTML = `
+            <table class="table is-fullwidth is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>ID</th>
+                        <th class="is-narrow">Acciones</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    ${respuestaHtml}
+                </tbody>
+            </table>`;
+
+        // Mostrar el mensaje si está presente
+        if (data.message) {
+            mostrarMensaje(data.message, 'success');
+        }
+
+        if (data.error) {
+            mostrarMensaje(data.error, 'error');
+        }
+
+        // Volver a realizar la búsqueda con el término almacenado
+        buscarUsuarios();
+    })
+    
+    .catch((error) => {
+        console.error('Error de red:', error);
+        // Manejar errores de red si es necesario
+    });
+};
+
+// Función para actualizar la tabla de usuarios con los datos proporcionados
+const actualizarTablaUsuarios = (data) => {
+    const usuarios = data.usuarios;
+    const message = data.message;
+
+    const tableBody = document.getElementById('respuesta_ajax');
+
+    // Construir el HTML de la tabla de usuarios
+    const html = usuarios.map(usuario => `
+        <tr>
+            <td>${usuario.nombre_usuario}</td>
+            <td>${usuario.Correo}</td>
+            <td>${usuario.Celular}</td>
+            <td>${usuario.IDUsuario}</td>
+            <td>
+               
+                <button class="button is-danger" onclick="confirmDelete(${usuario.IDUsuario})">Eliminar usuario</button>
+            </td>
+        </tr>`
+    ).join('');
+    // <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+
+    // Actualizar el contenido de la tabla de usuarios
+    tableBody.innerHTML = html;
+
+    // Mostrar mensaje si está presente
+    if (message) {
+        mostrarMensaje(message, 'success');
+    }
+};
+
+// Función para mostrar mensajes
+const mostrarMensaje = (message, type) => {
+    const notificationContainer = document.querySelector('.notification-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+
+    if (type === 'success') {
+        notification.classList.add('is-success');
+    } else if (type === 'error') {
+        notification.classList.add('is-danger');
+    }
+
+    notification.innerHTML = `
+        ${message}
+        <button class="delete"></button>`;
+
+    notificationContainer.appendChild(notification);
+
+    // Eliminar la notificación después de un tiempo
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+};
+
+// Asignar eventos a los botones de eliminar y reactivar usuarios
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.delete-user');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const IDUsuario = button.dataset.userid;
+            confirmDelete(IDUsuario);
+        });
+    });
+
+    const reactivateButtons = document.querySelectorAll('.reactivate-user');
+    reactivateButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const IDUsuario = button.dataset.userid;
+            reactivarUsuario(IDUsuario);
+        });
+    });
+});
+
+    </script>
 </body>
 </html>
