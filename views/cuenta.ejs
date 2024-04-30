@@ -97,7 +97,7 @@
                             <div class="field">
                                 <label class="label">Contraseña actual</label>
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" name="contraseniaActual" placeholder="Mi contraseña actual"/>
+                                    <input class="input" type="password" id="contraseniaActual" name="contraseniaActual" placeholder="Mi contraseña actual">
                                     <span class="icon is-small is-left">
                                       <i class="fas fa-lock"></i>
                                     </span>
@@ -106,7 +106,7 @@
                             <div class="field">
                                 <label class="label">Nueva contraseña</label>
                                 <p class="control has-icons-left">
-                                  <input class="input" type="password" name="nuevaContrasenia" placeholder="Mi nueva contraseña"/>
+                                  <input class="input" type="password" id="nuevaContrasenia" name="nuevaContrasenia" placeholder="Mi nueva contraseña">
                                   <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                   </span>
@@ -114,7 +114,7 @@
                             </div>
                             <div class="field is-grouped">
                                 <div class="control">
-                                  <button class="button is-success">Cambiar contraseña</button>
+                                  <input class="button is-success" type="submit" value="Cambiar contraseña">
                                 </div>
                             </div>
                         </form>
@@ -124,33 +124,35 @@
             </div>
             <div class="notification-container mb-4">
                 <% if (successMessage) { %>
-                    <div class="notification is-info">
+                    <div class="notification is-success">
                         <strong><%= successMessage %></strong>
                         <button class="delete" aria-label="delete"></button>
                     </div>
                 <% } else if (error) { %>
                     <div class="notification is-danger">
                         <strong><%= error %></strong>
+                        <button class="delete" aria-label="delete"></button>
                     </div>
                 <% } %>
             </div>
+    
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-                const notifications = document.querySelectorAll('.notification');
-    
-                notifications.forEach(notification => {
-                    const closeButton = notification.querySelector('.delete');
-    
-                    closeButton.addEventListener('click', function () {
-                        notification.remove(); 
-                    });
-    
-                    setTimeout(function () {
-                        notification.remove(); 
-                    }, 60000);
+            const notifications = document.querySelectorAll('.notification');
+
+            notifications.forEach(notification => {
+                const closeButton = notification.querySelector('.delete');
+
+                closeButton.addEventListener('click', function () {
+                    notification.remove(); 
                 });
+
+                setTimeout(function () {
+                    notification.remove(); 
+                }, 60000);
+            });
         });
     </script>
 </body>

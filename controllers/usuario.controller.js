@@ -117,12 +117,9 @@ exports.getCuenta = (request, response, next) => {
     id = request.session.idUsuario;
     username = request.session.username;
     correo = request.session.email
-    console.log(id);
-    console.log(username);
-    console.log(correo);
     response.render('cuenta', {
-        successMessage: '',
-        error: '',
+        successMessage: request.session.successMessage || '',
+        error: request.session.errorMessage || '',
         username: request.session.username || '',
         id: id,
         correo: correo,
@@ -133,6 +130,7 @@ exports.getCuenta = (request, response, next) => {
 exports.postCambiarContrasenia = (request, response, next) => {
     console.log('Hiciste cambiar contraseña');
     const {contraseniaActual, nuevaContrasenia} = request.body;
+    console.log(contraseniaActual);
     console.log(nuevaContrasenia);
     id = request.session.idUsuario;
     username = request.session.username;
@@ -156,26 +154,22 @@ exports.postCambiarContrasenia = (request, response, next) => {
                                     console.log('Contraseña cambiada con éxito');
 
                                     const successMessage = '¡Contraseña cambiada con éxito!';
+                                    // Establecer un mensaje de confirmación en la sesión del usuario
+                                    request.session.successMessage = successMessage;
 
-                                    return response.status(200).json({
-                                        successMessage: successMessage,
-                                        success: true,
-                                    })
+                                    // Redirigir a la pagina de cuenta
+                                    response.redirect('/usuarios/cuenta');
                                 })
                                 .catch((error) => {
                                     console.log(error);
-                                    response.status(500).send({
-                                        errorMesage: 'Error al cambiar la contraseña',
-                                        success: false,
-                                    })
+                                    response.status(500).send('Error al cambiar la contraseña')
                                 });
                         } else {
 
                             // La contraseña actual es incorrecta
-                            response.status(400).json({
-                                errorMessage: 'La contraseña actual es incorrecta',
-                                success: false,
-                            })
+                            const errorMessage = 'La contraseña actual es incorrecta';
+                            request.session.errorMessage = errorMessage;
+                            response.redirect('/usuarios/cuenta');
                         }
                     })
                     .catch((error) => {
@@ -185,17 +179,11 @@ exports.postCambiarContrasenia = (request, response, next) => {
             } else {
 
                 // Usuario no encontrado
-                response.status(404).json({
-                    errorMesage: 'Usuario no encontrado',
-                    success: false,
-                });
+                response.status(404).send('Usuario no encontrado');
             }
         })
         .catch((error) => {
             console.log(error);
-            response.status(500).json({
-                errorMesage: 'Error al obtener usuario',
-                success: false,
-            });
+            response.status(500).send('Error al obtener usuario');
         })
 }
