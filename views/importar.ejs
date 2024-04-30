@@ -52,9 +52,10 @@
 
         .notification-container {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
             z-index: 1000; 
         }
 
@@ -68,16 +69,163 @@
 <body>
     <%- include('includes/naveside.ejs') %>
         <div class="main-content">
-            <div class="column">
-                <section class="section">
-                    <h1 class="title">Sección de importación</h1>
-                    <div class="buttons">
-                        <a href="/importar/leads" class="button is-info">Consultar Leads</a>
-                    </div>
-                    
-                </section>
+            <div class="columns is-centered">
+                <div class="column is-vcentered">
+                    <section class="section">
+                        <div class="container">
+                            <h1 class="title">Sección de importación</h1>
+                            <div class="buttons">
+                                <a href="/importar/leads">
+                                    <span class="file-cta button is-info"> <!-- Clase modificada a "button is-success" -->
+                                        <span class="icon">
+                                            <i class="fa-solid fa-book-open"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Consultar Leads
+                                        </span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="box content-box has-text-centered">
+                            <div class="columns is-centered">
+                                <div class="column is-narrow">
+                                    <figure class="image is-128x128">
+                                        <img src="/multimedia/CSVIcono.png" />
+                                    </figure>
+                                </div>
+                            </div>
+
+                            <p class="is-size-3">Selecciona un archivo de extensión <strong>.csv</strong> para comenzar la importación. Es importante que el archivo cuente con encabezados</p><br>
+                            <p class="is-size-5 mb-2">Una vez que hayas importado el archivo, puedes consultar por medio del apartado de consulta.</p>
+                            <form action="/importar" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                                <div class="file is-centered">
+                                    <label class="file-label has-text-succes">
+                                        <input class="file-input" type="file" name="csvFile" id="fileInput">
+                                        <span class="file-cta button is-success" id="fileCta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label" id="fileLabel">
+                                                Seleccionar archivo…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="columns is-centered mt-auto">
+                                    <div class="column is-narrow">
+                                        <input class="button is-success" type="submit" value="Subir archivo">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="notification-container mb-4 is-fixed-bottom is-right">
+            <div id="message-container"></div>
+        </div>
+        <div class="field ">
+            <div class="control">
+                <a href="/homepage" class="button is-danger cancel-button-container">Cancelar</a>
             </div>
         </div>
     </div>
+    
+
+    <script>
+
+        // Obtener los inputs de archivo y span del botón
+        const fileInput = document.getElementById('fileInput');
+        const fileLabel = document.getElementById('fileLabel');
+        const fileCta = document.getElementById('fileCta');
+
+        fileInput.addEventListener('change', function() {
+
+            // Verificar que se ha seleccionado un archivo
+            if(fileInput.files.length > 0){
+
+                // Obtener el nombre del archivo seleccionado
+                const fileName = fileInput.files[0].name;
+
+                // Actualizar el texto del span con el nombre del archivo
+                fileLabel.textContent = fileName;
+
+                // Cambiar el color del botón
+                fileCta.classList.remove('is-success');
+                fileCta.classList.add('is-info');
+            } else {
+                fileLabel.textContent = 'Seleccionar archivo...'
+
+                // Restablecer el color del botón al verde
+                fileCta.classList.remove('is-info');
+                fileCta.classList.add('is-success');
+            }
+        });
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const csrf = document.getElementById('_csrf').value;
+            const formData = new FormData(form);
+            fetch('/importar', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'csrf-token': csrf
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                // Manejar la respuesta JSON aquí
+                console.log(data);
+
+                // Actualizar la vista con el mensaje de respuesta
+                const messageContainer = document.getElementById('message-container');
+                if(data.success){
+                    messageContainer.innerHTML = `
+                        <div class="notification is-success">
+                            ${data.message}
+                            <button class="delete" aria-label="delete"></button>
+                        </div>
+                    `;
+                } else {
+                    messageContainer.innerHTML = `
+                        <div class="notification is-danger">
+                            ${data.message}
+                            <button class="delete" aria-label="delete"></button>
+                        </div>
+                    `;
+                }
+
+                // Obtener las notificaciones actualizadas después de la inserción de los botones de cerrar
+                const notifications = document.querySelectorAll('.notification');
+
+                // Agregar el evento de clic para eliminar manualmente las notificaciones
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
+                });
+            })
+            .catch(error => {
+                console.error('Error al enviar la solicitud:', error);
+            });
+        });
+    </script>
+
 </body>
 </html>

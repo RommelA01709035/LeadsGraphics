@@ -143,10 +143,17 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label">Seller Asignado</label>
+                        <label class="label">Selecciona Seller:</label>
                         <div class="control">
-                            <input class="input" type="text" name="Seller_Asignado" value="<%= lead.Seller_Asignado %>" placeholder="Seller Asignado">
+                            <div class="select is-fullwidth">
+                                <select name="Seller_Asignado">
+                                    <% sellers.forEach(seller => { %>
+                                        <option value="<%= seller.seller %>"><%= seller.seller %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="field">
                         <label class="label">Embudo</label>

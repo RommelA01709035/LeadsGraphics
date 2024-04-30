@@ -89,7 +89,7 @@
                         
                             <!-- Botón para agregar leads -->
                             <div>
-                                <a href="/importar/agregar-lead" class="button is-info">Agregar Lead</a>
+                                <a href="/importar/agregar-lead" class="button is-info">Crear Lead</a>
                             </div>
                         </div>
                         <br><br>
@@ -134,12 +134,12 @@
                                                     <div class="buttons">
                                                         <% if (lead) { %>
                                                             <!-- Botón para modificar el lead -->
-                                                            <a href="/importar/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar Lead</a>
+                                                            <a href="/importar/modificar-lead/<%= lead.IDLead %>" class="button is-info">Modificar</a>
                                                         <% } else { %>
                                                             <!-- Si no se encuentra el lead -->
                                                             <p>Lead no encontrado</p>
                                                         <% } %>
-                                                        <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar Lead</button>
+                                                        <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -184,8 +184,8 @@
                         <td>${lead.Hora_Ultimo_Mensaje}</td>
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
-                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
+                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar</a>
+                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar</button>
                         </td>
                     </tr>`).join('');
                 document.getElementById('respuesta_ajax').innerHTML = `
@@ -279,8 +279,8 @@
                         <td>${lead.Hora_Ultimo_Mensaje}</td>
                         <td>
                             <!-- Botones de acción -->
-                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar Lead</a>
-                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar Lead</button>
+                            <a href="/importar/modificar-lead/${lead.IDLead}" class="button is-info">Modificar</a>
+                            <button class="button is-danger" onclick="confirmDelete('${lead.IDLead}')">Eliminar</button>
                         </td>
                     </tr>`).join('');
                 document.getElementById('respuesta_ajax').innerHTML = `
