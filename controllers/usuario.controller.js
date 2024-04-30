@@ -119,7 +119,7 @@ exports.getCuenta = (request, response, next) => {
     console.log(id);
     console.log(username);
     console.log(correo);
-    response.render('preferencias', { 
+    response.render('cuenta', { 
         username: request.session.username || '',
         id: id,
         correo: correo,
