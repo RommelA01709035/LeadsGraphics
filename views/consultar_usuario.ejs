@@ -122,7 +122,7 @@
                                                 <td><%= usuario.IDUsuario %></td>     
                                                 <td>
                                                     <div class="buttons">
-                                                        <!--<a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar usuario</a> -->
+                                                        <a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar usuario</a>
                                                         <% if (usuario.Habilitado === 0) { %>
                                                             <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar usuario</button>
 
@@ -169,11 +169,11 @@
                         <td>
                             <!-- Botones de acción -->
                             
-
+                            <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
                             <button class="button is-danger mt-2" onclick="desactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Desactivar usuario</button>
                         </td>
                     </tr>`).join('');
-                    //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                    
                 document.getElementById('respuesta_ajax').innerHTML = `
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
@@ -255,66 +255,65 @@ const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
     .then(data => {
         console.log('Respuesta del servidor:', data);
 
-        // Procesar la respuesta y actualizar el DOM
         const respuestaHtml = data.usuarios.map(usuario => {
             
-            // Comprobar si el usuario está desactivado
-    const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
+        const filaClass = usuario.Habilitado === 0 ? 'has-background-danger' : '';
 
-    let button; 
+        let button; 
 
-    if (usuario.Habilitado === 0) {
-        button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
-    } else {
-        button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
-    }
-
-    return `
-        <tr class="${filaClass}">
-            <td>${usuario.nombre_usuario}</td>
-            <td>${usuario.Correo}</td>
-            <td>${usuario.Celular}</td>
-            <td>${usuario.IDUsuario}</td>
-            <td>
-                
-                ${button}
-            </td>
-        </tr>`;
-        }).join('');
-        //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
-        // Actualizar el contenido de la tabla de usuarios
-        document.getElementById('respuesta_ajax').innerHTML = `
-            <table class="table is-fullwidth is-hoverable">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Teléfono</th>
-                        <th>ID</th>
-                        <th class="is-narrow">Acciones</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    ${respuestaHtml}
-                </tbody>
-            </table>`;
-
-        // Mostrar el mensaje si está presente
-        if (data.message) {
-            mostrarMensaje(data.message, 'success');
+        if (usuario.Habilitado === 0) {
+            button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
+        } else {
+            button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
         }
 
-        if (data.error) {
-            mostrarMensaje(data.error, 'error');
-        }
+        return `
+            <tr class="${filaClass}">
+                <td>${usuario.nombre_usuario}</td>
+                <td>${usuario.Correo}</td>
+                <td>${usuario.Celular}</td>
+                <td>${usuario.IDUsuario}</td>
+                <td>
+                    <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+                    ${button}
+                </td>
+            </tr>`;
+            }).join('');
 
-        // Volver a realizar la búsqueda con el término almacenado
-        buscarUsuarios();
-    })
-    .catch(error => {
-        console.error('Error al procesar la solicitud:', error);
-        mostrarMensaje('Ocurrió un error al procesar la solicitud.', 'error');
-    });
+            
+            // Actualizar el contenido de la tabla de usuarios
+            document.getElementById('respuesta_ajax').innerHTML = `
+                <table class="table is-fullwidth is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>ID</th>
+                            <th class="is-narrow">Acciones</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${respuestaHtml}
+                    </tbody>
+                </table>`;
+
+            // Mostrar el mensaje si está presente
+            if (data.message) {
+                mostrarMensaje(data.message, 'success');
+            }
+
+            if (data.error) {
+                mostrarMensaje(data.error, 'error');
+            }
+
+            // Volver a realizar la búsqueda con el término almacenado
+            buscarUsuarios();
+        })
+        .catch(error => {
+            console.error('Error al procesar la solicitud:', error);
+            mostrarMensaje('Ocurrió un error al procesar la solicitud.', 'error');
+        });
 };
 
 
@@ -378,12 +377,12 @@ const reactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
             <td>${usuario.Celular}</td>
             <td>${usuario.IDUsuario}</td>
             <td>
-                
+                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
                 ${button}
             </td>
         </tr>`;
         }).join('');
-        //<a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+        
         // Actualizar el contenido de la tabla de usuarios
         document.getElementById('respuesta_ajax').innerHTML = `
             <table class="table is-fullwidth is-hoverable">
@@ -435,12 +434,12 @@ const actualizarTablaUsuarios = (data) => {
             <td>${usuario.Celular}</td>
             <td>${usuario.IDUsuario}</td>
             <td>
-               
+                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
                 <button class="button is-danger" onclick="confirmDelete(${usuario.IDUsuario})">Eliminar usuario</button>
             </td>
         </tr>`
     ).join('');
-    // <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+    
 
     // Actualizar el contenido de la tabla de usuarios
     tableBody.innerHTML = html;

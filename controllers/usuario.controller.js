@@ -24,6 +24,19 @@ exports.getUsuarioPage = async (request, response, next) => {
     }
 };
 
+
+exports.modificarUsuario = (request, response, next) => {
+    
+    
+    console.log(request.session.email)
+    console.log(request.session.idUsuario)
+    response.render('modificar-usuario', 
+    { 
+    
+    username: request.session.username || '',
+    csrfToken: request.csrfToken(),});
+};
+
 exports.buscarUsuario = async (request, response, next) => {
     try {
         const nombre = request.params.nombre || '';
