@@ -70,19 +70,31 @@
         <div class="main-content">
             <div class="column">
                 <div class="section">
-                    <h1 class="title">Preferencias</h1>
-                    <div class="block">
-                        <%= username %>
-                    </div>
+                    <h1 class="title">Cuenta</h1>
+                    
+                    
+                    <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><%= username %></td></tr>
+                            <tr><td><%= id %></td></tr>
+                            <tr><td><%= correo %></td></tr>
+                        </tbody>
+                    </table>
+                    
                     <div class="buttons">
-                        <a href="/preferencias" class="button is-info">Cambiar contraseña</a>
+                        <a href="/cuenta" class="button is-info">Cambiar contraseña</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        
+
     </script>
 </body>
 </html>

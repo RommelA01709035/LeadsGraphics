@@ -98,5 +98,16 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
 
+    static changePassword(id, email, contrasena) {
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasenaCifrada) => {
+                return db.execute(`
+                    UPDATE INTO usuario SET Contrasena = ? WHERE IDUsuario = ? AND Correo = ? AND Contrasena = ?;
+                `, [contrasenaCifrada, id, email, contrasena]);
+            }).catch((error) => {
+                console.log(error);
+                throw Error('Contraseña invalida');
+            });
+    }
 
 }

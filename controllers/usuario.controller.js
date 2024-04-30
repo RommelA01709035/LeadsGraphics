@@ -110,7 +110,7 @@ exports.post_reactivate_Usuario = (request, response, next) => {
 };
 
 
-exports.get_preferencias = (request, response, next) => {
+exports.getCuenta = (request, response, next) => {
     console.log('Ruta preferencias');
     console.log(request.body);
     id = request.session.idUsuario;
@@ -126,3 +126,22 @@ exports.get_preferencias = (request, response, next) => {
         csrfToken: request.csrfToken()
     });
 }
+/*
+exports.postCambiarContrasenia = (request, response, next) => {
+    console.log('Hiciste cambiar contraseña');
+    id = request.session.idUsuario;
+    username = request.session.username;
+    correo = request.session.email
+    Usuario.fetchOneUser(id, username, correo)
+        .then(([usuario, fieldData]) => {
+            if(usuario.length == 1) {
+                console.log(usuario);
+                Usuario.changePassword(usuario.IDUsuario, usuario.Correo, usuario.Contrasena)
+                    .then()
+                
+
+            }
+        })
+        .catch()
+}
+*/
