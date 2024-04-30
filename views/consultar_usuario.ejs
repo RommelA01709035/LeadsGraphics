@@ -122,12 +122,12 @@
                                                 <td><%= usuario.IDUsuario %></td>     
                                                 <td>
                                                     <div class="buttons">
-                                                        <a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar usuario</a>
+                                                        <a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar</a>
                                                         <% if (usuario.Habilitado === 0) { %>
-                                                            <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar usuario</button>
+                                                            <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar</button>
 
                                                         <% } else { %>
-                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar usuario</button>
+                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar</button>
                                                         <% } %>
                                                     </div>
                                                 </td>
@@ -169,8 +169,8 @@
                         <td>
                             <!-- Botones de acción -->
                             
-                            <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
-                            <button class="button is-danger mt-2" onclick="desactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Desactivar usuario</button>
+                            <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar</a>
+                            <button class="button is-danger mt-2" onclick="desactivarUsuario('${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}')">Desactivar</button>
                         </td>
                     </tr>`).join('');
                     
@@ -262,9 +262,9 @@ const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
         let button; 
 
         if (usuario.Habilitado === 0) {
-            button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
+            button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar</button>';
         } else {
-            button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
+            button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar</button>';
         }
 
         return `
@@ -274,7 +274,7 @@ const desactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
                 <td>${usuario.Celular}</td>
                 <td>${usuario.IDUsuario}</td>
                 <td>
-                    <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+                    <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar</a>
                     ${button}
                 </td>
             </tr>`;
@@ -365,9 +365,9 @@ const reactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
     let button; 
 
     if (usuario.Habilitado === 0) {
-        button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar usuario</button>';
+        button = '<button class="button is-success mt-2" onclick="reactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Reactivar</button>';
     } else {
-        button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar usuario</button>';
+        button = '<button class="button is-danger mt-2" onclick="desactivarUsuario(\'' + usuario.IDUsuario + '\',\'' + csrfToken + '\',\'' + usuario.nombre_usuario + '\')">Desactivar</button>';
     }
 
     return `
@@ -377,7 +377,7 @@ const reactivarUsuario = (usuarioId, csrfToken, nombreUsuario) => {
             <td>${usuario.Celular}</td>
             <td>${usuario.IDUsuario}</td>
             <td>
-                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar usuario</a>
+                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}','${csrfToken}','${usuario.nombre_usuario}'" class="button is-info">Modificar</a>
                 ${button}
             </td>
         </tr>`;
@@ -434,7 +434,7 @@ const actualizarTablaUsuarios = (data) => {
             <td>${usuario.Celular}</td>
             <td>${usuario.IDUsuario}</td>
             <td>
-                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar usuario</a>
+                <a href="/usuarios/modificar-usuario/${usuario.IDUsuario}" class="button is-info">Modificar</a>
                 <button class="button is-danger" onclick="confirmDelete(${usuario.IDUsuario})">Eliminar usuario</button>
             </td>
         </tr>`
