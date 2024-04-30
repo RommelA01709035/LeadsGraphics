@@ -57,7 +57,7 @@ module.exports = class Usuario {
     }
 
     static fetchOneUser(id, username, correo){
-        return db.execute('SELECT * FROM usuario WHERE IDUsuario=? AND nombre_usuario=? AND Correo=?');
+        return db.execute('SELECT * FROM usuario WHERE IDUsuario=? AND nombre_usuario=? AND Correo=?', [id, username, correo]);
     }
 
     static fetchEmail(email, password){
@@ -102,11 +102,11 @@ module.exports = class Usuario {
         return bcrypt.hash(contrasena, 12)
             .then((contrasenaCifrada) => {
                 return db.execute(`
-                    UPDATE INTO usuario SET Contrasena = ? WHERE IDUsuario = ? AND Correo = ? AND Contrasena = ?;
-                `, [contrasenaCifrada, id, email, contrasena]);
+                    UPDATE usuario SET Contrasena = ? WHERE IDUsuario = ? AND Correo = ?;
+                `, [contrasenaCifrada, id, email]);
             }).catch((error) => {
                 console.log(error);
-                throw Error('Contraseña invalida');
+                throw Error('Error al cambiar la contraseña');
             });
     }
 

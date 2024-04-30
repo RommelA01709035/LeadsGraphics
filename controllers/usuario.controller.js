@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario.model');
 const loginController = require('../controllers/login.controller');
 const Historial = require('../models/historial.model');
 const { request, response } = require('express');
+const bcrypt = require('bcryptjs');
 
 
 exports.getUsuarioPage = async (request, response, next) => {
@@ -119,29 +120,82 @@ exports.getCuenta = (request, response, next) => {
     console.log(id);
     console.log(username);
     console.log(correo);
-    response.render('cuenta', { 
+    response.render('cuenta', {
+        successMessage: '',
+        error: '',
         username: request.session.username || '',
         id: id,
         correo: correo,
         csrfToken: request.csrfToken()
     });
 }
-/*
+
 exports.postCambiarContrasenia = (request, response, next) => {
     console.log('Hiciste cambiar contraseña');
+    const {contraseniaActual, nuevaContrasenia} = request.body;
+    console.log(nuevaContrasenia);
     id = request.session.idUsuario;
     username = request.session.username;
     correo = request.session.email
     Usuario.fetchOneUser(id, username, correo)
         .then(([usuario, fieldData]) => {
             if(usuario.length == 1) {
-                console.log(usuario);
-                Usuario.changePassword(usuario.IDUsuario, usuario.Correo, usuario.Contrasena)
-                    .then()
+                const user = usuario[0];
+                console.log(user);
                 
+                // Verificar si la contraseña actual coincide
+                bcrypt.compare(contraseniaActual, user.Contrasena)
+                    .then((result) => {
+                        if(result){
 
+                            // La contraseña actual es correcta, cambiarla contraseña
+                            Usuario.changePassword(user.IDUsuario, user.Correo, nuevaContrasenia)
+                                .then(() => {
+
+                                    // Contraseña cambiada con éxito
+                                    console.log('Contraseña cambiada con éxito');
+
+                                    const successMessage = '¡Contraseña cambiada con éxito!';
+
+                                    return response.status(200).json({
+                                        successMessage: successMessage,
+                                        success: true,
+                                    })
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    response.status(500).send({
+                                        errorMesage: 'Error al cambiar la contraseña',
+                                        success: false,
+                                    })
+                                });
+                        } else {
+
+                            // La contraseña actual es incorrecta
+                            response.status(400).json({
+                                errorMessage: 'La contraseña actual es incorrecta',
+                                success: false,
+                            })
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        response.status(500).send('Error al verificar la contraseña')
+                    })
+            } else {
+
+                // Usuario no encontrado
+                response.status(404).json({
+                    errorMesage: 'Usuario no encontrado',
+                    success: false,
+                });
             }
         })
-        .catch()
+        .catch((error) => {
+            console.log(error);
+            response.status(500).json({
+                errorMesage: 'Error al obtener usuario',
+                success: false,
+            });
+        })
 }
-*/

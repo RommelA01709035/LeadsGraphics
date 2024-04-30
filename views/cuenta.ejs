@@ -52,9 +52,10 @@
 
         .notification-container {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
             z-index: 1000; 
         }
 
@@ -87,14 +88,70 @@
                     </table>
                     
                     <div class="buttons">
-                        <a href="/cuenta" class="button is-info">Cambiar contraseña</a>
+                        <a id="mostrarFormulario" class="button is-info">Cambiar contraseña</a>
+                    </div>
+
+                    <div id="cambiarContraseña">
+                        <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST">
+                            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
+                            <div class="field">
+                                <label class="label">Contraseña actual</label>
+                                <p class="control has-icons-left">
+                                    <input class="input" type="password" name="contraseniaActual" placeholder="Mi contraseña actual"/>
+                                    <span class="icon is-small is-left">
+                                      <i class="fas fa-lock"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Nueva contraseña</label>
+                                <p class="control has-icons-left">
+                                  <input class="input" type="password" name="nuevaContrasenia" placeholder="Mi nueva contraseña"/>
+                                  <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                  </span>
+                                </p>
+                            </div>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                  <button class="button is-success">Cambiar contraseña</button>
+                                </div>
+                            </div>
+                        </form>
+                        
                     </div>
                 </div>
+            </div>
+            <div class="notification-container mb-4">
+                <% if (successMessage) { %>
+                    <div class="notification is-info">
+                        <strong><%= successMessage %></strong>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                <% } else if (error) { %>
+                    <div class="notification is-danger">
+                        <strong><%= error %></strong>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>
     <script>
-
+        document.addEventListener('DOMContentLoaded', function () {
+                const notifications = document.querySelectorAll('.notification');
+    
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+    
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+    
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
+                });
+        });
     </script>
 </body>
 </html>
