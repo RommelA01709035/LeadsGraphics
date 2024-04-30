@@ -384,6 +384,16 @@ module.exports = class Leads {
         }
     }
 
+    static sellerOption(){
+        return db.execute(
+            `
+            SELECT DISTINCT seller_asignado
+            FROM leads
+        `
+        )
+        
+    }
+
     static deleteLead(id){
         return db.execute('CALL deleteLead(?)',[id]);
     };

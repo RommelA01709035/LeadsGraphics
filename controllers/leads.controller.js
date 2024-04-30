@@ -169,7 +169,6 @@ exports.renderModificarLeadPage = async (req, res) => {
 
         const [lead, fieldData] = await Leads.fetchOne(leadId);
         
-
         // Verificar si se encontró el lead
         if (lead.length == 0) {
             // Si el lead no se encuentra, puedes manejar el error o redirigir a alguna página de error
@@ -179,12 +178,27 @@ exports.renderModificarLeadPage = async (req, res) => {
         else{
 
             console.log('Datos del lead en renderModificarLeadPage:', lead);
+            Leads.sellerOption()
+            .then(([rows, fieldData]) =>{
+                sellers = rows.map(row => ({
+                    seller: row.seller_asignado
+                }));
+                sellers.forEach(tupla => {
+                    console.log(tupla);
+                });
 
-        // Renderiza la vista de modificar lead
-        res.render('modificar_lead', { 
-            lead: lead[0] , 
-            csrfToken: req.csrfToken()
-        });
+                
+            // Renderiza la vista de modificar lead
+            res.render('modificar_lead', {
+                sellers: sellers, 
+                lead: lead[0] , 
+                csrfToken: req.csrfToken()
+            });
+            })
+            .catch(error => {
+                console.log(error);
+                response.status(500).json({ message: "Error obteniendo sellers" });
+            });
 
         }
 
