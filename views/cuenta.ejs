@@ -88,10 +88,10 @@
                     </table>
                     
                     <div class="buttons">
-                        <a id="mostrarFormulario" class="button is-info">Cambiar contraseña</a>
+                        <a id="mostrarFormulario" class="button is-info">Contraseña</a>
                     </div>
 
-                    <div id="cambiarContraseña">
+                    <div id="cambiarContraseña" class="is-hidden">
                         <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST">
                             <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                             <div class="field">
@@ -153,6 +153,19 @@
                     notification.remove(); 
                 }, 60000);
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const mostrarFormularioBtn = document.getElementById('mostrarFormulario');
+            const cambiarContraseñaDiv = document.getElementById('cambiarContraseña');
+
+            mostrarFormularioBtn.addEventListener('click', function () {
+            if (cambiarContraseñaDiv.classList.contains('is-hidden')) {
+                cambiarContraseñaDiv.classList.remove('is-hidden');
+            } else {
+                cambiarContraseñaDiv.classList.add('is-hidden');
+            }
+        });
         });
     </script>
 </body>
