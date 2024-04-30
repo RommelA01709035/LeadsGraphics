@@ -113,14 +113,16 @@ exports.post_reactivate_Usuario = (request, response, next) => {
 exports.get_preferencias = (request, response, next) => {
     console.log('Ruta preferencias');
     console.log(request.body);
-    //id = request.session.idUsuario;
-    //username = request.session.username;
-    //correo = request.session.email
-    //console.log(id);
-    //console.log(username);
-    //console.log(email);
+    id = request.session.idUsuario;
+    username = request.session.username;
+    correo = request.session.email
+    console.log(id);
+    console.log(username);
+    console.log(correo);
     response.render('preferencias', { 
         username: request.session.username || '',
+        id: id,
+        correo: correo,
         csrfToken: request.csrfToken()
     });
 }
