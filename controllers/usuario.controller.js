@@ -25,17 +25,39 @@ exports.getUsuarioPage = async (request, response, next) => {
 };
 
 
-exports.modificarUsuario = (request, response, next) => {
-    
-    
-    console.log(request.session.email)
-    console.log(request.session.idUsuario)
-    response.render('modificar-usuario', 
-    { 
-    
-    username: request.session.username || '',
-    csrfToken: request.csrfToken(),});
+exports.modificarUsuario = async (req, res) => {
+    try {
+        const usuarioId = req.params.IDUsuario;
+        console.log('ID de usuario a modificar:', usuarioId); // Agregar este console.log
+        const usuario = await Usuario.fetchOne(usuarioId);
+        console.log('Datos del usuario a modificar:', usuario); // Agregar este console.log
+        res.render('modificar-usuario', {
+            usuario: usuario[0],
+            username: req.session.username || '',
+            csrfToken: req.csrfToken(),
+        });
+    } catch (error) {
+        console.error('Error al obtener usuario para modificar:', error);
+        res.status(500).send('Error al obtener usuario para modificar');
+    }
 };
+
+exports.actualizarUsuario = async (req, res) => {
+    try {
+        const usuarioId = req.params.IDUsuario;
+        const { nombre_usuario, Correo, Celular } = req.body; // Obtener los datos del formulario
+        const updatedData = { nombre_usuario, Correo, Celular }; // Crear un objeto con los datos actualizados
+
+        // Llamar al método de actualización del modelo con el ID de usuario y los datos actualizados
+        await Usuario.actualizarUsuario(usuarioId, updatedData);
+
+        res.redirect('/usuarios'); // Redirigir a la página de usuarios después de la actualización
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        res.status(500).send('Error al actualizar usuario');
+    }
+};
+
 
 exports.buscarUsuario = async (request, response, next) => {
     try {
