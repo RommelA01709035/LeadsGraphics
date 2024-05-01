@@ -8,7 +8,8 @@ exports.getImportar = async (request, response, next) => {
         console.log('Ruta importar')
         response.render('importar', {
             message: '',
-            username: request.session.username || '', 
+            username: request.session.username || '',
+            roles: request.session.roles || [],
             csrfToken: request.csrfToken(),
         });
     } catch (error) {
@@ -76,6 +77,7 @@ exports.getLeadsPage = async (request, response, next) => {
             message: message,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
+            roles: request.session.roles || [],
         });
 
         // No es necesario crear una instancia de Leads aquí
@@ -91,7 +93,8 @@ exports.renderAddLeadPage = async (request, response, next) => {
         // Renderiza la vista de agregar lead
         response.render('agregar_lead', {
             csrfToken: request.csrfToken(),
-            username: request.session.username || ''
+            username: request.session.username || '',
+            roles: request.session.roles || [],
         });
     } catch (error) {
         console.error('Error al renderizar la vista de agregar lead:', error);
@@ -183,7 +186,9 @@ exports.renderModificarLeadPage = async (req, res) => {
         // Renderiza la vista de modificar lead
         res.render('modificar_lead', { 
             lead: lead[0] , 
-            csrfToken: req.csrfToken()
+            csrfToken: req.csrfToken(),
+            username: request.session.roles || '',
+            roles: request.session.roles || [],
         });
 
         }

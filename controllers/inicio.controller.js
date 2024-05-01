@@ -12,9 +12,7 @@ exports.get_homepage = (request, response, next) => {
     request.session.error = ''; 
     response.render('homepage', {
         username: request.session.username || '',
-
-        // Variable que se le pasa al ejs para determinar su accion
-        // registrar: false,
+        roles: request.session.roles || [],
         error: error,
     })
 }

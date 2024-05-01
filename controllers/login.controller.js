@@ -28,7 +28,7 @@ exports.post_login = (request, response, next) => {
                 bcrypt.compare(request.body.password, usuario.Contrasena)
                     .then(doMatch => {
                         if (doMatch) {
-                            Usuario.getRol(usuario.IDUsuario, usuario.Correo).then(([roles, fieldData]) => {
+                            Usuario.getPermisosYRol(usuario.IDUsuario, usuario.Correo).then(([roles, fieldData]) => {
                                 request.session.isLoggedIn = true;
                                 request.session.email = usuario.Correo;
                                 request.session.idUsuario= usuario.IDUsuario;
