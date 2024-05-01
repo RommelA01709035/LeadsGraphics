@@ -94,5 +94,29 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
 
+    static getRol(id, correo) {
+        return db.execute(`
+            SELECT Descripcion_Rol 
+            FROM usuario u, rol_usuario ru, roles r, funtion_rol fr, funcion f
+            WHERE u.IDUsuario = ? AND u.Correo = ? 
+            AND u.IDUsuario = ru.IDUsuario
+            AND ru.IDRol = r.IDRol
+            AND r.IDRol = fr.IDRol
+            AND fr.IDFuncion = f.IDFuncion
+            GROUP BY Descripcion_Rol
+        `, [id, correo])
+    }
+
+    static getPermisos(id, correo) {
+        return db.execute(`
+            SELECT Accion
+            FROM usuario u, rol_usuario ru, roles r, funtion_rol fr, funcion f
+            WHERE u.IDUsuario = ? AND u.Correo = ? 
+            AND u.IDUsuario = ru.IDUsuario
+            AND ru.IDRol = r.IDRol
+            AND r.IDRol = fr.IDRol
+            AND fr.IDFuncion = f.IDFuncion
+        `, [id, correo])
+    }
     
 }
