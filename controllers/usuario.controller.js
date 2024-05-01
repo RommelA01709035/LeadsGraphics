@@ -109,3 +109,49 @@ exports.post_reactivate_Usuario = (request, response, next) => {
         response.status(500).json({ message: "Error al reactivar" });
     });
 };
+
+// Usuarios (Seller/Admin)
+exports.get_signup_usuario = (request, response, next) => {
+    const error = request.session.error || '';
+    request.session.error = '';
+    response.render('registrar_usuario', {
+        username: request.session.username || '',
+        registrar: true,
+        error: error,
+        csrfToken: request.csrfToken(),
+        roles: request.session.roles || [],
+    }); 
+};
+
+
+exports.post_signup_usuario = (request, response, next) => {
+    const { nombre_usuario, correo, celular, contrasena } = request.body;
+    const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena);
+    
+    Usuario.create(nombre_usuario, correo, celular, contrasena)
+        .then(([rows, fieldData]) => {
+            // Obtener el ID del usuario recién registrado
+            const userId = rows.insertId;
+            // Asignar el rol al usuario
+            return Usuario.asignarUsuarioRol(nombre_usuario, correo)
+                .then(() => {
+                    // Devolver el ID del usuario para usarlo en la siguiente promesa
+                    return userId;
+                });
+        })
+        .then((userId) => {
+            // Obtener los detalles del usuario utilizando su ID
+            return Usuario.fetchOne(userId);
+        })
+        .then(([user, fieldData]) => {
+            const message = `El usuario ${user[0].nombre_usuario} con correo electrónico ${user[0].Correo} ha sido registrado correctamente.`;
+            request.session.message = message; 
+            console.log("Usuario registrado correctamente");
+            response.redirect('/usuarios');
+        })
+        .catch(error => {
+            console.log(error);
+            request.session.error = 'Nombre de usuario inválido.';
+            response.redirect('/usuarios');
+        });
+};
