@@ -33,6 +33,21 @@ module.exports = class Usuario {
                 throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
             });
     }
+
+    static createUser(nombre, correo, celular, contrasena, rol){
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasena_cifrada) => {
+                return db.execute(`
+                    SELECT RegistrarNuevoUsuarioYRol (?, ?, ?, ?, ?) AS id`,
+                    [nombre, correo, celular, contrasena_cifrada, rol]);
+            }).then(([result]) => {
+                return result[0].id;
+            })
+            .catch((error) => {
+                console.log(error);
+                throw Error('Correo de usuario duplicado: Ya existe un usuario con ese correo');
+            });
+    }
     
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');

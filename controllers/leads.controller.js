@@ -187,8 +187,8 @@ exports.renderModificarLeadPage = async (req, res) => {
         res.render('modificar_lead', { 
             lead: lead[0] , 
             csrfToken: req.csrfToken(),
-            username: request.session.roles || '',
-            roles: request.session.roles || [],
+            username: req.session.roles || '',
+            roles: req.session.roles || [],
         });
 
         }

@@ -6,111 +6,125 @@
     <title>Registro de Usuario</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .notification-container {
+            position: fixed;
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
+            z-index: 1000; 
         }
 
-        .form-container {
-            width: 500px;
-        }
-
-        .page-container {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .image-container img {
-            width: 256px;
-        }
-
-        .button.is-primary {
-            background-color: #F649D0;
-            color: white; 
-            border: none; 
-        }
-
-        .button.is-primary:hover {
-            background-color: #a0319b; 
-            color: white; 
-            border: none;
+        .control {
+            border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
+            border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
         }
     </style>
 </head>
 
 <body>
-    <div class="page-container">
-        <div class="container">
-            <div class="box">
-                <br>
-                <section class="form-section">
-                    <div class="image-container">
-                        <img src="/multimedia/logo.png">
+    <%- include('includes/naveside.ejs', {roles: roles}) %>
+        
+        <div class="main-content">
+            <div class="column is-centered">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title">Registrar nuevo usuario</h1>
+    
+                        <div class="buttons">
+                            <a href="/usuarios" class="button is-danger">
+                                Cancelar
+                            </a>
+                        </div>
                     </div>
-                    
-                    <form class="form-container" action="/registro" method="POST" onsubmit="return validarContraseñas()">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"> 
+                    <div class="container">
+                        <div class="column is-full is-centered">
 
-                        <div class="columns">
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="nombre_usuario">Nombre:</label>
-                                    <input id="nombre_usuario" name="nombre_usuario" class="input" type="text" required>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label" for="celular">Teléfono:</label>
-                                    <input id="celular" name="celular" class="input" type="string" required>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label" for="contrasena">Contraseña:</label>
-                                    <input id="contrasena" name="contrasena" class="input" type="password" required>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <label class="label" for="email">Correo:</label>
-                                    <input id="email" name="correo" class="input" type="email" required>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label" for="rol">Rol:</label>
-                                    <div class="select">
-                                        <select name="rol" id="rol">
-                                            <option value="seller">Seller</option>
-                                            <option value="admin">Administrador</option>
-                                        </select>
+                            <div class="box content-box has-text-centered mt-4">
+        
+                                <form action="/usuarios/signupusuario" method="POST" onsubmit="return validarContraseñas()">
+                                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+        
+                                    <div class="columns is-centered">
+                                        <div class="column is-half">
+                                            <div class="field">
+                                                <label class="label">Nombre</label>
+                                                <div class="control">
+                                                    <input class="input" id="nombre_usuario" name="nombre_usuario" class="input" type="text" required placeholder="Pedro">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Teléfono</label>
+                                                <div class="control">
+                                                    <input class="input" id="celular" name="celular" class="input" type="string" required placeholder="4425637485">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Contraseña</label>
+                                                <div class="control">
+                                                    <input class="input" id="contrasena" name="contrasena" class="input" type="password" required placeholder="Micontraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="column is-half">
+                                            <div class="field">
+                                                <label class="label">Correo electrónico</label>
+                                                <div class="control">
+                                                    <input class="input" id="email" name="correo" class="input" type="email" required placeholder="pedro@gmail.com">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Rol</label>
+                                                <div class="select">
+                                                    <select name="rol" id="rol" required>
+                                                        <option value="">Selecciona un rol</option>
+                                                        <option value="seller">Seller</option>
+                                                        <option value="admin">Administrador</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Confirmar contraseña</label>
+                                                <div class="control">
+                                                    <input class="input" id="confirmacontrasena" name="confirmacontrasena" class="input" type="password" required placeholder="Micontraseña" >
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label" for="confirmacontrasena">Confirmar contraseña:</label>
-                                    <input id="confirmacontrasena" name="confirmacontrasena" class="input" type="password" required>
-                                </div>
+        
+                                    <div class="field has-text-centered">
+                                        <input class="button is-success" type="submit" value="Registrar nuevo usuario"/>
+                                    </div>
+                                </form>
+        
                             </div>
                         </div>
-
-                        <div class="field has-text-centered">
-                            <button type="submit" class="button is-primary">Registrarse</button>
-                        </div>
-                    </form>
+                    </div>                   
                 </section>
             </div>
+        </div>
+        <div class="notification-container mb-4">
+            <% if (message) { %>
+                <div class="notification is-success">
+                    <strong><%= message %></strong>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+            <% } else if (error) { %>
+                <div class="notification is-danger">
+                    <strong><%= error %></strong>
+                </div>
+            <% } else if (errorMessage) { %>
+                <div class="notification is-danger">
+                    <strong><%= errorMessage %></strong>
+                </div>
+            <% } %>
         </div>
     </div>
 
@@ -130,6 +144,22 @@
             }
             return true; 
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+                const notifications = document.querySelectorAll('.notification');
+    
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+    
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+    
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
+                });
+        });
     </script>
 
 </body>

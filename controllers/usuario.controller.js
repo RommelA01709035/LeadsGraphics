@@ -114,7 +114,11 @@ exports.post_reactivate_Usuario = (request, response, next) => {
 exports.get_signup_usuario = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
+    const message = request.session.message || '';
+    const errorMessage = request.session.errorMessage || '';
     response.render('registrar_usuario', {
+        message: message,
+        errorMessage: errorMessage,
         username: request.session.username || '',
         registrar: true,
         error: error,
@@ -125,19 +129,35 @@ exports.get_signup_usuario = (request, response, next) => {
 
 
 exports.post_signup_usuario = (request, response, next) => {
-    const { nombre_usuario, correo, celular, contrasena } = request.body;
-    const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena);
+    const { nombre_usuario, correo, celular, contrasena, rol} = request.body;
+    const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena, rol);
+    console.log(request.body);
+
     
-    Usuario.create(nombre_usuario, correo, celular, contrasena)
+    // Mapa de correspondencia entre roles y IDs en la base de datos
+    const rolesMap = {
+        'owner': 1,
+        'admin': 2,
+        'seller': 3
+    }
+
+    const rolID = rolesMap[rol];
+
+    if (!rolID) {
+        const errorMessage = 'Rol inválido.';
+        console.log(errorMessage);
+        request.session.error = errorMessage;
+        return response.redirect('/usuarios');
+    }
+
+    Usuario.createUser(nombre_usuario, correo, celular, contrasena, rolID)
         .then(([rows, fieldData]) => {
+
+            console.log(rows);
             // Obtener el ID del usuario recién registrado
-            const userId = rows.insertId;
-            // Asignar el rol al usuario
-            return Usuario.asignarUsuarioRol(nombre_usuario, correo)
-                .then(() => {
-                    // Devolver el ID del usuario para usarlo en la siguiente promesa
-                    return userId;
-                });
+            const userId = rows;
+            console.log(userId)
+            return userId;
         })
         .then((userId) => {
             // Obtener los detalles del usuario utilizando su ID
@@ -151,7 +171,7 @@ exports.post_signup_usuario = (request, response, next) => {
         })
         .catch(error => {
             console.log(error);
-            request.session.error = 'Nombre de usuario inválido.';
+            request.session.error = 'Error al registrar usuario.';
             response.redirect('/usuarios');
         });
 };
