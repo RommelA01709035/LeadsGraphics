@@ -6,7 +6,6 @@ module.exports = (request, response, next) => {
         if(rol.Accion == 'Consultar grafica' || 
             rol.Accion == 'Autenticarse' || 
             rol.Accion == 'Descargar reporte' ||
-            rol.Accion == 'Cargar CSV' || 
             rol.Accion == 'Cambiar contraseña' ||
             rol.Accion == 'Modificar Lead' ||
             rol.Accion == 'Recuperar contraseña' ||

@@ -15,6 +15,7 @@ exports.get_crea_grafica = (request, response, next) => {
     maxDate: maxDate, 
     vista: vista, 
     username: request.session.username || '',
+    roles: request.session.roles || [],
     csrfToken: request.csrfToken(),});
 };
 
@@ -98,6 +99,7 @@ exports.post_grafica = (request, response, next) => {
                                         registers: registers, 
                                         csrfToken: request.csrfToken(),
                                         username: request.session.username || '',
+                                        roles: request.session.roles || [],
                                     });
                                 }).catch(error => {
                                     console.log(error);
@@ -193,7 +195,9 @@ exports.post_grafica = (request, response, next) => {
                                         minimo: minimo, 
                                         registers: registers,
                                         csrfToken: request.csrfToken(),
-                                        username: request.session.username || '',});
+                                        username: request.session.username || '',
+                                        roles: request.session.roles || [],
+                                    });
                                 }).catch(error => {
                                     console.log(error);
                                     response.status(500).json({ message: "Error en minimo" });
@@ -230,7 +234,9 @@ exports.post_grafica = (request, response, next) => {
                     caso: caso,
                     titulo: "",
                     csrfToken: request.csrfToken(),
-                    username: request.session.username || '',});
+                    username: request.session.username || '',
+                    roles: request.session.roles || [],
+                });
                 }
             
             break;
@@ -301,7 +307,9 @@ exports.post_grafica = (request, response, next) => {
                                         minimo: minimo, 
                                         registers: registers,
                                         csrfToken: request.csrfToken(),
-                                        username: request.session.username || '',});
+                                        username: request.session.username || '',
+                                        roles: request.session.roles || [],
+                                    });
                                 
                                 }).catch(error => {
                                     console.log(error);

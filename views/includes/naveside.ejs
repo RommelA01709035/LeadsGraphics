@@ -17,18 +17,22 @@
               </span>
             </a>
           </li>
-          <li class="mt-2">
-            <a href="/usuarios" class="columns is-spaced is-centered text-icon">
-              <span class="column is-narrow">
-                <span class="icon-text">
-                    <span class="icon">
-                      <i class="fa-solid fa-users fa-xl colorFondo1"></i>
+          <% for (let permiso of roles){ %>
+            <% if (permiso.Accion == 'Consultar usuario') { %>
+              <li class="mt-2">
+                <a href="/usuarios" class="columns is-spaced is-centered text-icon">
+                  <span class="column is-narrow">
+                    <span class="icon-text">
+                        <span class="icon">
+                          <i class="fa-solid fa-users fa-xl colorFondo1"></i>
+                        </span>
+                        <span class="hover-text is-family-sans-serif has-text-right is-size-6">Usuarios</span>
                     </span>
-                    <span class="hover-text is-family-sans-serif has-text-right is-size-6">Usuarios</span>
-                </span>
-              </span>
-            </a>
-          </li>
+                  </span>
+                </a>
+              </li>
+            <% } %>
+          <% } %> 
           <li class="mt-2">
             <a href="/importar" class="columns is-spaced is-centered text-icon">
               <span class="column is-narrow">
@@ -53,18 +57,22 @@
               </span>
             </a>
           </li>
-          <li class="mt-2">
-            <a href="/historial" class="columns is-spaced is-centered text-icon">
-              <span class="column is-narrow">
-                <span class="icon-text">
-                  <span class="icon">
-                    <i class="fa-solid fa-clock-rotate-left fa-xl colorFondo1"></i>
+          <% for (let permiso of roles){ %>
+            <% if (permiso.Accion == 'Consultar historial') { %>
+              <li class="mt-2">
+                <a href="/historial" class="columns is-spaced is-centered text-icon">
+                  <span class="column is-narrow">
+                    <span class="icon-text">
+                      <span class="icon">
+                        <i class="fa-solid fa-clock-rotate-left fa-xl colorFondo1"></i>
+                      </span>
+                      <span class="hover-text is-family-sans-serif has-text-right is-size-6">Historial</span>
+                    </span>
                   </span>
-                  <span class="hover-text is-family-sans-serif has-text-right is-size-6">Historial</span>
-                </span>
-              </span>
-            </a>
-          </li>
+                </a>
+              </li>
+            <% } %>
+          <% } %> 
           <li class="mt-2">
             <a href="#" class="columns is-spaced is-centered text-icon">
               <span class="column is-narrow">

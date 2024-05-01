@@ -7,6 +7,7 @@ exports.get_homepage = (request, response, next) => {
 
     // Declarar una constante error del tipo sesion
     const error = request.session.error || ''; 
+    console.log(request.session);
 
     // Para que no este para siempre, el usuario puede equivocarse
     request.session.error = ''; 

@@ -12,7 +12,7 @@ exports.getUsuarioPage = async (request, response, next) => {
             usuario: usuario,
             message: false, 
             username: request.session.username || '',
-            permisos: request.session.permisos || [],
+            roles: request.session.roles || [],
             csrfToken: request.csrfToken()
         });
         
@@ -55,7 +55,7 @@ exports.post_delete_Usuario = (request, response, next) => {
                 message: message,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
-                permisos: request.session.permisos || [],
+                roles: request.session.roles || [],
             });
         })
     })
@@ -101,7 +101,7 @@ exports.post_reactivate_Usuario = (request, response, next) => {
             message: message,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
-            permisos: request.session.permisos || [],
+            roles: request.session.roles || [],
         });
     })
     .catch(error => {

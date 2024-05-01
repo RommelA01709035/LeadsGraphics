@@ -8,6 +8,7 @@ exports.get_historial = async (request, response, next) => {
 
         response.render('historial', {
             username: request.session.username || '',
+            roles: request.session.roles || [],
             error: error,
             historial: historial,
         });
