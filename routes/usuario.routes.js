@@ -10,7 +10,7 @@ const usuarioController = require('../controllers/usuario.controller');
 router.get('/buscar/:nombre', isAuth, usuarioController.buscarUsuario);
 router.get('/buscar', isAuth, isAdmin, usuarioController.buscarUsuario);
 
-router.get('/', isAuth, isAdmin, usuarioController.getUsuarioPage);
+router.get('/', isAuth, isSeller, usuarioController.getUsuarioPage);
 router.get('/cuenta', isAuth, isSeller, usuarioController.getCuenta);
 router.post('/cuenta/cambiar-contrasenia', isAuth, isSeller, usuarioController.postCambiarContrasenia);
 router.post('/desactivar/:IDUsuario', isAuth, isOwner, usuarioController.desactivarUsuario);
