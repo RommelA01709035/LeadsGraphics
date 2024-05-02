@@ -42,7 +42,7 @@ exports.post_grafica = (request, response, next) => {
     let estados;
     let etapas;
 
-    startMonth.setDate(_startMonth.getDate() )
+    startMonth.setDate(_startMonth.getDate())
     console.log(startMonth);
     endMonth.setDate(_endMonth.getDate());
     console.log(endMonth);

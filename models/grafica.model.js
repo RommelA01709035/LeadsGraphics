@@ -133,7 +133,7 @@ module.exports = class Grafica {
             FROM leads
             where estado_lead = ?
             and Creado BETWEEN ? AND ?
-            GROUP BY  Seller_asignado
+            GROUP BY  Seller_asignado, estado_lead
             order by cantidad_leads desc;
         `, [valor, startMonth, endMonth])
     }
@@ -145,7 +145,7 @@ module.exports = class Grafica {
             FROM leads
             where etapa = ?
             and Creado BETWEEN ? AND ?
-            GROUP BY  Seller_asignado
+            GROUP BY  Seller_asignado, etapa
             order by cantidad_leads desc;
         `, [valor, startMonth, endMonth])
         
@@ -158,7 +158,7 @@ module.exports = class Grafica {
         FROM leads
         where embudo = ?
         and Creado BETWEEN ? AND ?
-        GROUP BY  Seller_asignado
+        GROUP BY  Seller_asignado, embudo
         order by cantidad_leads desc;
         `, [valor, startMonth, endMonth]
 
