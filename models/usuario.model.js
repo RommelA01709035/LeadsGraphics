@@ -11,10 +11,10 @@ module.exports = class Usuario {
         console.log("ID: ", usuarioId);
         
 
-        this.nombre = usuarioNombre;
-        this.correo = usuarioCorreo;
-        this.telefono = usuarioTelefono;
-        this.id = usuarioId;
+        this.nombre_usuario = usuarioNombre || '';
+        this.Correo = usuarioCorreo || '';
+        this.Celular = usuarioTelefono || '';
+        this.IDUsuario = usuarioId || '';
     }
     
     static createUserContructor(nombre, correo, celular, contrasena) {
@@ -78,6 +78,33 @@ module.exports = class Usuario {
             console.log('Datos de usuarios encontrados:', rows);
     
             return rows;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async actualizarUsuario(usuarioId, usuarioData) {
+        try {
+            // Actualizar el usuario en la base de datos utilizando una consulta SQL
+            const query = `
+                UPDATE usuario
+                SET 
+                    nombre_usuario = ?,
+                    Correo = ?,
+                    Celular = ?
+                WHERE IDUsuario = ?`;
+
+            const values = [
+                usuarioData.nombre_usuario,
+                usuarioData.Correo,
+                usuarioData.Celular,
+                usuarioId
+            ];
+
+            await db.execute(query, values);
+
+            // Devolver el usuario actualizado
+            return usuarioData;
         } catch (error) {
             throw error;
         }
