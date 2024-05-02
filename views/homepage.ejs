@@ -49,31 +49,35 @@
                       </div>
                     </article>
                 </div>
-                <div class="box">
-                    <article class="media">
-                      <div class="media-left">
-                        <span class="icon-text">
-                          <span class="icon">
-                            <div class="columns is-centered is-vcentered mt-4">
-                              <div class="column">
-                                <i class="fa-regular fa-circle-user fa-3x has-text-black colorFondo1-home"></i>
-                              </div>
+                <% for (let permiso of roles){ %>
+                  <% if (permiso.Accion == 'Consultar usuario') { %>
+                    <div class="box">
+                        <article class="media">
+                          <div class="media-left">
+                            <span class="icon-text">
+                              <span class="icon">
+                                <div class="columns is-centered is-vcentered mt-4">
+                                  <div class="column">
+                                    <i class="fa-regular fa-circle-user fa-3x has-text-black colorFondo1-home"></i>
+                                  </div>
+                                </div>
+                                
+                              </span>
+                            </span>
+                          </div>
+                          <div class="media-content">
+                            <div class="content">
+                              <p>
+                                <strong>Users</strong> <small>Usuarios</small>
+                                <br>
+                                En el apartado de usuario encontraras la información acerca de los usuarios 
+                              </p>
                             </div>
-                            
-                          </span>
-                        </span>
-                      </div>
-                      <div class="media-content">
-                        <div class="content">
-                          <p>
-                            <strong>Users</strong> <small>Usuarios</small>
-                            <br>
-                            En el apartado de usuario encontraras la información acerca de los usuarios 
-                          </p>
-                        </div>
-                      </div>
-                    </article>
-                </div>
+                          </div>
+                        </article>
+                    </div>
+                  <% } %>
+                <% } %> 
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
@@ -122,30 +126,34 @@
                       </div>
                     </article>
                 </div>
-                <div class="box">
-                  <article class="media">
-                    <div class="media-left">
-                      <span class="icon-text">
-                        <span class="icon">
-                          <div class="columns is-centered is-vcentered mt-4">
-                            <div class="column">
-                              <i class="fa-solid fa-clock-rotate-left fa-3x colorFondo1-home"></i>
-                            </div>
+                <% for (let permiso of roles){ %>
+                  <% if (permiso.Accion == 'Consultar usuario') { %>
+                    <div class="box">
+                      <article class="media">
+                        <div class="media-left">
+                          <span class="icon-text">
+                            <span class="icon">
+                              <div class="columns is-centered is-vcentered mt-4">
+                                <div class="column">
+                                  <i class="fa-solid fa-clock-rotate-left fa-3x colorFondo1-home"></i>
+                                </div>
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                        <div class="media-content">
+                          <div class="content">
+                            <p>
+                              <strong>Historial</strong> <small>Historial de acciones</small>
+                              <br>
+                              En este apartado podrás ver las acciones que han hecho los usuarios a lo largo del tiempo.
+                            </p>
                           </div>
-                        </span>
-                      </span>
-                    </div>
-                    <div class="media-content">
-                      <div class="content">
-                        <p>
-                          <strong>Historial</strong> <small>Historial de acciones</small>
-                          <br>
-                          En este apartado podrás ver las acciones que han hecho los usuarios a lo largo del tiempo.
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-              </div>
+                        </div>
+                      </article>
+                  </div>
+                  <% } %>
+                <% } %> 
                 <div class="box">
                     <article class="media">
                       <div class="media-left">
@@ -165,30 +173,6 @@
                             <strong>Help</strong> <small>Preguntas frecuentes</small>
                             <br>
                             A veces el inicio no podrá resolver todas tus dudas, en este apartado encontrarás respuestas a problemas más críticos.
-                          </p>
-                        </div>
-                      </div>
-                    </article>
-                </div>
-                <div class="box">
-                    <article class="media">
-                      <div class="media-left">
-                        <span class="icon-text">
-                          <span class="icon">
-                            <div class="columns is-centered is-vcentered mt-4">
-                              <div class="column">
-                                <i class="fa-solid fa-gear fa-3x colorFondo1-home"></i>
-                              </div>
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                      <div class="media-content">
-                        <div class="content">
-                          <p>
-                            <strong>Preferences</strong> <small>Ajustes</small>
-                            <br>
-                            Cada usuario tiene un modo de trabajar, los ajustes proporcionan la opción de personalizar el espacio de trabajo.
                           </p>
                         </div>
                       </div>
@@ -216,31 +200,7 @@
                       </div>
                     </div>
                   </article>
-              </div>
-              <div class="box">
-                  <article class="media">
-                    <div class="media-left">
-                      <span class="icon-text">
-                        <span class="icon">
-                          <div class="columns is-centered is-vcentered mt-4">
-                            <div class="column">
-                              <i class="fa-solid fa-door-open fa-3x colorFondo1-home"></i>
-                            </div>
-                          </div>
-                        </span>
-                      </span>
-                    </div>
-                    <div class="media-content">
-                      <div class="content">
-                        <p>
-                          <strong>Salir</strong> <small>Cerrar sesión</small>
-                          <br>
-                          Cada usuario tiene la responsabilidad de  cerrar su sesión en caso cada que sale de la pagína web.
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-              </div>
+                </div>
                 
               </section>
             </div>
