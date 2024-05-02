@@ -9,7 +9,8 @@ exports.get_crea_grafica = (request, response, next) => {
     
     const opcion = "";
     const startDate = new Date().toISOString().split('T')[0]; 
-    const caso = ''
+    const caso = '';
+    const title = '';
     console.log(request.session.email)
     console.log(request.session.idUsuario)
     response.render('crea-grafica', 
@@ -20,7 +21,7 @@ exports.get_crea_grafica = (request, response, next) => {
     embudos: '',
     estados: '',
     etapas: '',
-    title: '',
+    title: title,
     username: request.session.username || '',
     csrfToken: request.csrfToken(),});
 };
@@ -43,8 +44,10 @@ exports.post_grafica = (request, response, next) => {
     console.log(startMonth);
     endMonth.setDate(_endMonth.getDate());
     console.log(endMonth);
-
+    console.log(caso);
     // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas
+
+
     Grafica.getAverage(startMonth, endMonth)
         .then(([rows2, fieldData]) => {
             average = rows2.map(row => ({
@@ -87,6 +90,22 @@ exports.post_grafica = (request, response, next) => {
                 console.log(tupla);
             });
 
+		
+	
+	if (typeof caso === "undefined" || caso === null || caso === "") {
+    		console.log("Caso no definido, nulo o vacío");
+	} else if (caso == "Archivados") {
+		console.log("Soy Archivado");
+	} else if (caso === "LeadsSeller") {
+console.log("Soy LeadsSeller");
+} else if (caso === "Historial") {
+console.log("Soy Historial");
+}else if(caso == "leadsPorMes"){
+	console.log("Leads por mes");
+}
+ else {
+console.log("Caso inválido");
+}
             // Ejecutar el caso necesario para renderizar el tipo de gráfica correspondiente
             switch (caso) {
                 case 'leadsPorMes':
@@ -238,8 +257,6 @@ exports.post_grafica = (request, response, next) => {
                         });
                     break;
                     case 'LeadsSeller':
-                        // Obtener los valores de embudos, estados y etapas aquí primero
-                        
                         Grafica.getDropdownEmbudo(startMonth, endMonth)
                             .then(([rows7, fieldData]) => {
                                 embudos = rows7.map(row => ({
@@ -283,7 +300,6 @@ exports.post_grafica = (request, response, next) => {
                                 data.forEach(tupla => {
                                     console.log(tupla);
                                 });
-                    
                                 // Renderizar la vista aquí dentro, después de obtener todos los valores necesarios
                                 response.render('grafica', {
                                     data: data,
