@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <style>
+        .notification-container {
+            position: fixed;
+            bottom: 50px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el borde derecho */
+            max-width: 300px; /* Anchura máxima del contenedor */
+            transform: translate(0, 0); /* Ajuste de posición */
+            z-index: 1000; 
+        }
+
+        .control {
+            border: 2px solid #000000; /* Color del contorno (rojo en este caso) */
+            border-radius: 5px; /* Ajusta el radio de borde según sea necesario */
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('includes/naveside.ejs', {roles: roles}) %>
+        
+        <div class="main-content">
+            <div class="column is-centered">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title">Registrar nuevo usuario</h1>
+    
+                        <div class="buttons">
+                            <a href="/usuarios" class="button is-info">
+                                Regresar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="column is-full is-centered">
+
+                            <div class="box content-box has-text-centered mt-4">
+        
+                                <form action="/usuarios/signupusuario" method="POST" onsubmit="return validarContraseñas()">
+                                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+        
+                                    <div class="columns is-centered">
+                                        <div class="column is-half">
+                                            <div class="field">
+                                                <label class="label">Nombre</label>
+                                                <div class="control">
+                                                    <input class="input" id="nombre_usuario" name="nombre_usuario" class="input" type="text" required placeholder="Pedro">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Teléfono</label>
+                                                <div class="control">
+                                                    <input class="input" id="celular" name="celular" class="input" type="string" required placeholder="4425637485">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Contraseña</label>
+                                                <div class="control">
+                                                    <input class="input" id="contrasena" name="contrasena" class="input" type="password" required placeholder="Micontraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="column is-half">
+                                            <div class="field">
+                                                <label class="label">Correo electrónico</label>
+                                                <div class="control">
+                                                    <input class="input" id="email" name="correo" class="input" type="email" required placeholder="pedro@gmail.com">
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Rol</label>
+                                                <div class="select">
+                                                    <select name="rol" id="rol" required>
+                                                        <option value="">Selecciona un rol</option>
+                                                        <option value="seller">Seller</option>
+                                                        <option value="admin">Administrador</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+        
+                                            <div class="field">
+                                                <label class="label">Confirmar contraseña</label>
+                                                <div class="control">
+                                                    <input class="input" id="confirmacontrasena" name="confirmacontrasena" class="input" type="password" required placeholder="Micontraseña" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="field has-text-centered">
+                                        <input class="button is-success" type="submit" value="Registrar nuevo usuario"/>
+                                    </div>
+                                </form>
+        
+                            </div>
+                        </div>
+                    </div>                   
+                </section>
+            </div>
+        </div>
+        <div class="notification-container mb-4">
+            <% if (message) { %>
+                <div class="notification is-success">
+                    <strong><%= message %></strong>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+            <% } else if (error) { %>
+                <div class="notification is-danger">
+                    <strong><%= error %></strong>
+                </div>
+            <% } else if (errorMessage) { %>
+                <div class="notification is-danger">
+                    <strong><%= errorMessage %></strong>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function validarContraseñas() {
+            var contrasena = document.getElementById("contrasena").value;
+            var confirmarContrasena = document.getElementById("confirmacontrasena").value;
+
+            if (contrasena !== confirmarContrasena) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Las contraseñas no coinciden.",
+                    footer: '<a href="#">¿Por qué tengo este problema?</a>'
+                });
+                return false; 
+            }
+            return true; 
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+                const notifications = document.querySelectorAll('.notification');
+    
+                notifications.forEach(notification => {
+                    const closeButton = notification.querySelector('.delete');
+    
+                    closeButton.addEventListener('click', function () {
+                        notification.remove(); 
+                    });
+    
+                    setTimeout(function () {
+                        notification.remove(); 
+                    }, 60000);
+                });
+        });
+    </script>
+
+</body>
+</html>

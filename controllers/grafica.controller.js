@@ -23,6 +23,7 @@ exports.get_crea_grafica = (request, response, next) => {
     etapas: '',
     title: title,
     username: request.session.username || '',
+    roles: request.session.roles || [],
     csrfToken: request.csrfToken(),});
 };
 
@@ -134,6 +135,7 @@ console.log("Caso inválido");
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
+                                roles: request.session.roles || [],
                             });
                         })
                         .catch(error => {
@@ -161,6 +163,7 @@ console.log("Caso inválido");
                             title: getTitleForCase(caso),
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                     }).catch(error =>{
                         console.log(error);
@@ -200,6 +203,7 @@ console.log("Caso inválido");
                                     registers: registers,
                                     csrfToken: request.csrfToken(),
                                     username: request.session.username || '',
+                                    roles: request.session.roles || [],
                                 });
                             })
                             .catch(error => {
@@ -248,6 +252,7 @@ console.log("Caso inválido");
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
+                                roles: request.session.roles || [],
                             });
 
                         })
@@ -318,6 +323,7 @@ console.log("Caso inválido");
                                     etapas: etapas,
                                     csrfToken: request.csrfToken(),
                                     username: request.session.username || '',
+                                    roles: request.session.roles || [],
                                 });
                             })
                             .catch(error => {
@@ -355,6 +361,7 @@ console.log("Caso inválido");
                             registers: registers,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
 
                     })
@@ -505,6 +512,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })
@@ -547,6 +555,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })
@@ -589,6 +598,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })

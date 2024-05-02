@@ -10,6 +10,7 @@ exports.get_login = (request, response, next) => {
     request.session.message = ''; 
     response.render('login', { 
         username: request.session.username || '',
+        roles: request.session.roles || [],
         csrfToken: request.csrfToken(),
         error: error,
         message: message, 
@@ -27,15 +28,20 @@ exports.post_login = (request, response, next) => {
                 bcrypt.compare(request.body.password, usuario.Contrasena)
                     .then(doMatch => {
                         if (doMatch) {
-                            request.session.isLoggedIn = true;
-                            request.session.email = usuario.Correo;
-                            request.session.idUsuario = usuario.IDUsuario;
-                            request.session.username = usuario.nombre_usuario;
-                            console.log(request.session.email)
-                            console.log(request.session.idUsuario)
-                            return request.session.save(err => {
-                                response.redirect('/homepage');
-                            });
+                            Usuario.getPermisosYRol(usuario.IDUsuario, usuario.Correo).then(([roles, fieldData]) => {
+                                request.session.isLoggedIn = true;
+                                request.session.email = usuario.Correo;
+                                request.session.idUsuario= usuario.IDUsuario;
+                                request.session.username = usuario.nombre_usuario;
+                                request.session.telefono = usuario.Celular;
+                                request.session.roles = roles;
+                                console.log(request.session.email);
+                                console.log(request.session.idUsuario);
+                                console.log(request.session.roles);
+                                return request.session.save(err => {
+                                    response.redirect('/homepage');
+                                });
+                            }).catch((error) => {console.log(error)});
                         } else {
                             request.session.error = 'El usuario y/o contraseña son incorrectos';
                             return response.redirect('/login');
@@ -65,7 +71,7 @@ exports.get_signup = (request, response, next) => {
         registrar: true,
         error: error,
         csrfToken: request.csrfToken(),
-        permisos: request.session.permisos || [],
+        roles: request.session.roles || [],
     }); 
 };
 

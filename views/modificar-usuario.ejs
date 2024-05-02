@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Usuario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/estilos.css"> <!-- Agrega el archivo de estilos personalizados -->
+    <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
+    <style>
+        /* Estilos para el formulario */
+        .main-content {
+            padding: 2rem;
+            margin: auto;
+            max-width: 600px;
+        }
+
+        .field {
+            margin-bottom: 1.5rem;
+        }
+
+        .title {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <%- include('includes/naveside.ejs', {roles: roles}) %>
+
+    <div class="main-content">
+        <h1 class="title">Modificar Usuario</h1>
+
+        <form action="/usuarios/actualizar-usuario/<%= usuario[0].IDUsuario %>" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            
+            <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control">
+                    <input class="input" type="text" name="nombre_usuario" value="<%= usuario[0].nombre_usuario %>" placeholder="Nombre" required>
+                </div>  
+            </div>
+            
+            <div class="field">
+                <label class="label">Correo</label>
+                <div class="control">
+                    <input class="input" type="email" name="Correo" value="<%= usuario[0].Correo %>" placeholder="Correo" required>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Teléfono</label>
+                <div class="control">
+                    <input class="input" type="text" name="Celular" value="<%= usuario[0].Celular %>" placeholder="Teléfono" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Cambia de Rol: </label>
+                <div class="control select is-fullwidth">
+                    <select name="rol">
+                        <% rolesOption.forEach(rolop => { %>
+                            <option value="<%= rolop.IDRol_ %>"><%= rolop.descripcion_rol %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" type="submit">Actualizar Usuario</button>
+                </div>
+                <div class="control">
+                    <a href="/usuarios" class="button is-danger">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -11,10 +11,10 @@ module.exports = class Usuario {
         console.log("ID: ", usuarioId);
         
 
-        this.nombre = usuarioNombre;
-        this.correo = usuarioCorreo;
-        this.telefono = usuarioTelefono;
-        this.id = usuarioId;
+        this.nombre_usuario = usuarioNombre || '';
+        this.Correo = usuarioCorreo || '';
+        this.Celular = usuarioTelefono || '';
+        this.IDUsuario = usuarioId || '';
     }
     
     static createUserContructor(nombre, correo, celular, contrasena) {
@@ -32,6 +32,20 @@ module.exports = class Usuario {
             .catch((error) => {
                 console.log(error);
                 throw Error('Nombre de usuario duplicado: Ya existe un usuario con ese nombre');
+            });
+    }
+
+    static createUser(nombre, correo, celular, contrasena, rol){
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasena_cifrada) => {
+                return db.execute(`
+                    SELECT RegistrarNuevoUsuarioYRol (?, ?, ?, ?, ?) AS id`,
+                    [nombre, correo, celular, contrasena_cifrada, rol]
+                );
+            })
+            .catch((error) => {
+                console.log(error);
+                throw Error('Correo de usuario duplicado: Ya existe un usuario con ese correo');
             });
     }
     
@@ -69,10 +83,47 @@ module.exports = class Usuario {
         }
     }
 
+    static  actualizarRol(rolNuevo,IDUsuario){
+        return db.execute(`
+        UPDATE rol_usuario SET IDRol = ? 
+        WHERE IDUsuario = ?
+        `, [rolNuevo, IDUsuario])
+    }
+    static async actualizarUsuario(usuarioId, usuarioData) {
+        try {
+            // Actualizar el usuario en la base de datos utilizando una consulta SQL
+            const query = `
+                UPDATE usuario
+                SET 
+                    nombre_usuario = ?,
+                    Correo = ?,
+                    Celular = ?
+                WHERE IDUsuario = ?`;
+
+            const values = [
+                usuarioData.nombre_usuario,
+                usuarioData.Correo,
+                usuarioData.Celular,
+                usuarioId
+            ];
+
+            await db.execute(query, values);
+
+            // Devolver el usuario actualizado
+            return usuarioData;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 
     static fetchEmail(email, password){
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
+    }
+
+    static fetchOneUser(id, username, correo){
+        return db.execute('SELECT * FROM usuario WHERE IDUsuario=? AND nombre_usuario=? AND Correo=?', [id, username, correo]);
     }
     
     static desactivar(nombre_usuario, IDUsuario) {
@@ -113,5 +164,59 @@ module.exports = class Usuario {
         return db.execute('SELECT COUNT(*) AS total FROM usuario');
     }
 
-    
+    static getRol(id, correo) {
+        return db.execute(`
+            SELECT Descripcion_Rol 
+            FROM usuario u, rol_usuario ru, roles r, funtion_rol fr, funcion f
+            WHERE u.IDUsuario = ? AND u.Correo = ? 
+            AND u.IDUsuario = ru.IDUsuario
+            AND ru.IDRol = r.IDRol
+            AND r.IDRol = fr.IDRol
+            AND fr.IDFuncion = f.IDFuncion
+            GROUP BY Descripcion_Rol
+        `, [id, correo])
+    }
+
+    static getRolOption(){
+        return db.execute(`
+            SELECT DISTINCT IDRol, Descripcion_Rol
+            from roles
+        `)
+    }
+
+    static getPermisos(id, correo) {
+        return db.execute(`
+            SELECT Accion
+            FROM usuario u, rol_usuario ru, roles r, funtion_rol fr, funcion f
+            WHERE u.IDUsuario = ? AND u.Correo = ? 
+            AND u.IDUsuario = ru.IDUsuario
+            AND ru.IDRol = r.IDRol
+            AND r.IDRol = fr.IDRol
+            AND fr.IDFuncion = f.IDFuncion
+        `, [id, correo])
+    }
+
+    static getPermisosYRol(id, correo) {
+        return db.execute(`
+            SELECT Accion, Descripcion_Rol
+            FROM usuario u, rol_usuario ru, roles r, funtion_rol fr, funcion f
+            WHERE u.IDUsuario = ? AND u.Correo = ? 
+            AND u.IDUsuario = ru.IDUsuario
+            AND ru.IDRol = r.IDRol
+            AND r.IDRol = fr.IDRol
+            AND fr.IDFuncion = f.IDFuncion
+        `, [id, correo])
+    }
+
+    static changePassword(id, email, contrasena) {
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasenaCifrada) => {
+                return db.execute(`
+                    UPDATE usuario SET Contrasena = ? WHERE IDUsuario = ? AND Correo = ?;
+                `, [contrasenaCifrada, id, email]);
+            }).catch((error) => {
+                console.log(error);
+                throw Error('Error al cambiar la contraseña');
+            });
+    }
 }
