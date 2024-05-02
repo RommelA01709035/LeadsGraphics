@@ -26,353 +26,286 @@ exports.get_crea_grafica = (request, response, next) => {
     csrfToken: request.csrfToken(),});
 };
 
-exports.post_grafica = (request, response, next) => {
-    const { caso, opcion, startDate, endDate } = request.body;
-    const _startMonth = new Date(startDate);
-    const _endMonth = new Date(endDate);
-    const startMonth = new Date(_startMonth);
-    const endMonth = new Date(_endMonth);
-    let average;
-    let maximo;
-    let minimo;
-    let registers;
-    let embudos;
-    let estados;
-    let etapas;
+exports.post_grafica = async (request, response, next) => {
+    try {
+        const { caso, opcion, startDate, endDate } = request.body;
+        const _startMonth = new Date(startDate);
+        const _endMonth = new Date(endDate);
+        const startMonth = new Date(_startMonth);
+        const endMonth = new Date(_endMonth);
+        let average;
+        let maximo;
+        let minimo;
+        let registers;
+        let embudos;
+        let estados;
+        let etapas;
 
-    startMonth.setDate(_startMonth.getDate())
-    console.log(startMonth);
-    endMonth.setDate(_endMonth.getDate());
-    console.log(endMonth);
-    console.log(caso);
-    // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas
+        startMonth.setDate(_startMonth.getDate());
+        console.log(_startMonth);
+        endMonth.setDate(_endMonth.getDate() + 1);
+        console.log(_endMonth);
 
+        average = await Grafica.getAverage(startMonth, endMonth);
+        console.log("Promedio:");
+        average.forEach(tupla => {
+            console.log(tupla);
+        });
 
-    Grafica.getAverage(startMonth, endMonth)
-        .then(([rows2, fieldData]) => {
-            average = rows2.map(row => ({
-                promedio: row.promedio,
-                mes: row.mes
-            }));
-            console.log("Promedio:");
-            average.forEach(tupla => {
-                console.log(tupla);
-            });
-            return Grafica.getMax(startMonth, endMonth);
-        })
-        .then(([rows3, fieldData]) => {
-            maximo = rows3.map(row => ({
-                maximo: row.maximo
-            }));
-            console.log("Maximo:");
-            maximo.forEach(tupla => {
-                console.log(tupla);
-            });
-            return Grafica.getMin(startMonth, endMonth);
-        })
-        .then(([rows4, fieldData]) => {
-            minimo = rows4.map(row => ({
-                minimo: row.minimo,
-                mes: row.mes
-            }));
-            console.log("Minimo:");
-            minimo.forEach(tupla => {
-                console.log(tupla);
-            });
-            return Grafica.getCount(startMonth, endMonth);
-        })
-        .then(([rows5, fieldData]) => {
-            registers = rows5.map(row => ({
-                total_tuplas: row.total_tuplas
-            }));
-            console.log("registers:");
-            registers.forEach(tupla => {
-                console.log(tupla);
-            });
+        maximo = await Grafica.getMax(startMonth, endMonth);
+        console.log("Maximo:");
+        maximo.forEach(tupla => {
+            console.log(tupla);
+        });
 
-		
-	
-	if (typeof caso === "undefined" || caso === null || caso === "") {
-    		console.log("Caso no definido, nulo o vacío");
-	} else if (caso == "Archivados") {
-		console.log("Soy Archivado");
-	} else if (caso === "LeadsSeller") {
-console.log("Soy LeadsSeller");
-} else if (caso === "Historial") {
-console.log("Soy Historial");
-}else if(caso == "leadsPorMes"){
-	console.log("Leads por mes");
-}
- else {
-console.log("Caso inválido");
-}
-            // Ejecutar el caso necesario para renderizar el tipo de gráfica correspondiente
-            switch (caso) {
-                case 'leadsPorMes':
-                    Grafica.getLeadsMonth(startMonth, endMonth)
-                        .then(([rows, fieldData]) => {
-                            const data = rows.map(row => ({
-                                mes: row.mes,
-                                cantidad_leads: row.cantidad_leads,
-                                estado_lead: row.estado_lead
-                            }));
-                            console.log("Tuplas obtenidas de la base de datos:");
-                            data.forEach(tupla => {
-                                console.log(tupla);
-                            });
-                            console.log("Username: " + request.session.username);
-                            response.render('grafica', {
-                                data: data, opcion: opcion,
-                                caso: caso, 
-                                startMonth: startMonth,
-                                endMonth: endMonth,
-                                titulo_grafica: '',
-                                average: average,
-                                maximo: maximo,
-                                minimo: minimo,
-                                title: caso,
-                                registers: registers,
-                                csrfToken: request.csrfToken(),
-                                username: request.session.username || '',
-                            });
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            response.status(500).json({ message: "Error creating chart" });
-                        });
-                    break;
-                case 'Historial':
-                    Historial.accionesContadas()
-                    .then(([rows, fieldData]) => {
-                        const data = rows.map(row => ({
-                            accion: row.accion,
-                            cantidad: row.cantidad,
-                        }));
-                        console.log("Tuplas obtenidas de la base de datos:");
-                        data.forEach(tupla => {
-                            console.log(tupla);
-                        });
+        minimo = await Grafica.getMin(startMonth, endMonth);
+        console.log("Minimo:");
+        minimo.forEach(tupla => {
+            console.log(tupla);
+        });
 
-                        response.render('grafica', {
-                            data: data,
-                            opcion: opcion,
-                            caso: caso,
-                            titulo_grafica: "Historial de la app",
-                            title: getTitleForCase(caso),
-                            csrfToken: request.csrfToken(),
-                            username: request.session.username || '',
-                        });
-                    }).catch(error =>{
-                        console.log(error);
-                        response.status(500).json({ message: "Error creating chart Historial" });
-                    });
-                        
-                    break;
+        registers = await Grafica.getCount(startMonth, endMonth);
+        console.log("registers:");
+        registers.forEach(tupla => {
+            console.log(tupla);
+        });
 
-                case 'LastMessage':
-                    const { palabra } = request.body
-                    console.log(palabra)
-                    if (palabra) {
-                        Grafica.getLastMessage(palabra, startMonth, endMonth)
-                            .then(([rows, fieldData]) => {
-                                const data = rows.map(row => ({
-                                    cantidad_leads: row.cantidad_leads,
-                                    cantidad_mensajes: row.cantidad_mensajes,
-                                    palabra: palabra,
-                                }));
-                                console.log("Tuplas obtenidas de la base de datos:");
-                                data.forEach(tupla => {
-                                    console.log(tupla);
-                                });
-                                console.log(opcion);
-
-                                response.render('grafica', {
-                                    data: data,
-                                    opcion: opcion,
-                                    caso: caso,
-                                    startMonth: formatDate(startMonth),
-                                    endMonth: formatDate(endMonth),
-                                    titulo_grafica: "Leads con esta palabra",
-                                    average: average,
-                                    maximo: maximo,
-                                    minimo: minimo,
-                                    title: getTitleForCase(caso),
-                                    registers: registers,
-                                    csrfToken: request.csrfToken(),
-                                    username: request.session.username || '',
-                                });
-                            })
-                            .catch(error => {
-                                console.log(error);
-                                response.status(500).json({ message: "Error creating chart" });
-                            });
-                    } else {
-                        console.log("Entraste al Else")
-                        console.log(opcion);
-                        response.render('crea-grafica', {
-                            opcion: "LastMessage",
-                            startMonth: formatDate(startMonth),
-                            endMonth: formatDate(endMonth),
-                            caso: caso,
-                            titulo_grafica: "",
-                            csrfToken: request.csrfToken(),
-                            username: request.session.username || '',
-                        });
-                    }
-                    break;
-
-                case 'PerCompany':
-                    Grafica.getPerCompany(startMonth, endMonth)
-                        .then(([rows, fieldData]) => {
-                            const data = rows.map(row => ({
-                                cantidad_leads: row.cantidad_leads,
-                                Compania: row.Compania,
-                            }));
-                            console.log("Tuplas obtenidas de la base de datos:");
-                            data.forEach(tupla => {
-                                console.log(tupla);
-                            });
-                            console.log(opcion);
-
-                            response.render('grafica', {
-                                data: data,
-                                opcion: opcion,
-                                caso: caso,
-                                startMonth: formatDate(startMonth),
-                                endMonth: formatDate(endMonth),
-                                titulo_grafica: "Leads por compañia",
-                                average: average,
-                                maximo: maximo,
-                                minimo: minimo,
-                                title: getTitleForCase(caso),
-                                registers: registers,
-                                csrfToken: request.csrfToken(),
-                                username: request.session.username || '',
-                            });
-
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            response.status(500).json({ message: "Error creating chart" });
-                        });
-                    break;
-                    case 'LeadsSeller':
-                        Grafica.getDropdownEmbudo(startMonth, endMonth)
-                            .then(([rows7, fieldData]) => {
-                                embudos = rows7.map(row => ({
-                                    embudos: row.Embudo
-                                }));
-                                console.log("Tuplas obtenidas de la base de datos de embudos:");
-                                embudos.forEach(tupla => {
-                                    console.log(tupla);
-                                });
-                                return Grafica.getDropdownEstado(startMonth, endMonth);
-                            })
-                            .then(([rows6, fieldData]) => {
-                                estados = rows6.map(row => ({
-                                    estados: row.estado_lead
-                                }));
-                                console.log("Tuplas obtenidas de la base de datos de estados:");
-                                estados.forEach(tupla => {
-                                    console.log(tupla);
-                                });
-                                return Grafica.getDropdownEtapa(startMonth, endMonth);
-                            })
-                            .then(([rows8, fieldData]) => {
-                                etapas = rows8.map(row => ({
-                                    etapas: row.etapa
-                                }));
-                                console.log("Tuplas obtenidas de la base de datos de etapas:");
-                                etapas.forEach(tupla => {
-                                    console.log(tupla);
-                                });
-                    
-                                // Después de obtener todos los valores necesarios, obtener los datos de leads por vendedor
-                                return Grafica.getLeadsPerSeller(startMonth, endMonth);
-                            })
-                            .then(([rows, fieldData]) => {
-                                const data = rows.map(row => ({
-                                    cantidad_leads: row.cantidad_leads,
-                                    archivado: row.archivado,
-                                    Seller: row.Seller_asignado,
-                                }));
-                                console.log("Tuplas obtenidas de la base de datos de leads por vendedor:");
-                                data.forEach(tupla => {
-                                    console.log(tupla);
-                                });
-                                // Renderizar la vista aquí dentro, después de obtener todos los valores necesarios
-                                response.render('grafica', {
-                                    data: data,
-                                    opcion: opcion,
-                                    caso: caso,
-                                    startMonth: formatDate(startMonth),
-                                    endMonth: formatDate(endMonth),
-                                    titulo_grafica: "Leads por cada seller",
-                                    average: average,
-                                    maximo: maximo,
-                                    minimo: minimo,
-                                    title: getTitleForCase(caso),
-                                    registers: registers,
-                                    embudos: embudos,
-                                    estados: estados,
-                                    etapas: etapas,
-                                    csrfToken: request.csrfToken(),
-                                    username: request.session.username || '',
-                                });
-                            })
-                            .catch(error => {
-                                console.log(error);
-                                response.status(500).json({ message: "Error obteniendo la gráfica" });
-                            });
-                        break;
-                    
-            case 'Archivados':
-                console.log(startDate);
-                console.log(endDate);
-                Grafica.getLeadsArchivados(startMonth, endMonth)
-                    .then(([rows, fieldData]) => {
-                        const data = rows.map(row => ({
-                            cantidad_leads: row.cantidad_leads,
-                            archivado: row.archivado,
-                        }));
-                        console.log("Tuplas obtenidas de la base de datos:");
-                        data.forEach(tupla => {
-                            console.log(tupla);
-                        });
-                        console.log(opcion);
-
-                        response.render('grafica', {
-                            data: data,
-                            opcion: opcion,
-                            caso: caso,
-                            startMonth: formatDate(startMonth),
-                            endMonth: formatDate(endMonth),
-                            titulo_grafica: "Leads archivados",
-                            average: average,
-                            maximo: maximo,
-                            minimo: minimo,
-                            title: getTitleForCase(caso),
-                            registers: registers,
-                            csrfToken: request.csrfToken(),
-                            username: request.session.username || '',
-                        });
-
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        response.status(500).json({ message: "Error creating chart" });
-                    });
+        switch (caso) {
+            case 'leadsPorMes':
+                const [rows, fieldData] = await Grafica.getLeadsMonth(startMonth, endMonth);
+                const data = rows.map(row => ({
+                    mes: row.mes,
+                    cantidad_leads: row.cantidad_leads,
+                    estado_lead: row.estado_lead
+                }));
+                console.log("Tuplas obtenidas de la base de datos:");
+                data.forEach(tupla => {
+                    console.log(tupla);
+                });
+                console.log("Username: " + request.session.username);
+                response.render('grafica', {
+                    data: data,
+                    opcion: opcion,
+                    caso: caso,
+                    startMonth: formatDate(startMonth),
+                    endMonth: formatDate(endMonth),
+                    titulo_grafica: "Leads por mes",
+                    average: average,
+                    maximo: maximo,
+                    minimo: minimo,
+                    title: getTitleForCase(caso),
+                    registers: registers,
+                    csrfToken: request.csrfToken(),
+                    username: request.session.username || '',
+                    roles: request.session.roles || [],
+                });
                 break;
 
-                default:
-                    response.status(400).json({ message: "Invalid case" });
-            }
-        })
-        .catch(error => {
-            console.log(error);
-            response.status(500).json({ message: "Error creating chart" });
-        });
+            case 'Historial':
+                const [historialRows, historialFieldData] = await Historial.accionesContadas();
+                const historialData = historialRows.map(row => ({
+                    accion: row.accion,
+                    cantidad: row.cantidad,
+                }));
+                console.log("Tuplas obtenidas de la base de datos:");
+                historialData.forEach(tupla => {
+                    console.log(tupla);
+                });
+
+                response.render('grafica', {
+                    data: historialData,
+                    opcion: opcion,
+                    caso: caso,
+                    titulo_grafica: "Historial de la app",
+                    title: getTitleForCase(caso),
+                    csrfToken: request.csrfToken(),
+                    username: request.session.username || '',
+                    roles: request.session.roles || [],
+                });
+                break;
+
+            case 'LastMessage':
+                const { palabra } = request.body
+                console.log(palabra)
+                if (palabra) {
+                    const [rows, fieldData] = await Grafica.getLastMessage(palabra, startMonth, endMonth);
+                    const data = rows.map(row => ({
+                        cantidad_leads: row.cantidad_leads,
+                        cantidad_mensajes: row.cantidad_mensajes,
+                        palabra: palabra,
+                    }));
+                    console.log("Tuplas obtenidas de la base de datos:");
+                    data.forEach(tupla => {
+                        console.log(tupla);
+                    });
+                    console.log(opcion);
+
+                    response.render('grafica', {
+                        data: data,
+                        opcion: opcion,
+                        caso: caso,
+                        startMonth: formatDate(startMonth),
+                        endMonth: formatDate(endMonth),
+                        titulo_grafica: "Leads con esta palabra",
+                        average: average,
+                        maximo: maximo,
+                        minimo: minimo,
+                        title: getTitleForCase(caso),
+                        registers: registers,
+                        csrfToken: request.csrfToken(),
+                        username: request.session.username || '',
+                        roles: request.session.roles || [],
+                    });
+                } else {
+                    console.log("Entraste al Else")
+                    console.log(opcion);
+                    response.render('crea-grafica', {
+                        opcion: "LastMessage",
+                        startMonth: formatDate(startMonth),
+                        endMonth: formatDate(endMonth),
+                        caso: caso,
+                        titulo_grafica: "",
+                        csrfToken: request.csrfToken(),
+                        username: request.session.username || '',
+                    });
+                }
+                break;
+               // Caso 'PerCompany'
+case 'PerCompany':
+    const [companyRows, companyFieldData] = await Grafica.getPerCompany(startMonth, endMonth);
+    const companyData = companyRows.map(row => ({
+        cantidad_leads: row.cantidad_leads,
+        Compania: row.Compania,
+    }));
+    console.log("Tuplas obtenidas de la base de datos:");
+    companyData.forEach(tupla => {
+        console.log(tupla);
+    });
+    console.log(opcion);
+
+    response.render('grafica', {
+        data: companyData,
+        opcion: opcion,
+        caso: caso,
+        startMonth: formatDate(startMonth),
+        endMonth: formatDate(endMonth),
+        titulo_grafica: "Leads por compañia",
+        average: average,
+        maximo: maximo,
+        minimo: minimo,
+        title: getTitleForCase(caso),
+        registers: registers,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        roles: request.session.roles || [],
+    });
+    break;
+
+// Caso 'LeadsSeller'
+case 'LeadsSeller':
+    const [embudoRows, embudoFieldData] = await Grafica.getDropdownEmbudo(startMonth, endMonth);
+    embudos = embudoRows.map(row => ({
+        embudos: row.Embudo
+    }));
+    console.log("Tuplas obtenidas de la base de datos de embudos:");
+    embudos.forEach(tupla => {
+        console.log(tupla);
+    });
+
+    const [estadoRows, estadoFieldData] = await Grafica.getDropdownEstado(startMonth, endMonth);
+    estados = estadoRows.map(row => ({
+        estados: row.estado_lead
+    }));
+    console.log("Tuplas obtenidas de la base de datos de estados:");
+    estados.forEach(tupla => {
+        console.log(tupla);
+    });
+
+    const [etapaRows, etapaFieldData] = await Grafica.getDropdownEtapa(startMonth, endMonth);
+    etapas = etapaRows.map(row => ({
+        etapas: row.etapa
+    }));
+    console.log("Tuplas obtenidas de la base de datos de etapas:");
+    etapas.forEach(tupla => {
+        console.log(tupla);
+    });
+
+    const [leadsRows, leadsFieldData] = await Grafica.getLeadsPerSeller(startMonth, endMonth);
+    const leadsData = leadsRows.map(row => ({
+        cantidad_leads: row.cantidad_leads,
+        archivado: row.archivado,
+        Seller: row.Seller_asignado,
+    }));
+    console.log("Tuplas obtenidas de la base de datos de leads por vendedor:");
+    leadsData.forEach(tupla => {
+        console.log(tupla);
+    });
+
+    response.render('grafica', {
+        data: leadsData,
+        opcion: opcion,
+        caso: caso,
+        startMonth: formatDate(startMonth),
+        endMonth: formatDate(endMonth),
+        titulo_grafica: "Leads por cada seller",
+        average: average,
+        maximo: maximo,
+        minimo: minimo,
+        title: getTitleForCase(caso),
+        registers: registers,
+        embudos: embudos,
+        estados: estados,
+        etapas: etapas,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        roles: request.session.roles || [],
+    });
+    break;
+
+// Caso 'Archivados'
+case 'Archivados':
+    console.log(startDate);
+    console.log(endDate);
+    const [archivadosRows, archivadosFieldData] = await Grafica.getLeadsArchivados(startMonth, endMonth);
+    const archivadosData = archivadosRows.map(row => ({
+        cantidad_leads: row.cantidad_leads,
+        archivado: row.archivado,
+    }));
+    console.log("Tuplas obtenidas de la base de datos:");
+    archivadosData.forEach(tupla => {
+        console.log(tupla);
+    });
+    console.log(opcion);
+
+    response.render('grafica', {
+        data: archivadosData,
+        opcion: opcion,
+        caso: caso,
+        startMonth: formatDate(startMonth),
+        endMonth: formatDate(endMonth),
+        titulo_grafica: "Leads archivados",
+        average: average,
+        maximo: maximo,
+        minimo: minimo,
+        title: getTitleForCase(caso),
+        registers: registers,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        roles: request.session.roles || [],
+    });
+    break;
+
+            // Otros casos aquí...
+
+            default:
+                response.status(400).json({ message: "Invalid case" });
+        }
+    } catch (error) {
+        console.error('Error en post_grafica:', error);
+        response.status(500).json({ message: "Error creating chart" });
+    }
 };
+
 
 exports.post_grafica_usuario = (request, response, next) => {
     const { caso, opcion, startDate, endDate, consulta, valor } = request.body;
