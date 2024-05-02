@@ -142,7 +142,11 @@
                                                             <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar</button>
 
                                                         <% } else { %>
-                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar</button>
+                                                            <% for (let permiso of roles){ %>
+                                                                <% if (permiso.Accion == 'Eliminar usuarios') { %>
+                                                                    <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar</button>
+                                                                <% } %>
+                                                            <% } %>
                                                         <% } %>
                                                     </div>
                                                 </td>
