@@ -39,11 +39,10 @@ exports.post_grafica = (request, response, next) => {
     let estados;
     let etapas;
 
-
     startMonth.setDate(_startMonth.getDate())
-    console.log(_startMonth);
-    endMonth.setDate(_endMonth.getDate() + 1);
-    console.log(_endMonth);
+    console.log(startMonth);
+    endMonth.setDate(_endMonth.getDate());
+    console.log(endMonth);
 
     // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas
     Grafica.getAverage(startMonth, endMonth)
@@ -106,13 +105,13 @@ exports.post_grafica = (request, response, next) => {
                             response.render('grafica', {
                                 data: data, opcion: opcion,
                                 caso: caso, 
-                                startMonth: formatDate(startMonth),
-                                endMonth: formatDate(endMonth),
-                                titulo_grafica: "Leads por mes",
+                                startMonth: startMonth,
+                                endMonth: endMonth,
+                                titulo_grafica: '',
                                 average: average,
                                 maximo: maximo,
                                 minimo: minimo,
-                                title: getTitleForCase(caso),
+                                title: caso,
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',

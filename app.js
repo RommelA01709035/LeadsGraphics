@@ -86,10 +86,10 @@ const rutaHistorial = require('./routes/historial.routes');
 // Usar las rutas
 app.use('/', rutaLogin);
 app.use('/homepage', rutaInicio);
-app.use('/grafica', rutaGrafica);
+app.use('/', rutaGrafica);
 app.use('/importar', rutaLeads);
 app.use('/usuarios', rutaUsuarios);
 app.use('/historial', rutaHistorial);
 
 
-app.listen(3000);
+app.listen(8081);

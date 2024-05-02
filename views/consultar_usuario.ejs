@@ -93,7 +93,7 @@
                         <!-- Contenedor para mostrar los resultados de la búsqueda -->
                         <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                         <div id="respuesta_ajax" class="table-body">
-                            <% if (usuarios.length < 1) { %>
+                            <% if (usuario.length < 1) { %>
                                 <!-- Mensaje si no se encuentran usuarios -->
                                 <div class="notification is-info">
                                     <button class="delete"></button>
@@ -114,20 +114,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% for (let usuario of usuarios) { %>
-                                            <tr class="<%= usuario.Habilitado === 0 ? 'disabled-user has-background-danger' : '' %>">
-                                                <td><%= usuario.nombre_usuario %></td>
-                                                <td><%= usuario.Correo %></td>
-                                                <td><%= usuario.Celular %></td>
-                                                <td><%= usuario.IDUsuario %></td>     
+                                        <% for (let usuarios of usuario) { %>
+                                            <tr class="<%= usuarios.Habilitado === 0 ? 'disabled-user has-background-danger' : '' %>">
+                                                <td><%= usuarios.nombre_usuario %></td>
+                                                <td><%= usuarios.Correo %></td>
+                                                <td><%= usuarios.Celular %></td>
+                                                <td><%= usuarios.IDUsuario %></td>     
                                                 <td>
                                                     <div class="buttons">
-                                                        <a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar</a>
-                                                        <% if (usuario.Habilitado === 0) { %>
-                                                            <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Reactivar</button>
+                                                        <a href="/usuarios/modificar-usuario/<%= usuarios.IDUsuario %>" class="button is-info">Modificar</a>
+                                                        <% if (usuarios.Habilitado === 0) { %>
+                                                            <button id="reactivateButton_<%= usuarios.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuarios.IDUsuario %>', '<%= csrfToken %>','<%= usuarios.nombre_usuario %>')">Reactivar</button>
 
                                                         <% } else { %>
-                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuario.nombre_usuario %>')">Desactivar</button>
+                                                            <button id="desactivarButton_<%= usuario.IDUsuario %>" class="button is-danger desactivar-button" onclick="desactivarUsuario('<%= usuarios.IDUsuario %>', '<%= csrfToken %>','<%= usuarios.nombre_usuario %>')">Desactivar</button>
                                                         <% } %>
                                                     </div>
                                                 </td>

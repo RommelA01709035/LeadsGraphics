@@ -1,33 +1,63 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGraphs</title>
+    <title id="title">LeadGraphs</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/estilos.css">
- 
-   
 </head>
 <body>
-
     <section class="hero is-link">
         <div class="hero-body has-text-centered">
-            <p class="title is-size-3"> <%= title %> </p> 
-            <% if (caso !== "Historial") { %>
-                <p class="subtitle is-size-5"> Fechas: <%=startMonth%> - <%= endMonth%> </p> 
-            <% } %>
+            <!-- Título -->
+            <p class="title is-size-3" id="titleElement"></p>
+            <!-- Fechas -->
+            <p class="subtitle is-size-5" id="dateElement"></p>
             <p class="subtitle is-3 no-imprimir">(solo se muestran en grafica 28 series de datos)</p>
-            <p class="ml-5">Autor: <%= username %></p>
+            <p class="ml-5">Autor: <span id="author"></span></p>
         </div>
     </section>
-    
-    
 
-    
-    
+    <script>
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function getTitleForCase(caso) {
+            switch (caso) {
+                case 'leadsPorMes':
+                    return 'Leads por mes ';
+                case 'LastMessage':
+                    return 'Leads con esta palabra ';
+                case 'PerCompany':
+                    return 'Leads por compañía ';
+                case 'Historial':
+                    return 'Histórico de acciones por usuarios ';
+                case 'Archivados':
+                    return 'Leads archivados';
+                case 'LeadsSeller':
+                    return 'Leads que tiene cada seller';
+                default:
+                    return 'LeadGraphs';
+            }
+        }
+
+        // Obtener las fechas formateadas
+        const startMonthFormatted = formatDate(new Date(startMonth));
+        const endMonthFormatted = formatDate(new Date(endMonth));
+
+        // Actualizar el título y las fechas en el HTML
+        document.getElementById('title').innerText = getTitleForCase(title);
+        if (caso !== "Historial") {
+            document.getElementById('dateElement').innerText = `Fechas: ${startMonthFormatted} - ${endMonthFormatted}`;
+        }
+        document.getElementById('author').innerText = username;
+    </script>
