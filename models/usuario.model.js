@@ -121,6 +121,10 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario WHERE Correo=?', 
         [email]);
     }
+
+    static fetchOneUser(id, username, correo){
+        return db.execute('SELECT * FROM usuario WHERE IDUsuario=? AND nombre_usuario=? AND Correo=?', [id, username, correo]);
+    }
     
     static desactivar(nombre_usuario, IDUsuario) {
         return db.execute(
@@ -202,5 +206,17 @@ module.exports = class Usuario {
             AND r.IDRol = fr.IDRol
             AND fr.IDFuncion = f.IDFuncion
         `, [id, correo])
+    }
+
+    static changePassword(id, email, contrasena) {
+        return bcrypt.hash(contrasena, 12)
+            .then((contrasenaCifrada) => {
+                return db.execute(`
+                    UPDATE usuario SET Contrasena = ? WHERE IDUsuario = ? AND Correo = ?;
+                `, [contrasenaCifrada, id, email]);
+            }).catch((error) => {
+                console.log(error);
+                throw Error('Error al cambiar la contraseña');
+            });
     }
 }

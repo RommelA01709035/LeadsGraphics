@@ -8,6 +8,8 @@ router.get('/buscar/:nombre', isAuth, usuarioController.buscarUsuario);
 router.get('/buscar', isAuth, usuarioController.buscarUsuario);
 
 router.get('/', isAuth, usuarioController.getUsuarioPage);
+router.get('/cuenta', isAuth, usuarioController.getCuenta);
+router.post('/cuenta/cambiar-contrasenia', isAuth, usuarioController.postCambiarContrasenia);
 router.post('/desactivar/:IDUsuario', usuarioController.desactivarUsuario);
 router.post('/reactivar/:IDUsuario', usuarioController.reactivarUsuario);
 router.get('/modificar-usuario/:IDUsuario', usuarioController.modificarUsuario);

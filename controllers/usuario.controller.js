@@ -2,6 +2,7 @@
 const Usuario = require('../models/usuario.model');
 const loginController = require('../controllers/login.controller');
 const Historial = require('../models/historial.model');
+const bcrypt = require('bcryptjs');
 
 
 exports.getUsuarioPage = async (request, response, next) => {
@@ -139,6 +140,88 @@ exports.reactivarUsuario = async (req, res) => {
         res.status(500).json({ error: 'Ocurrió un error al reactivar usuario' });
     }
 };
+
+exports.getCuenta = (request, response, next) => {
+    console.log('Ruta preferencias');
+    console.log(request.body);
+    const error = request.session.error || '';
+    const id = request.session.idUsuario;
+    const username = request.session.username || '';
+    const correo = request.session.email;
+    const successMessage = request.session.successMessage || '';
+    const errorMessage = request.session.errorMessage || '';
+    response.render('cuenta', {
+        successMessage: successMessage,
+        errorMessage: errorMessage,
+        error: error,
+        username: username,
+        id: id,
+        correo: correo,
+        csrfToken: request.csrfToken(),
+        roles: request.session.roles || [],
+    });
+}
+
+exports.postCambiarContrasenia = (request, response, next) => {
+    console.log('Hiciste cambiar contraseña');
+    const {contraseniaActual, nuevaContrasenia} = request.body;
+    console.log(contraseniaActual);
+    console.log(nuevaContrasenia);
+    const id = request.session.idUsuario;
+    const username = request.session.username;
+    const correo = request.session.email
+    Usuario.fetchOneUser(id, username, correo)
+        .then(([usuario, fieldData]) => {
+            if(usuario.length == 1) {
+                const user = usuario[0];
+                console.log(user);
+                
+                // Verificar si la contraseña actual coincide
+                bcrypt.compare(contraseniaActual, user.Contrasena)
+                    .then((result) => {
+                        if(result){
+
+                            // La contraseña actual es correcta, cambiarla contraseña
+                            Usuario.changePassword(user.IDUsuario, user.Correo, nuevaContrasenia)
+                                .then(() => {
+
+                                    // Contraseña cambiada con éxito
+                                    console.log('Contraseña cambiada con éxito');
+
+                                    const successMessage = '¡Contraseña cambiada con éxito!';
+                                    // Establecer un mensaje de confirmación en la sesión del usuario
+                                    request.session.successMessage = successMessage;
+
+                                    // Redirigir a la pagina de cuenta
+                                    response.redirect('/usuarios/cuenta');
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    response.status(500).send('Error al cambiar la contraseña')
+                                });
+                        } else {
+
+                            // La contraseña actual es incorrecta
+                            const errorMessage = 'La contraseña actual es incorrecta';
+                            request.session.errorMessage = errorMessage;
+                            response.redirect('/usuarios/cuenta');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        response.status(500).send('Error al verificar la contraseña')
+                    })
+            } else {
+
+                // Usuario no encontrado
+                response.status(404).send('Usuario no encontrado');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            response.status(500).send('Error al obtener usuario');
+        })
+}
 
 // Usuarios (Seller/Admin)
 exports.get_signup_usuario = (request, response, next) => {

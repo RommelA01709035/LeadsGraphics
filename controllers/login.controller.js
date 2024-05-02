@@ -32,6 +32,7 @@ exports.post_login = (request, response, next) => {
                                 request.session.isLoggedIn = true;
                                 request.session.email = usuario.Correo;
                                 request.session.idUsuario= usuario.IDUsuario;
+                                request.session.username = usuario.nombre_usuario;
                                 request.session.roles = roles;
                                 console.log(request.session.email);
                                 console.log(request.session.idUsuario);
