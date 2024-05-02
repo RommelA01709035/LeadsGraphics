@@ -22,6 +22,7 @@ exports.get_crea_grafica = (request, response, next) => {
     etapas: '',
     title: '',
     username: request.session.username || '',
+    roles: request.session.roles || [],
     csrfToken: request.csrfToken(),});
 };
 
@@ -116,6 +117,7 @@ exports.post_grafica = (request, response, next) => {
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
+                                roles: request.session.roles || [],
                             });
                         })
                         .catch(error => {
@@ -143,6 +145,7 @@ exports.post_grafica = (request, response, next) => {
                             title: getTitleForCase(caso),
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                     }).catch(error =>{
                         console.log(error);
@@ -182,6 +185,7 @@ exports.post_grafica = (request, response, next) => {
                                     registers: registers,
                                     csrfToken: request.csrfToken(),
                                     username: request.session.username || '',
+                                    roles: request.session.roles || [],
                                 });
                             })
                             .catch(error => {
@@ -230,6 +234,7 @@ exports.post_grafica = (request, response, next) => {
                                 registers: registers,
                                 csrfToken: request.csrfToken(),
                                 username: request.session.username || '',
+                                roles: request.session.roles || [],
                             });
 
                         })
@@ -303,6 +308,7 @@ exports.post_grafica = (request, response, next) => {
                                     etapas: etapas,
                                     csrfToken: request.csrfToken(),
                                     username: request.session.username || '',
+                                    roles: request.session.roles || [],
                                 });
                             })
                             .catch(error => {
@@ -340,6 +346,7 @@ exports.post_grafica = (request, response, next) => {
                             registers: registers,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
 
                     })
@@ -490,6 +497,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })
@@ -532,6 +540,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })
@@ -574,6 +583,7 @@ exports.post_grafica_usuario = (request, response, next) => {
                             etapas: etapas,
                             csrfToken: request.csrfToken(),
                             username: request.session.username || '',
+                            roles: request.session.roles || [],
                         });
                         
                     })

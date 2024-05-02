@@ -7,12 +7,12 @@ exports.get_homepage = (request, response, next) => {
 
     // Declarar una constante error del tipo sesion
     const error = request.session.error || ''; 
-
+    console.log(request.session);
     // Para que no este para siempre, el usuario puede equivocarse
     request.session.error = ''; 
     response.render('homepage', {
         username: request.session.username || '',
-
+        roles: request.session.roles || [],
         // Variable que se le pasa al ejs para determinar su accion
         // registrar: false,
         error: error,

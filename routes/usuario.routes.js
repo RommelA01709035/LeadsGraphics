@@ -12,6 +12,8 @@ router.post('/desactivar/:IDUsuario', usuarioController.desactivarUsuario);
 router.post('/reactivar/:IDUsuario', usuarioController.reactivarUsuario);
 router.get('/modificar-usuario/:IDUsuario', usuarioController.modificarUsuario);
 router.post('/modificar-usuario/:IDUsuario', usuarioController.modificarUsuario);
+router.get('/signupusuario', usuarioController.get_signup_usuario);
+router.post('/signupusuario', usuarioController.post_signup_usuario);
 
 
 

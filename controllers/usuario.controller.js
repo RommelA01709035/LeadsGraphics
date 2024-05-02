@@ -13,6 +13,7 @@ exports.getUsuarioPage = async (request, response, next) => {
             usuarios: usuarios,
             message: false, 
             username: request.session.username || '',
+            roles: request.session.roles || [],
             csrfToken: request.csrfToken()
         });
         
@@ -34,6 +35,7 @@ exports.modificarUsuario = (request, response, next) => {
     { 
     
     username: request.session.username || '',
+    roles: request.session.roles || [],
     csrfToken: request.csrfToken(),});
 };
 
@@ -94,3 +96,66 @@ exports.reactivarUsuario = async (req, res) => {
     }
 };
 
+// Usuarios (Seller/Admin)
+exports.get_signup_usuario = (request, response, next) => {
+    const error = request.session.error || '';
+    request.session.error = '';
+    const message = request.session.message || '';
+    const errorMessage = request.session.errorMessage || '';
+    response.render('registrar_usuarios', {
+        message: message,
+        errorMessage: errorMessage,
+        registrar: true,
+        error: error,
+        csrfToken: request.csrfToken(),
+        roles: request.session.roles || [],
+    }); 
+};
+
+
+exports.post_signup_usuario = (request, response, next) => {
+    const { nombre_usuario, correo, celular, contrasena, rol} = request.body;
+    const nuevo_usuario = Usuario.createUserContructor(nombre_usuario, correo, celular, contrasena, rol);
+    console.log(request.body);
+
+    // Mapa de correspondencia entre roles y IDs en la base de datos
+    const rolesMap = {
+        'owner': 1,
+        'admin': 2,
+        'seller': 3
+    }
+
+    const rolID = rolesMap[rol];
+
+    if (!rolID) {
+        const errorMessage = 'Rol inválido.';
+        console.log(errorMessage);
+        request.session.error = errorMessage;
+        return response.redirect('/usuarios/signupusuario');
+    }
+
+    Usuario.createUser(nombre_usuario, correo, celular, contrasena, rolID)
+        .then(([row, fieldData]) => {
+            console.log(row[0]['id']);
+
+            const userId = row[0]['id'];
+            console.log(userId)
+            return userId;
+        })
+        .then((userId) => {
+            // Obtener los detalles del usuario utilizando su ID
+            return Usuario.fetchOne(userId);
+        })
+        .then(([user, fieldData]) => {
+            console.log(user);
+            const message = `El usuario ${user[0].nombre_usuario} con correo electrónico ${user[0].Correo} ha sido registrado correctamente.`;
+            request.session.message = message; 
+            console.log("Usuario registrado correctamente");
+            response.redirect('/usuarios/signupusuario');
+        })
+        .catch(error => {
+            console.log(error);
+            request.session.error = 'Error al registrar usuario.';
+            response.redirect('/usuarios/signupusuario');
+        });
+};

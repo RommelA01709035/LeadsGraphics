@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const isAuth = require('../util/is-auth');
+const isOwner = require('../util/is-Owner');
+const isAdmin = require('../util/is-Admin');
+const isSeller = require('../util/is-Seller');
 const leadsController = require('../controllers/leads.controller');
 
 router.get('/leads', isAuth, leadsController.getLeadsPage);

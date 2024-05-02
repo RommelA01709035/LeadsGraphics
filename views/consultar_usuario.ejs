@@ -67,7 +67,7 @@
 </head>
 
 <body>
-    <%- include('includes/naveside.ejs') %>
+    <%- include('includes/naveside.ejs', {roles: roles}) %>
         <div class="main-content">
             <div class="columns">
                 <section class="section">
@@ -80,7 +80,22 @@
                             <% } %>
                         </div>
                         <h1 class="title">Consultar Usuarios</h1>
-
+                        <div class="columns">
+                            <div class="column is-right">
+                                <div class="buttons">
+                                    <a href="/usuarios/signupusuario">
+                                        <span class="button is-info">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-user"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Registrar nuevo usuario
+                                            </span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="is-flex" style="justify-content: space-between;">
                             <!-- Barra de búsqueda -->
                             <div class="control">
