@@ -109,7 +109,7 @@
                     </div>
 
                     <div id="cambiarContraseña" class="is-hidden">
-                        <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST">
+                        <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST" onsubmit="return validarContraseñas()"">
                             <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                             <div class="field">
                                 <label class="label">Contraseña actual</label>
@@ -124,6 +124,15 @@
                                 <label class="label">Nueva contraseña</label>
                                 <p class="control has-icons-left">
                                   <input class="input" type="password" id="nuevaContrasenia" name="nuevaContrasenia" required placeholder="Mi nueva contraseña">
+                                  <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                  </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Confirmar contraseña</label>
+                                <p class="control has-icons-left">
+                                  <input class="input" type="password" id="confirmarContrasenia" name="confirmarContrasenia" required placeholder="Mi nueva contraseña">
                                   <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                   </span>
@@ -187,8 +196,24 @@
             } else {
                 cambiarContraseñaDiv.classList.add('is-hidden');
             }
+            });
         });
-        });
+
+        function validarContraseñas() {
+            var contrasena = document.getElementById("nuevaContrasenia").value;
+            var confirmarContrasena = document.getElementById("confirmarContrasenia").value;
+
+            if (contrasena !== confirmarContrasena) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Las contraseñas no coinciden.",
+                    footer: '<a href="#">¿Por qué tengo este problema?</a>'
+                });
+                return false; 
+            }
+            return true; 
+        }
     </script>
 </body>
 </html>
