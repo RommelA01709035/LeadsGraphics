@@ -111,7 +111,7 @@
                             <div class="field">
                                 <label class="label">Contraseña actual</label>
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" id="contraseniaActual" name="contraseniaActual" placeholder="Mi contraseña actual">
+                                    <input class="input" type="password" id="contraseniaActual" name="contraseniaActual" required placeholder="Mi contraseña actual">
                                     <span class="icon is-small is-left">
                                       <i class="fas fa-lock"></i>
                                     </span>
@@ -120,7 +120,7 @@
                             <div class="field">
                                 <label class="label">Nueva contraseña</label>
                                 <p class="control has-icons-left">
-                                  <input class="input" type="password" id="nuevaContrasenia" name="nuevaContrasenia" placeholder="Mi nueva contraseña">
+                                  <input class="input" type="password" id="nuevaContrasenia" name="nuevaContrasenia" required placeholder="Mi nueva contraseña">
                                   <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                   </span>
@@ -140,6 +140,11 @@
                 <% if (successMessage) { %>
                     <div class="notification is-success">
                         <strong><%= successMessage %></strong>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                <% } else if (errorMessage) { %>
+                    <div class="notification is-danger">
+                        <strong><%= errorMessage %></strong>
                         <button class="delete" aria-label="delete"></button>
                     </div>
                 <% } else if (error) { %>
