@@ -32,12 +32,31 @@ exports.modificarUsuario = async (req, res) => {
         console.log('ID de usuario a modificar:', usuarioId); // Agregar este console.log
         const usuario = await Usuario.fetchOne(usuarioId);
         console.log('Datos del usuario a modificar:', usuario); // Agregar este console.log
+        Usuario.getRolOption()
+        .then(([rows, fieldData]) =>{
+            roles_ = rows.map(row => ({
+                IDRol_: row.IDRol,
+                descripcion_rol: row.Descripcion_Rol
+            }));
+            roles_.forEach(tupla => {
+                console.log(tupla);
+            });
+
+            
+        // Renderiza la vista de modificar lead
         res.render('modificar-usuario', {
             usuario: usuario[0],
             username: req.session.username || '',
+            rolesOption: roles_,
             roles: req.session.roles || [],
             csrfToken: req.csrfToken(),
         });
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ message: "Error obteniendo sellers" });
+        });
+        
     } catch (error) {
         console.error('Error al obtener usuario para modificar:', error);
         res.status(500).send('Error al obtener usuario para modificar');
@@ -48,10 +67,14 @@ exports.actualizarUsuario = async (req, res) => {
     try {
         const usuarioId = req.params.IDUsuario;
         const { nombre_usuario, Correo, Celular } = req.body; // Obtener los datos del formulario
-        const updatedData = { nombre_usuario, Correo, Celular }; // Crear un objeto con los datos actualizados
+        const updatedData = { nombre_usuario, Correo, Celular,  }; // Crear un objeto con los datos actualizados
+        const rolNuevo = req.body.rol;
 
+        console.log(rolNuevo)
+        console.log(usuarioId)
         // Llamar al método de actualización del modelo con el ID de usuario y los datos actualizados
         await Usuario.actualizarUsuario(usuarioId, updatedData);
+        await Usuario.actualizarRol(rolNuevo, usuarioId);
 
         res.redirect('/usuarios'); // Redirigir a la página de usuarios después de la actualización
     } catch (error) {

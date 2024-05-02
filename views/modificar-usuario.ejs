@@ -55,7 +55,17 @@
                     <input class="input" type="text" name="Celular" value="<%= usuario[0].Celular %>" placeholder="Teléfono" required>
                 </div>
             </div>
-            
+            <div class="field">
+                <label class="label">Cambia de Rol: </label>
+                <div class="control select is-fullwidth">
+                    <select name="rol">
+                        <% rolesOption.forEach(rolop => { %>
+                            <option value="<%= rolop.IDRol_ %>"><%= rolop.descripcion_rol %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" type="submit">Actualizar Usuario</button>

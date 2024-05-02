@@ -83,6 +83,12 @@ module.exports = class Usuario {
         }
     }
 
+    static  actualizarRol(rolNuevo,IDUsuario){
+        return db.execute(`
+        UPDATE rol_usuario SET IDRol = ? 
+        WHERE IDUsuario = ?
+        `, [rolNuevo, IDUsuario])
+    }
     static async actualizarUsuario(usuarioId, usuarioData) {
         try {
             // Actualizar el usuario en la base de datos utilizando una consulta SQL
@@ -165,6 +171,13 @@ module.exports = class Usuario {
             AND fr.IDFuncion = f.IDFuncion
             GROUP BY Descripcion_Rol
         `, [id, correo])
+    }
+
+    static getRolOption(){
+        return db.execute(`
+            SELECT DISTINCT IDRol, Descripcion_Rol
+            from roles
+        `)
     }
 
     static getPermisos(id, correo) {
