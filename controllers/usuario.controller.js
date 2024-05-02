@@ -147,7 +147,8 @@ exports.getCuenta = (request, response, next) => {
     const error = request.session.error || '';
     const id = request.session.idUsuario;
     const username = request.session.username || '';
-    const correo = request.session.email;
+    const correo = request.session.email || '';
+    const telefono = request.session.telefono || '';
     const successMessage = request.session.successMessage || '';
     const errorMessage = request.session.errorMessage || '';
     response.render('cuenta', {
@@ -157,6 +158,7 @@ exports.getCuenta = (request, response, next) => {
         username: username,
         id: id,
         correo: correo,
+        telefono: telefono,
         csrfToken: request.csrfToken(),
         roles: request.session.roles || [],
     });
