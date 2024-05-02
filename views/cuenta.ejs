@@ -71,10 +71,20 @@
         <div class="main-content">
             <div class="column">
                 <div class="section">
-                    <h1 class="title">Cuenta</h1>
+                    <div class="container">
+                        <h1 class="title">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa-solid fa-circle-user has-text-black"></i>
+                                </span>
+                                <span>Perfil</span>
+                            </span>
+                        </h1>
+                    </div>
                     
                     
-                    <table class="table is-bordered is-striped is-fullwidth table-shadow">
+                    
+                    <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
                                 <th>Nombre Usuario</th>
@@ -83,9 +93,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td><%= username %></td></tr>
-                            <tr><td><%= correo %></td></tr>
-                            <tr><td><%= telefono %></td></tr>
+                            <tr>
+                                <td><%= username %></td>
+                                <td><%= correo %></td>
+                                <td><%= telefono %></td>
+                            </tr>
                         </tbody>
                     </table>
                     
