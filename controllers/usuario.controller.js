@@ -35,6 +35,7 @@ exports.modificarUsuario = async (req, res) => {
         res.render('modificar-usuario', {
             usuario: usuario[0],
             username: req.session.username || '',
+            roles: req.session.roles || [],
             csrfToken: req.csrfToken(),
         });
     } catch (error) {
