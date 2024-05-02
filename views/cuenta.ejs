@@ -103,13 +103,26 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="is-flex" style="justify-content: space-between;">
                     
-                    <div class="buttons">
-                        <a id="mostrarFormulario" class="button is-info">Contraseña</a>
-                    </div>
+                        <div class="buttons">
+                            <a id="mostrarFormulario" class="button is-info">Contraseña</a>
+                        </div>
 
+                        <div>
+                            <a href="/logout" class="button is-danger">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-door-open fa-xl"></i>
+                                    </span>
+                                    <span>Salir</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    
                     <div id="cambiarContraseña" class="is-hidden">
-                        <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST">
+                        <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST" onsubmit="return validarContraseñas()"">
                             <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                             <div class="field">
                                 <label class="label">Contraseña actual</label>
@@ -129,14 +142,24 @@
                                   </span>
                                 </p>
                             </div>
+                            <div class="field">
+                                <label class="label">Confirmar contraseña</label>
+                                <p class="control has-icons-left">
+                                  <input class="input" type="password" id="confirmarContrasenia" name="confirmarContrasenia" required placeholder="Mi nueva contraseña">
+                                  <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                  </span>
+                                </p>
+                            </div>
                             <div class="field is-grouped">
                                 <div class="control">
                                   <input class="button is-success" type="submit" value="Cambiar contraseña">
                                 </div>
                             </div>
                         </form>
-                        
                     </div>
+
+
                 </div>
             </div>
             <div class="notification-container mb-4">
@@ -187,8 +210,24 @@
             } else {
                 cambiarContraseñaDiv.classList.add('is-hidden');
             }
+            });
         });
-        });
+
+        function validarContraseñas() {
+            var contrasena = document.getElementById("nuevaContrasenia").value;
+            var confirmarContrasena = document.getElementById("confirmarContrasenia").value;
+
+            if (contrasena !== confirmarContrasena) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Las contraseñas no coinciden.",
+                    footer: '<a href="#">¿Por qué tengo este problema?</a>'
+                });
+                return false; 
+            }
+            return true; 
+        }
     </script>
 </body>
 </html>

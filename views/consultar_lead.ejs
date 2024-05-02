@@ -69,9 +69,23 @@
 <body>
     <%- include('includes/naveside.ejs', {roles: roles}) %>
         <div class="main-content">
-            <div class="columns">
+            <div class="column is-three-quarters">
                 <section class="section">
                     <div class="container">
+                            <h1 class="title">Consultar Leads</h1>
+    
+                            <div class="is-flex" style="justify-content: space-between;">
+                                <!-- Barra de búsqueda -->
+                                <div class="control">
+                                    <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
+                                </div>
+                                <!-- Botón para agregar leads -->
+                                <div>
+                                    <a href="/importar/agregar-lead" class="button is-info">Crear Lead</a>
+                                </div>
+                            
+                            </div>
+                            <br><br>
                         <div class="notification-container">
                             <% if (message) { %>
                                 <div class="notification is-success">
@@ -79,21 +93,9 @@
                                 </div>
                             <% } %>
                         </div>
-                        <h1 class="title">Consultar Leads</h1>
+                    </div>
+                    <div class="container">
 
-                        <div class="is-flex" style="justify-content: space-between;">
-                            <!-- Barra de búsqueda -->
-                            <div class="control">
-                                <input id="buscar" class="input is-info" type="text" placeholder="Buscar..."/>
-                            </div>
-                        
-                            <!-- Botón para agregar leads -->
-                            <div>
-                                <a href="/importar/agregar-lead" class="button is-info">Crear Lead</a>
-                            </div>
-                        </div>
-                        <br><br>
-                        
                         <!-- Contenedor para mostrar los resultados de la búsqueda -->
                         <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                         <div id="respuesta_ajax" class="table-body">
@@ -106,7 +108,7 @@
                             <% } else { %>
                                 <!-- Contenedor para los leads encontrados -->
                             
-                                <table class="table is-fullwidth is-hoverable">
+                                <table class="table is-hoverable is-three-quarters">
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
