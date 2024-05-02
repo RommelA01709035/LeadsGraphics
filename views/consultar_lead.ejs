@@ -139,7 +139,11 @@
                                                             <!-- Si no se encuentra el lead -->
                                                             <p>Lead no encontrado</p>
                                                         <% } %>
-                                                        <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar</button>
+                                                        <% for (let permiso of roles){ %>
+                                                            <% if (permiso.Accion == 'Eliminar Lead') { %>
+                                                                <button class="button is-danger" onclick="confirmDelete(<%= lead.IDLead %>)">Eliminar</button>
+                                                            <% } %>
+                                                        <% } %>
                                                     </div>
                                                 </td>
                                             </tr>
