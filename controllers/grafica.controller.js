@@ -33,6 +33,7 @@ exports.post_grafica = (request, response, next) => {
     const _endMonth = new Date(endDate);
     const startMonth = new Date(_startMonth);
     const endMonth = new Date(_endMonth);
+    const username = request.session.username;
     let average;
     let maximo;
     let minimo;
@@ -41,7 +42,7 @@ exports.post_grafica = (request, response, next) => {
     let estados;
     let etapas;
 
-    startMonth.setDate(_startMonth.getDate())
+    startMonth.setDate(_startMonth.getDate() )
     console.log(startMonth);
     endMonth.setDate(_endMonth.getDate());
     console.log(endMonth);
@@ -90,23 +91,6 @@ exports.post_grafica = (request, response, next) => {
             registers.forEach(tupla => {
                 console.log(tupla);
             });
-
-		
-	
-	if (typeof caso === "undefined" || caso === null || caso === "") {
-    		console.log("Caso no definido, nulo o vacío");
-	} else if (caso == "Archivados") {
-		console.log("Soy Archivado");
-	} else if (caso === "LeadsSeller") {
-console.log("Soy LeadsSeller");
-} else if (caso === "Historial") {
-console.log("Soy Historial");
-}else if(caso == "leadsPorMes"){
-	console.log("Leads por mes");
-}
- else {
-console.log("Caso inválido");
-}
             // Ejecutar el caso necesario para renderizar el tipo de gráfica correspondiente
             switch (caso) {
                 case 'leadsPorMes':
@@ -123,19 +107,20 @@ console.log("Caso inválido");
                             });
                             console.log("Username: " + request.session.username);
                             response.render('grafica', {
-                                data: data, opcion: opcion,
-                                caso: caso, 
-                                startMonth: startMonth,
-                                endMonth: endMonth,
-                                titulo_grafica: '',
-                                average: average,
-                                maximo: maximo,
-                                minimo: minimo,
-                                title: caso,
-                                registers: registers,
-                                csrfToken: request.csrfToken(),
-                                username: request.session.username || '',
-                                roles: request.session.roles || [],
+                                data: data,
+                                    opcion: opcion,
+                                    caso: caso,
+                                    startMonth: formatDate(startMonth),
+                                    endMonth: formatDate(endMonth),
+                                    titulo_grafica: "Leads por mes",
+                                    average: average,
+                                    maximo: maximo,
+                                    minimo: minimo,
+                                    title: getTitleForCase(caso),
+                                    registers: registers,
+                                    csrfToken: request.csrfToken(),
+                                    username: request.session.username || '',
+                                    roles: request.session.roles || [],
                             });
                         })
                         .catch(error => {
@@ -155,17 +140,22 @@ console.log("Caso inválido");
                             console.log(tupla);
                         });
 
-                        response.render('grafica', {
-                            data: data,
-                            opcion: opcion,
-                            caso: caso,
-                            titulo_grafica: "Historial de la app",
-                            title: getTitleForCase(caso),
-                            csrfToken: request.csrfToken(),
-                            username: request.session.username || '',
-                            roles: request.session.roles || [],
-                        });
-                    }).catch(error =>{
+			response.render('grafica', {
+                                data: data,
+                                    opcion: opcion,
+                                    caso: caso,
+                                    startMonth: formatDate(startMonth),
+                                    endMonth: formatDate(endMonth),
+                                    titulo_grafica: "Historial de acciones de la app",
+                                    average: average,
+                                    maximo: maximo,
+                                    minimo: minimo,
+                                    title: getTitleForCase(caso),
+                                    registers: registers,
+                                    csrfToken: request.csrfToken(),
+                                    username: request.session.username || '',
+                                    roles: request.session.roles || [],
+                            });                    }).catch(error =>{
                         console.log(error);
                         response.status(500).json({ message: "Error creating chart Historial" });
                     });
@@ -188,8 +178,7 @@ console.log("Caso inválido");
                                     console.log(tupla);
                                 });
                                 console.log(opcion);
-
-                                response.render('grafica', {
+				response.render('grafica', {
                                     data: data,
                                     opcion: opcion,
                                     caso: caso,
@@ -205,6 +194,7 @@ console.log("Caso inválido");
                                     username: request.session.username || '',
                                     roles: request.session.roles || [],
                                 });
+
                             })
                             .catch(error => {
                                 console.log(error);
@@ -238,21 +228,21 @@ console.log("Caso inválido");
                             });
                             console.log(opcion);
 
-                            response.render('grafica', {
+			response.render('grafica', {
                                 data: data,
-                                opcion: opcion,
-                                caso: caso,
-                                startMonth: formatDate(startMonth),
-                                endMonth: formatDate(endMonth),
-                                titulo_grafica: "Leads por compañia",
-                                average: average,
-                                maximo: maximo,
-                                minimo: minimo,
-                                title: getTitleForCase(caso),
-                                registers: registers,
-                                csrfToken: request.csrfToken(),
-                                username: request.session.username || '',
-                                roles: request.session.roles || [],
+                                    opcion: opcion,
+                                    caso: caso,
+                                    startMonth: formatDate(startMonth),
+                                    endMonth: formatDate(endMonth),
+                                    titulo_grafica: "Leads por compañias",
+                                    average: average,
+                                    maximo: maximo,
+                                    minimo: minimo,
+                                    title: getTitleForCase(caso),
+                                    registers: registers,
+                                    csrfToken: request.csrfToken(),
+                                    username: request.session.username || '',
+                                    roles: request.session.roles || [],
                             });
 
                         })
@@ -306,7 +296,7 @@ console.log("Caso inválido");
                                     console.log(tupla);
                                 });
                                 // Renderizar la vista aquí dentro, después de obtener todos los valores necesarios
-                                response.render('grafica', {
+                             response.render('grafica', {
                                     data: data,
                                     opcion: opcion,
                                     caso: caso,

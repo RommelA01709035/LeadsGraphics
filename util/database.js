@@ -3,10 +3,10 @@ const mysql = require('mysql2');
 const { Pool } = require('pg');
 
 const pool = mysql.createPool({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     database: 'leadgraphs',
-    password: 'JulianSQL'
+    password: 'taco'
 });
 
 module.exports = pool.promise();

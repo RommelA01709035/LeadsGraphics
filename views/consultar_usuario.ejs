@@ -108,7 +108,7 @@
                         <!-- Contenedor para mostrar los resultados de la búsqueda -->
                         <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
                         <div id="respuesta_ajax" class="table-body">
-                            <% if (usuario.length < 1) { %>
+                            <% if (usuarios.length < 1) { %>
                                 <!-- Mensaje si no se encuentran usuarios -->
                                 <div class="notification is-info">
                                     <button class="delete"></button>
@@ -129,12 +129,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% for (let usuarios of usuario) { %>
-                                            <tr class="<%= usuarios.Habilitado === 0 ? 'disabled-user has-background-danger' : '' %>">
-                                                <td><%= usuarios.nombre_usuario %></td>
-                                                <td><%= usuarios.Correo %></td>
-                                                <td><%= usuarios.Celular %></td>
-                                                <td><%= usuarios.IDUsuario %></td>     
+                                        <% for (let usuario of usuarios) { %>
+                                            <tr class="<%= usuario.Habilitado === 0 ? 'disabled-user has-background-danger' : '' %>">
+                                                <td><%= usuario.nombre_usuario %></td>
+                                                <td><%= usuario.Correo %></td>
+                                                <td><%= usuario.Celular %></td>
+                                                <td><%= usuario.IDUsuario %></td>     
                                                 <td>
                                                     <div class="buttons">
                                                         <a href="/usuarios/modificar-usuario/<%= usuarios.IDUsuario %>" class="button is-info">Modificar</a>
