@@ -103,11 +103,24 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="is-flex" style="justify-content: space-between;">
                     
-                    <div class="buttons">
-                        <a id="mostrarFormulario" class="button is-info">Contraseña</a>
-                    </div>
+                        <div class="buttons">
+                            <a id="mostrarFormulario" class="button is-info">Contraseña</a>
+                        </div>
 
+                        <div>
+                            <a href="/logout" class="button is-danger">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-door-open fa-xl"></i>
+                                    </span>
+                                    <span>Salir</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    
                     <div id="cambiarContraseña" class="is-hidden">
                         <form action="/usuarios/cuenta/cambiar-contrasenia" method="POST" onsubmit="return validarContraseñas()"">
                             <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
@@ -144,8 +157,9 @@
                                 </div>
                             </div>
                         </form>
-                        
                     </div>
+
+
                 </div>
             </div>
             <div class="notification-container mb-4">
