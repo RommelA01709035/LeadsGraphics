@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="/css/estilos.css">
     <script src="https://kit.fontawesome.com/ec8ea11f65.js" crossorigin="anonymous"></script>
     <style>
+        .main-content {
+            padding: 2rem;
+            margin: auto;
+            max-width: 600px;
+        }
+
         .notification-container {
             position: fixed;
             bottom: 50px; /* Distancia desde la parte inferior */
@@ -30,84 +36,91 @@
         
         <div class="main-content">
             <div class="column is-centered">
-                <section class="section">
-                    <div class="container">
-                        <h1 class="title">Registrar nuevo usuario</h1>
-    
-                        <div class="buttons">
-                            <a href="/usuarios" class="button is-info">
-                                Regresar
-                            </a>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="column is-full is-centered">
+                <div class="columns is-centered">
+                    <div class="column is-full">
 
-                            <div class="box content-box has-text-centered mt-4">
-        
-                                <form action="/usuarios/signupusuario" method="POST" onsubmit="return validarContraseñas()">
-                                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
-        
-                                    <div class="columns is-centered">
-                                        <div class="column is-half">
-                                            <div class="field">
-                                                <label class="label">Nombre</label>
-                                                <div class="control">
-                                                    <input class="input" id="nombre_usuario" name="nombre_usuario" class="input" type="text" required placeholder="Pedro">
-                                                </div>
-                                            </div>
-        
-                                            <div class="field">
-                                                <label class="label">Teléfono</label>
-                                                <div class="control">
-                                                    <input class="input" id="celular" name="celular" class="input" type="string" required placeholder="4425637485">
-                                                </div>
-                                            </div>
-        
-                                            <div class="field">
-                                                <label class="label">Contraseña</label>
-                                                <div class="control">
-                                                    <input class="input" id="contrasena" name="contrasena" class="input" type="password" required placeholder="Micontraseña">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="field">
-                                                <label class="label">Correo electrónico</label>
-                                                <div class="control">
-                                                    <input class="input" id="email" name="correo" class="input" type="email" required placeholder="pedro@gmail.com">
-                                                </div>
-                                            </div>
-        
-                                            <div class="field">
-                                                <label class="label">Rol</label>
-                                                <div class="select">
-                                                    <select name="rol" id="rol" required>
-                                                        <option value="">Selecciona un rol</option>
-                                                        <option value="seller">Seller</option>
-                                                        <option value="admin">Administrador</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-        
-                                            <div class="field">
-                                                <label class="label">Confirmar contraseña</label>
-                                                <div class="control">
-                                                    <input class="input" id="confirmacontrasena" name="confirmacontrasena" class="input" type="password" required placeholder="Micontraseña" >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-        
-                                    <div class="field has-text-centered">
-                                        <input class="button is-success" type="submit" value="Registrar nuevo usuario"/>
-                                    </div>
-                                </form>
-        
+                        <section class="section">
+                            <div class="container">
+                                <h1 class="title">Registrar nuevo usuario</h1>
+            
+                                <div class="buttons">
+                                    <a href="/usuarios" class="button is-info">
+                                        Regresar
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </div>                   
-                </section>
+                            <div class="container">
+                                <div class="column is-full is-centered">
+        
+                                    <div class="box content-box has-text-centered mt-4">
+                
+                                        <form action="/usuarios/signupusuario" method="POST" onsubmit="return validarContraseñas()">
+                                            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                
+                                            <div class="columns is-centered">
+                                                <div class="column is-half">
+                                                    <div class="field">
+                                                        <label class="label">Nombre</label>
+                                                        <div class="control">
+                                                            <input class="input" id="nombre_usuario" name="nombre_usuario" class="input" type="text" required placeholder="Pedro">
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="field">
+                                                        <label class="label">Teléfono</label>
+                                                        <div class="control">
+                                                            <input class="input" id="celular" name="celular" class="input" type="string" required placeholder="4425637485">
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="field">
+                                                        <label class="label">Contraseña</label>
+                                                        <div class="control">
+                                                            <input class="input" id="contrasena" name="contrasena" class="input" type="password" required placeholder="Micontraseña">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="column is-half">
+                                                    <div class="field">
+                                                        <label class="label">Correo electrónico</label>
+                                                        <div class="control">
+                                                            <input class="input" id="email" name="correo" class="input" type="email" required placeholder="pedro@gmail.com">
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="field">
+                                                        <label class="label">Rol</label>
+                                                        <div class="select">
+                                                                <div class="control">
+                                                                <select name="rol" id="rol" required>
+                                                                    <option value="">Selecciona un rol</option>
+                                                                    <option value="seller">Seller</option>
+                                                                    <option value="admin">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="field">
+                                                        <label class="label">Confirmar contraseña</label>
+                                                        <div class="control">
+                                                            <input class="input" id="confirmacontrasena" name="confirmacontrasena" class="input" type="password" required placeholder="Micontraseña" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                            <div class="field has-text-centered">
+                                                <input class="button is-success" type="submit" value="Registrar nuevo usuario"/>
+                                            </div>
+                                        </form>
+                
+                                    </div>
+                                </div>
+                            </div>                   
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="notification-container mb-4">
