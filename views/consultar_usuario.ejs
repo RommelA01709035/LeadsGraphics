@@ -137,9 +137,9 @@
                                                 <td><%= usuario.IDUsuario %></td>     
                                                 <td>
                                                     <div class="buttons">
-                                                        <a href="/usuarios/modificar-usuario/<%= usuarios.IDUsuario %>" class="button is-info">Modificar</a>
-                                                        <% if (usuarios.Habilitado === 0) { %>
-                                                            <button id="reactivateButton_<%= usuarios.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuarios.IDUsuario %>', '<%= csrfToken %>','<%= usuarios.nombre_usuario %>')">Reactivar</button>
+                                                        <a href="/usuarios/modificar-usuario/<%= usuario.IDUsuario %>" class="button is-info">Modificar</a>
+                                                        <% if (usuario.Habilitado === 0) { %>
+                                                            <button id="reactivateButton_<%= usuario.IDUsuario %>" class="button is-success reactivate-button" onclick="reactivarUsuario('<%= usuario.IDUsuario %>', '<%= csrfToken %>','<%= usuarios.nombre_usuario %>')">Reactivar</button>
 
                                                         <% } else { %>
                                                             <% for (let permiso of roles){ %>
