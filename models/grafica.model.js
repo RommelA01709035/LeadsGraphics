@@ -85,8 +85,8 @@ module.exports = class Grafica {
             `
             SELECT COUNT(*) AS cantidad_leads, Seller_asignado, archivado
             FROM leads
-            WHERE (Archivado = 'True' OR Archivado = 'False')
-            AND Creado BETWEEN ? AND ?
+            WHERe
+            Creado BETWEEN ? AND ?
             GROUP BY  Seller_asignado ,archivado
             
             `, [startMonth, endMonth]

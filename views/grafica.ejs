@@ -112,7 +112,7 @@
                                     <input type="hidden" name="opcion" value="bar">
                                     <input type="hidden" name="startDate" value="<%= startMonth %>">
                                     <input type="hidden" name="endDate" value="<%= endMonth %>">
-                                    <label class="label">Selecciona el embudo:</label>
+                                    <label class="label is-static is-small">Selecciona el embudo:</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select name="valor">
@@ -137,7 +137,7 @@
                                     <input type="hidden" name="opcion" value="bar">
                                     <input type="hidden" name="startDate" value="<%= startMonth %>">
                                     <input type="hidden" name="endDate" value="<%= endMonth %>">
-                                    <label class="label">Selecciona la etapa:</label>
+                                    <label class="label  is-static is-small">Selecciona la etapa:</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select name="valor">
@@ -162,7 +162,7 @@
                                     <input type="hidden" name="opcion" value="bar">
                                     <input type="hidden" name="startDate" value="<%= startMonth %>">
                                     <input type="hidden" name="endDate" value="<%= endMonth %>">
-                                    <label class="label">Selecciona el estado:</label>
+                                    <label class="label  is-static is-small">Selecciona el estado:</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select name="valor">
@@ -264,8 +264,12 @@
             labels = data.map(entry => `${entry.Seller_asignado} Leads - ${entry.cantidad_leads}`);
             values = data.map(entry => entry.cantidad_leads);
         <%}%>
+
+console.log(labels);
         
-        
+labels = limpiarLabels(labels);
+
+console.log(labels);
     
         const chartData = {
             labels: labels,
@@ -445,7 +449,14 @@
             window.onbeforeprint = handlePrePrint;
 
             // Agrega un listener para el evento de impresión
+
             window.onafterprint = handlePostPrint;
+
+function limpiarLabels(labels) {
+ 
+   // Itera sobre cada label y limpia los caracteres no deseados
+    return labels.map(label => label.replace(/"/g, '').trim());
+}
     </script>
     
 </body>

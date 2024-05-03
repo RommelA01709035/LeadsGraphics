@@ -4,6 +4,10 @@ const Leads = require('../models/leads.model');
 const { end } = require('../util/database');
 const Historial = require('../models/historial.model');
 const { error } = require('console');
+const dayjs = require('dayjs')
+
+//import dayjs from 'dayjs' // ES 2015
+dayjs().format()
 
 exports.get_crea_grafica = (request, response, next) => {
     
@@ -42,11 +46,14 @@ exports.post_grafica = (request, response, next) => {
     let estados;
     let etapas;
 
+    
     startMonth.setDate(_startMonth.getDate())
     console.log(startMonth);
     endMonth.setDate(_endMonth.getDate());
     console.log(endMonth);
     console.log(caso);
+
+    
     // Secuencia de promesas para obtener el mínimo, el máximo, el promedio y el recuento de tuplas
 
 
