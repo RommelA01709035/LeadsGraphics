@@ -142,19 +142,23 @@
                             <input class="input" type="text" name="Estado_Lead" value="<%= lead.Estado_Lead %>" placeholder="Estado Lead">
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">Selecciona Seller:</label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select name="Seller_Asignado">
-                                    <% sellers.forEach(seller => { %>
-                                        <option value="<%= seller.seller %>"><%= seller.seller %></option>
-                                    <% }); %>
-                                </select>
-                            </div>
-                        </div>
+                    <% for (let permiso of roles){ %>
+                        <% if (permiso.Accion == 'Asigna seller') { %>
+                            <div class="field">
+                                <label class="label">Selecciona Seller:</label>
+                                <div class="control">
+                                    <div class="select is-fullwidth">
+                                        <select name="Seller_Asignado">
+                                            <% sellers.forEach(seller => { %>
+                                                <option value="<%= seller.seller %>"><%= seller.seller %></option>
+                                            <% }); %>
+                                        </select>
+                                    </div>
+                                </div>
                         
-                    </div>
+                            </div>
+                        <% } %>
+                    <% } %> 
                     <div class="field">
                         <label class="label">Embudo</label>
                         <div class="control">

@@ -16,6 +16,7 @@ module.exports = (request, response, next) => {
         }
     }
     if (isSeller) {
+        console.log('Soy seller')
         next();
     } else {
         return response.redirect('/logout');

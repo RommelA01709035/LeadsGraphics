@@ -26,6 +26,7 @@ module.exports = (request, response, next) => {
         }
     }
     if (isAdmin) {
+        console.log('Soy admin');
         next();
     } else {
         return response.redirect('/logout');

@@ -7,12 +7,12 @@ const isSeller = require('../util/is-Seller');
 const leadsController = require('../controllers/leads.controller');
 
 router.get('/leads', isAuth, isSeller, leadsController.getLeadsPage);
-router.get('/buscar/:nombre', isAuth, isSeller, leadsController.buscarLeads);
+router.get('/buscar/:nombre', isAuth, leadsController.buscarLeads);
 router.get('/buscar', isAuth, isSeller, leadsController.buscarLeads);
 router.get('/agregar-lead', isAuth, isSeller, leadsController.renderAddLeadPage);
 router.get('/modificar-lead/:lead_id', isAuth, isSeller, leadsController.renderModificarLeadPage);
 
-router.post('/modificar-lead/:lead_id', isAuth, isSeller, leadsController.guardarLead);
+router.post('/modificar-lead/:lead_id', isAuth, leadsController.guardarLead);
 router.post('/agregar-lead', isAuth, isSeller, leadsController.agregarLead);
 router.post('/eliminar-lead', isAuth, isAdmin, leadsController.eliminarLead);
 router.get('/', isAuth, isSeller, leadsController.getImportar);
