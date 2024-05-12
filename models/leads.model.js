@@ -197,25 +197,21 @@ module.exports = class Leads {
                 try{
                     //console.log('Fila del CSV:', row);
                 
-                    // Convertir valores "Si" y "No" a 1 y 0 respectivamente
-                    for (const key in row) {
-                        if (row[key] === 'false' || 
-                            row[key] === 'FALSE') {
-                            row[key] = '0';
-                        } 
-                        else if (row[key] === 'true' ||
-                                row[key] === 'TRUE') {
-                            row[key] = '1';
-                        }
-                        else if (row[key] === '') {
-                            
-                            // Manejar campos vacíos asignando un valor predeterminado para la db
-                            row[key] = null;
-                        }
-                        //console.log(`Valor de ${key} después de la conversión:`, row[key]);
-                    }
+for (const key in row) {
+    if (typeof row[key] === 'string') {
+        row[key] = row[key].replace(/['"]+/g, ''); // Eliminar comillas dobles o simples
+        if (row[key] === 'false' || row[key] === 'FALSE') {
+            row[key] = '0';
+        } else if (row[key] === 'true' || row[key] === 'TRUE') {
+            row[key] = '1';
+        } else if (row[key] === '') {
+            row[key] = null; // Cambiar a null si es una cadena vacía
+        } else if (row[key] === 'null' || row[key] === 'NULL') {
+            row[key] = 'No tiene valor'; // Cambiar a "No tiene valor" si el valor es nulo
+        }
+    }
+}
 
-                    
                     //console.log('Fila del CSV después de la conversión:', row);
 
 
@@ -311,11 +307,14 @@ module.exports = class Leads {
 
                     // Agregar el Lead importado a los resultados
                     results.push(lead);
-                    
+         
+			
                 } catch (error) {
                     console.log('Error al insertar lead', error);
                 }
             }).on('end', () => {
+		
+
                 console.log('Todos los datos del CSV se han insertado en la base de datos.');
             });
         } catch (error) {
