@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `contenedor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contenedor` (
-  `IDContenedor` int NOT NULL,
-  `Fecha_Creacion_Contenedor` date DEFAULT NULL,
+  `IDContenedor` int NOT NULL AUTO_INCREMENT,
+  `Fecha_Creacion_Contenedor` date DEFAULT current_timestamp(),
   `Autor` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`IDContenedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `funcion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `funcion` (
-  `IDFuncion` int NOT NULL,
+  `IDFuncion` int NOT NULL AUTO_INCREMENT,
   `Accion` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`IDFuncion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
