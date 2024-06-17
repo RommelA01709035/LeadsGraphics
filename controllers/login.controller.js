@@ -88,6 +88,7 @@ exports.post_signup = (request, response, next) => {
         })
         .then(([user, fieldData]) => {
             console.log(user);
+            console.log(user);
             const message = `El usuario ${user[0].nombre_usuario} con correo electrónico ${user[0].Correo} ha sido registrado correctamente.`;
             request.session.message = message; 
             console.log("Usuario registrado correctamente");
